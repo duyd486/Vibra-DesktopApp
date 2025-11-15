@@ -22,7 +22,7 @@ namespace Vibra_DesktopApp.Views
         public LoginWindow()
         {
             InitializeComponent();
-            DataContext = viewModel = new LoginViewModel();
+            DataContext = viewModel = new LoginViewModel(this);
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

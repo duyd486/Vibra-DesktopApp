@@ -11,8 +11,18 @@ namespace Vibra_DesktopApp.ViewModels
 {
     public partial class LoginViewModel : ObservableObject
     {
+        private LoginWindow? loginWindow;
+        private SignUpWindow? signUpWindow;
+
         [ObservableProperty] private string? emailText;
         [ObservableProperty] private string? passwordText;
+        [ObservableProperty] private string? rePasswordText;
+
+
+        public LoginViewModel(LoginWindow login)
+        {
+            loginWindow = login;
+        }
 
 
 
@@ -21,25 +31,60 @@ namespace Vibra_DesktopApp.ViewModels
         {
             if(EmailText == null || PasswordText == null)
             {
-                MessageBox.Show("Please enter both email and password.");
+                MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
                 return;
             }
 
-            ApiManager.GetInstance().LoginAsync(EmailText, PasswordText);
+            _ = ApiManager.GetInstance().LoginAsync(EmailText, PasswordText, () =>
+            {
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                loginWindow.Close();
+            });
+        }
+
+        [RelayCommand]
+        private void SignUp()
+        {
+            if (EmailText == null || PasswordText == null || RePasswordText == null)
+            {
+                MessageBox.Show("Vui lòng điền đầy đủ thông tin");
+                return;
+            }
+            if (PasswordText != RePasswordText)
+            {
+                MessageBox.Show("Mật khẩu không trùng khớp");
+                return;
+            }
+
+            _ = ApiManager.GetInstance().SignUpAsync(EmailText, PasswordText, CloseSignUp);
         }
 
         [RelayCommand]
         private void OpenSignUp()
         {
-            SignUpWindow signUpWindow = new SignUpWindow(this);
+            EmailText = "";
+            signUpWindow = new SignUpWindow(this);
             signUpWindow.ShowDialog();
         }
+
+        [RelayCommand]
+        private void CloseSignUp()
+        {
+            EmailText = "";
+            signUpWindow?.Close();
+        }
+
 
 
 
         public void SetPassword(string password)
         {
             PasswordText = password;
+        }
+        public void SetRePassword(string rePassword)
+        {
+            RePasswordText = rePassword;
         }
     }
 }

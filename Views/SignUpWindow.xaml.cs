@@ -25,5 +25,17 @@ namespace Vibra_DesktopApp.Views
             viewModel = vm;
             DataContext = viewModel;
         }
+
+        private void PasswordBox_RePasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var senderBox = sender as PasswordBox;
+            viewModel.SetRePassword(senderBox.Password);
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var senderBox = sender as PasswordBox;
+            viewModel.SetPassword(senderBox.Password);
+        }
     }
 }
