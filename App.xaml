@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Vibra_DesktopApp"
              StartupUri="Views/LoginWindow.xaml">
     <Application.Resources>
-         
+        
     </Application.Resources>
 </Application>

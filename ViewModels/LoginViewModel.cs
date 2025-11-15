@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using Vibra_DesktopApp.Singleton;
+using Vibra_DesktopApp.Views;
 
 namespace Vibra_DesktopApp.ViewModels
 {
-    partial class LoginViewModel : ObservableObject
+    public partial class LoginViewModel : ObservableObject
     {
         [ObservableProperty] private string? emailText;
         [ObservableProperty] private string? passwordText;
@@ -23,9 +25,16 @@ namespace Vibra_DesktopApp.ViewModels
                 return;
             }
 
-            Console.WriteLine("Login button clicked");
-            MessageBox.Show("Login button clicked " + EmailText + " " + PasswordText);
+            ApiManager.GetInstance().LoginAsync(EmailText, PasswordText);
         }
+
+        [RelayCommand]
+        private void OpenSignUp()
+        {
+            SignUpWindow signUpWindow = new SignUpWindow(this);
+            signUpWindow.ShowDialog();
+        }
+
 
 
         public void SetPassword(string password)

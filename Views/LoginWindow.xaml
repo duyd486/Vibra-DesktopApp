@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vibra_DesktopApp.Views"
+        xmlns:viewmodels="clr-namespace:Vibra_DesktopApp.ViewModels"
+        xmlns:views="clr-namespace:Vibra_DesktopApp.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="#121212"
         WindowStyle="None"
         Title="LoginWindow" Height="680" Width="680">
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -22,10 +26,14 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Margin="0 10 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="#" FontSize="40" Margin="0 10 0 -10" FontWeight="Bold" HorizontalAlignment="Center" Foreground="White"/>
-                
-                <TextBlock Text="Đăng nhập vào Vibra" FontWeight="Bold" FontSize="36" Margin="0 20 0 0" Foreground="White"/>
+            <StackPanel Grid.Row="0" Margin="0 30 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border Background="White" Width="200" Height="60">
+                    <Border.OpacityMask>
+                        <ImageBrush ImageSource="/Assets/Images/MyLogo.png"/>
+                    </Border.OpacityMask>
+                </Border>
+
+                <TextBlock Text="Đăng nhập vào Vibra" FontWeight="Bold" FontSize="36" Margin="0 0 0 0" Foreground="White"/>
 
             </StackPanel>
             <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -63,7 +71,9 @@
                         </Setter>
                     </Style> 
                 </StackPanel.Resources>
-                <Button Margin="0 30 0 0"></Button>
+                <Button Margin="0 30 0 0">
+                   
+                </Button>
                 <Button Margin="0 12 0 0"></Button>
             </StackPanel>
             <Rectangle Height="1" Grid.Row="2"
@@ -191,10 +201,8 @@
 
             <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0 0 0 40">
                 <TextBlock Text="Bạn chưa có tài khoản?  " Foreground="#aeaeae" FontSize="18"/>
-                <Button Content="Đăng ký" FontSize="18" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand" Foreground="White"/>
+                <Button Command="{Binding OpenSignUpCommand}" Content="Đăng ký" FontSize="18" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand" Foreground="White"/>
             </StackPanel>
-
-
         </Grid>
     </Grid>
 </Window>

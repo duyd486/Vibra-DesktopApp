@@ -10,13 +10,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\MyLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Converters\" />
-    <Folder Include="Singleton\" />
     <Folder Include="Views\Modals\" />
+    <Folder Include="Views\Pages\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Images\MyLogo.png" />
   </ItemGroup>
 
 </Project>
