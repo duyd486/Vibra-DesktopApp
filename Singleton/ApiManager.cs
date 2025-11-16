@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Diagnostics;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
@@ -24,6 +25,7 @@ namespace Vibra_DesktopApp.Singleton
             return Instance;
         }
 
+        #region Login & SignUp
 
         public async Task LoginAsync(string email, string password, Action OpenApp)
         {  
@@ -82,12 +84,49 @@ namespace Vibra_DesktopApp.Singleton
             CloseSignUp();
         }
 
+        #endregion
+
+        #region HomePage
+
+        public async Task<List<Song>> GetListSong()
+        {
+            using HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + currentUser?.token);
+            HttpResponseMessage response = await client.GetAsync(baseUrl + "home/list-song");
+
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            ListSongResponse? res = JsonSerializer.Deserialize<ListSongResponse>(result);
+
+
+            //if (res?.code == 200)
+            //{
+            //    MessageBox.Show("Lấy danh sách nhạc thành công");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Call api thất bại");
+            //}
+            return res?.data ?? new List<Song>();
+        }
+
+
+
+        #endregion
 
 
         public User? GetCurrentUser()
         {
             return currentUser;
         }
+    }
+
+    public class ListSongResponse
+    {
+        public int? code { get; set; }
+        public List<Song>? data { get; set; }
+        public string? message { get; set; }
     }
 
     public class LoginResponse

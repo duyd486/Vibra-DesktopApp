@@ -16,6 +16,7 @@ namespace Vibra_DesktopApp.Models
         public string? avatar { get; set; }
         public DateTime? created_at { get; set; }
         public DateTime? updated_at { get; set; }
+        public int? followers { get; set; }
         public string? token { get; set; }
         public string? avatar_path { get; set; }
     }
