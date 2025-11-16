@@ -39,7 +39,7 @@ namespace Vibra_DesktopApp.ViewModels
             {
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
-                loginWindow.Close();
+                loginWindow?.Close();
             });
         }
 

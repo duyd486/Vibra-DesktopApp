@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Vibra_DesktopApp.Views.Components.Header"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="1600">
+    <Grid Background="AliceBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
+            <Border Background="Black" Width="100" Height="30" Margin="20,0,10,0">
+                <Border.OpacityMask>
+                    <ImageBrush ImageSource="/Assets/Images/LogoText.png"/>
+                </Border.OpacityMask>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

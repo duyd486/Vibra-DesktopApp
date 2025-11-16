@@ -4,10 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vibra_DesktopApp.Views"
+        xmlns:views="clr-namespace:Vibra_DesktopApp.Views.Components"
+        xmlns:pages="clr-namespace:Vibra_DesktopApp.Views.Pages"
+        xmlns:singletons="clr-namespace:Vibra_DesktopApp.Singleton"
+        xmlns:vm="clr-namespace:Vibra_DesktopApp.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
         Title="MainWindow" Height="900" Width="1600">
-    <Grid>
-        
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <Grid Background="AliceBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+        <views:Header Grid.Row="0"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <views:Sidebar Grid.Column="0"/>
+
+            <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/> 
+        </Grid>
+        <views:Player Grid.Row="2"/>
     </Grid>
 </Window>

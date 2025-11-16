@@ -10,13 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\LogoText.png" />
     <None Remove="Assets\Images\MyLogo.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Converters\" />
     <Folder Include="Views\Modals\" />
-    <Folder Include="Views\Pages\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\LogoText.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\MyLogo.png" />
   </ItemGroup>
 

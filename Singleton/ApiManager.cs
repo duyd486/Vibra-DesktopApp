@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
+using Vibra_DesktopApp.Models;
 
 namespace Vibra_DesktopApp.Singleton
 {
@@ -15,7 +13,7 @@ namespace Vibra_DesktopApp.Singleton
         private const string baseUrl = "http://spotify_clone_api.test/api/";
 
 
-        private UserData? currentUser;
+        private User? currentUser;
 
         public static ApiManager GetInstance()
         {
@@ -38,10 +36,13 @@ namespace Vibra_DesktopApp.Singleton
 
 
             string result = await response.Content.ReadAsStringAsync();
+
             LoginResponse? login = JsonSerializer.Deserialize<LoginResponse>(result);
+
+
             if (login?.code == 200)
             {
-                MessageBox.Show("Đăng nhập thành công" + login.data.name);
+                MessageBox.Show("Đăng nhập thành công" + login.data?.name);
                 currentUser = login?.data;
                 OpenApp();
 
@@ -81,31 +82,18 @@ namespace Vibra_DesktopApp.Singleton
             CloseSignUp();
         }
 
-        public UserData? GetCurrentUser()
+
+
+        public User? GetCurrentUser()
         {
             return currentUser;
         }
     }
-    public class UserData
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public string email { get; set; }
-        public string gender { get; set; }
-        public DateTime birth { get; set; }
-        public DateTime email_verified_at { get; set; }
-        public string avatar { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
-        public string token { get; set; }
-        public string avatar_path { get; set; }
-    }
 
     public class LoginResponse
     {
-        public int code { get; set; }
-        public UserData data { get; set; }
-        public string message { get; set; }
+        public int? code { get; set; }
+        public User? data { get; set; }
+        public string? message { get; set; }
     }
 }
