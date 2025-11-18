@@ -15,7 +15,6 @@ namespace Vibra_DesktopApp.ViewModels
 
         public HomeViewModel()
         {
-            Debug.WriteLine("HomeViewModel created");
             RefreshListSong();
         }
 
