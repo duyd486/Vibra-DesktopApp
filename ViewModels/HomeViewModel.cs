@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,6 +22,13 @@ namespace Vibra_DesktopApp.ViewModels
         public async void RefreshListSong()
         {
             ListSong = await ApiManager.GetInstance().GetListSong();
+        }
+
+
+        [RelayCommand]
+        public void PlayOrPauseThisSong(Song song)
+        {
+            SongManager.GetInstace().PlayOrPauseThisSong(song);
         }
     }
 }

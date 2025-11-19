@@ -26,7 +26,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Width="200" Height="240" HorizontalAlignment="Left">
-                                        <Button Width="160" Height="160" Cursor="Hand" Margin="0,0,0,10" Background="Transparent" BorderThickness="0">
+                                        <Button CommandParameter="{Binding}" Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Width="160" Height="160" Cursor="Hand" Margin="0,0,0,10" Background="Transparent" BorderThickness="0">
                                             <Ellipse Width="160" Height="160">
                                                 <Ellipse.Fill>
                                                     <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
