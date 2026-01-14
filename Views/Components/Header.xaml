@@ -1,23 +1,122 @@
 ﻿<UserControl x:Class="Vibra_DesktopApp.Views.Components.Header"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Components"
-             mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="1600">
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+             Height="60">
+
     <Grid Background="AliceBlue">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-            <Border Background="Black" Width="100" Height="30" Margin="20,0,10,0">
-                <Border.OpacityMask>
-                    <ImageBrush ImageSource="/Assets/Images/LogoText.png"/>
-                </Border.OpacityMask>
+
+        <!-- LEFT: Back / Forward -->
+        <StackPanel Grid.Column="0"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    Margin="12,0">
+
+            <Button Style="{StaticResource IconButtonStyle}"
+                    Content="←"/>
+
+            <Button Style="{StaticResource IconButtonStyle}"
+                    Content="→"
+                    Margin="8,0,0,0"/>
+        </StackPanel>
+
+        <!-- CENTER: Search -->
+
+        <StackPanel Grid.Column="1"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+
+            <Button
+                Style="{StaticResource IconButtonStyle}"
+                Content="⌂"
+                VerticalAlignment="Center"
+                FontSize="28"
+                HorizontalAlignment="Right" Height="52" Width="52"
+                Margin="0 0 10 0"
+                Command="{Binding HomeCommand}" />
+
+            <Border 
+                Height="50"
+                Width="500"
+                CornerRadius="26"
+                Background="#1F1F1F"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+
+                <Grid Margin="12,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Search icon -->
+                    <TextBlock Text="🔍"
+                               FontSize="20"
+                               VerticalAlignment="Center"
+                               Foreground="#B3B3B3"
+                               Margin="6,0,0,0"/>
+
+                    <!-- Search box -->
+                    <TextBox Grid.Column="1"
+                             Margin="8,0,0,0"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Foreground="White"
+                             FontSize="18"
+                             VerticalAlignment="Center"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             CaretBrush="White">
+                        <i:Interaction.Triggers>
+                            <!-- Khi focus -->
+                            <i:EventTrigger EventName="GotFocus">
+                                <i:InvokeCommandAction Command="{Binding SearchBoxFocusedCommand}"/>
+                            </i:EventTrigger>
+                            <!-- Khi nhấn Enter -->
+                            <i:EventTrigger EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding SearchCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+                </Grid>
             </Border>
         </StackPanel>
+
+
+
+        <!-- RIGHT: Premium / Notification / Avatar -->
+        <StackPanel Grid.Column="2"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right">
+
+            <!-- Avatar -->
+            <Button
+                Style="{StaticResource IconButtonStyle}"
+                Content="🐷"
+                VerticalAlignment="Center"
+                FontSize="16"
+                HorizontalAlignment="Right" Height="48" Width="48"
+                Margin="0 0 10 0"
+                Command="{Binding UserClickCommand}" />
+
+            <!-- WINDOW BUTTONS -->
+            <Button Style="{StaticResource WindowButton}" Width="52" Height="70" FontSize="24" Margin="0 -7 0 0"
+                        Content="─"
+                        Command="{Binding UserClickCommand}"/>
+
+            <Button Style="{StaticResource WindowButton}" Width="52" Height="69" FontSize="24" Margin="0 -7 0 0"
+                        Content="□"/>
+
+            <Button Style="{StaticResource CloseButton}" Width="52" Height="60" FontSize="20" 
+                        Content="✕"/>
+        </StackPanel>
+
     </Grid>
 </UserControl>

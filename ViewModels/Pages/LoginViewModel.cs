@@ -14,9 +14,6 @@ namespace Vibra_DesktopApp.ViewModels
     {
         private readonly IndexViewModel _indexVM;
 
-        private LoginView? loginView;
-        private SignUpView? signUpView;
-
         [ObservableProperty] private string? emailText;
         [ObservableProperty] private string? passwordText;
         [ObservableProperty] private string? rePasswordText;
@@ -32,19 +29,27 @@ namespace Vibra_DesktopApp.ViewModels
         [RelayCommand]
         private async Task LoginAsync()
         {
-            if(EmailText == null || PasswordText == null)
-            {
-                MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
-                return;
-            }
+            //if(EmailText == null || PasswordText == null)
+            //{
+            //    MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
+            //    return;
+            //}
 
-            bool result = await ApiManager.GetInstance().LoginAsync(EmailText, PasswordText);
+            //bool result = await ApiManager.GetInstance().LoginAsync(EmailText, PasswordText);
 
+            //if (result && ApiManager.GetInstance().GetCurrentUser() != null)
+            //{
+            //    MainWindow mainWindow = new MainWindow();
+            //    mainWindow.Show();
+            //    //loginView?.Close();
+            //}
+
+
+            bool result = await ApiManager.GetInstance().LoginAsync("adele@gmail.com", "12345678");
             if (result && ApiManager.GetInstance().GetCurrentUser() != null)
             {
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
-                //loginView?.Close();
             }
         }
 

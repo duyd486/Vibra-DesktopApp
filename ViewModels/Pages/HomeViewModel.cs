@@ -10,12 +10,14 @@ using Vibra_DesktopApp.Singleton;
 
 namespace Vibra_DesktopApp.ViewModels
 {
-    partial class HomeViewModel : ObservableObject
+    public partial class HomeViewModel : ObservableObject
     {
+        private readonly MainViewModel _mainVM;
         [ObservableProperty] private List<Song>? listSong;
 
-        public HomeViewModel()
+        public HomeViewModel(MainViewModel mainVM)
         {
+            _mainVM = mainVM;
             RefreshListSong();
         }
 

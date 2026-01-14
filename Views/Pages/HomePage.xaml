@@ -7,9 +7,6 @@
              xmlns:vm="clr-namespace:Vibra_DesktopApp.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1250">
-    <UserControl.DataContext>
-        <vm:HomeViewModel/>
-    </UserControl.DataContext>
     <Grid Background="Transparent">
         <Border CornerRadius="20" Background="#1D1512" Margin="0 0 5 5">
             <Grid VerticalAlignment="Top">

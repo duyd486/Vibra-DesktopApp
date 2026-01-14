@@ -21,6 +21,16 @@ namespace Vibra_DesktopApp.Views.Components
         public Header()
         {
             InitializeComponent();
+            MouseLeftButtonDown += (_, e) =>
+            {
+                if (e.ClickCount == 2)
+                    Window.GetWindow(this)?.WindowState =
+                        Window.GetWindow(this)?.WindowState == WindowState.Maximized
+                            ? WindowState.Normal
+                            : WindowState.Maximized;
+                else
+                    Window.GetWindow(this)?.DragMove();
+            };
         }
     }
 }
