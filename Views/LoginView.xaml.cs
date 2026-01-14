@@ -8,34 +8,28 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Vibra_DesktopApp.ViewModels;
 
 namespace Vibra_DesktopApp.Views
 {
     /// <summary>
-    /// Interaction logic for SignUpWindow.xaml
+    /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class SignUpWindow : Window
+    public partial class LoginView : UserControl
     {
-        LoginViewModel viewModel;
-        public SignUpWindow(LoginViewModel vm)
+        public LoginView()
         {
             InitializeComponent();
-            viewModel = vm;
-            DataContext = viewModel;
         }
-
-        private void PasswordBox_RePasswordChanged(object sender, RoutedEventArgs e)
-        {
-            var senderBox = sender as PasswordBox;
-            viewModel.SetRePassword(senderBox.Password);
-        }
-
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            var senderBox = sender as PasswordBox;
-            viewModel.SetPassword(senderBox.Password);
+            if (DataContext is LoginViewModel vm &&
+                sender is PasswordBox box)
+            {
+                vm.SetPassword(box.Password);
+            }
         }
     }
 }

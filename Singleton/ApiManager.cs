@@ -27,7 +27,7 @@ namespace Vibra_DesktopApp.Singleton
 
         #region Login & SignUp
 
-        public async Task LoginAsync(string email, string password, Action OpenApp)
+        public async Task<bool> LoginAsync(string email, string password)
         {  
             using HttpClient client = new HttpClient();
 
@@ -35,7 +35,6 @@ namespace Vibra_DesktopApp.Singleton
             string json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync(baseUrl + "login", content);
-
 
             string result = await response.Content.ReadAsStringAsync();
 
@@ -46,16 +45,16 @@ namespace Vibra_DesktopApp.Singleton
             {
                 MessageBox.Show("Đăng nhập thành công" + login.data?.name);
                 currentUser = login?.data;
-                OpenApp();
-
+                return true;
             }
             else
             {
                 MessageBox.Show("Đăng nhập thất bại");
+                return false;
             }
         }
 
-        public async Task SignUpAsync(string email, string password, Action CloseSignUp)
+        public async Task<bool> SignUpAsync(string email, string password)
         {
             using HttpClient client = new HttpClient();
 
@@ -75,13 +74,13 @@ namespace Vibra_DesktopApp.Singleton
             if (login?.code == 200)
             {
                 MessageBox.Show("Chúng tôi vừa gửi tới email của bạn một mã xác thực, vui lòng kiểm tra email để xác thực tài khoản hiện tại!");
+                return true;
             }
             else
             {
                 MessageBox.Show("Đăng ký thất bại");
+                return false;
             }
-
-            CloseSignUp();
         }
 
         #endregion

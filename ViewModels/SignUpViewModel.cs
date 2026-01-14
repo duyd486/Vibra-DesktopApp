@@ -3,61 +3,55 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Vibra_DesktopApp.Singleton;
-using Vibra_DesktopApp.Views;
 
 namespace Vibra_DesktopApp.ViewModels
 {
-    public partial class LoginViewModel : ObservableObject
+    public partial class SignUpViewModel : ObservableObject
     {
         private readonly IndexViewModel _indexVM;
-
-        private LoginView? loginView;
-        private SignUpView? signUpView;
 
         [ObservableProperty] private string? emailText;
         [ObservableProperty] private string? passwordText;
         [ObservableProperty] private string? rePasswordText;
 
 
-        public LoginViewModel(IndexViewModel indexVM)
+        public SignUpViewModel(IndexViewModel indexVM)
         {
             _indexVM = indexVM;
         }
 
-
-
         [RelayCommand]
-        private async Task LoginAsync()
+        private async Task SignUp()
         {
-            if(EmailText == null || PasswordText == null)
+            if (EmailText == null || PasswordText == null || RePasswordText == null)
             {
-                MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
+                MessageBox.Show("Vui lòng điền đầy đủ thông tin");
+                return;
+            }
+            if (PasswordText != RePasswordText)
+            {
+                MessageBox.Show("Mật khẩu không trùng khớp");
                 return;
             }
 
-            bool result = await ApiManager.GetInstance().LoginAsync(EmailText, PasswordText);
+            bool result = await ApiManager.GetInstance().SignUpAsync(EmailText, PasswordText);
 
-            if (result && ApiManager.GetInstance().GetCurrentUser() != null)
+            if (result)
             {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                //loginView?.Close();
+                OpenLogin();
             }
         }
 
         [RelayCommand]
-        private void OpenSignUp()
+        private void OpenLogin()
         {
             EmailText = "";
             PasswordText = "";
-            _indexVM.ShowSignUp();
+            RePasswordText = "";
+            _indexVM.ShowLogin();
         }
-
-
-
 
         public void SetPassword(string password)
         {
