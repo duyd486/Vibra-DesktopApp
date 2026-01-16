@@ -4,13 +4,194 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Components"
+             xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="1600">
+             d:DesignHeight="76" d:DesignWidth="1600">
+    
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
+
+        <!-- ================= LEFT: SONG INFO ================= -->
+        <StackPanel Grid.Column="0"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center" Margin="20 0 0 0">
+
+            <!-- Thumbnail -->
+            <Border Width="52"
+                    Height="52"
+                    CornerRadius="28"
+                    Background="#222"
+                    >
+                <Image Source="{Binding SongManager.CurrentTrack.thumbnail}"
+                       Stretch="UniformToFill"/>
+            </Border>
+
+            <!-- Song title + artist -->
+            <StackPanel VerticalAlignment="Center" Margin="16 0 0 0">
+                <TextBlock Text="Đừng làm trái tim anh đau"
+                           Foreground="White"
+                           FontWeight="SemiBold"
+                           FontSize="14"
+                           TextTrimming="CharacterEllipsis"/>
+
+                <TextBlock Text="Sơn Tùng M-TP"
+                           Foreground="#AAAAAA"
+                           FontSize="12"/>
+            </StackPanel>
+
+            <!-- Like -->
+            <fa:IconBlock Icon="CheckCircle"
+                          Foreground="#1DB954"
+                          FontSize="16"
+                          VerticalAlignment="Center"
+                          Margin="20 0 0 0"/>
+        </StackPanel>
+
+        <!-- ================= CENTER: CONTROLS ================= -->
+        <StackPanel Grid.Column="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+
+            <!-- Control buttons -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+
+                <fa:IconBlock Icon="Random"
+                              Foreground="White"
+                              FontSize="16"
+                              Margin="12,0"/>
+
+                <fa:IconBlock Icon="StepBackward"
+                              Foreground="White"
+                              FontSize="18"
+                              Margin="12,0"/>
+
+                <!-- Play button -->
+
+                <Button Width="40"
+                        Height="40"
+                        Background="White"
+                        Margin="20 0 20 4"
+                        Style="{StaticResource IconButtonStyle}"
+                        Command="{Binding PlayOrPauseCommand}"
+                        Visibility="{Binding SongManager.IsPlaying, Converter={StaticResource InverseBoolToVisibility}}"
+                        >
+
+                    <fa:IconBlock Icon="Play"
+                                  Foreground="Black"
+                                  FontSize="18"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                </Button>
+                <Button Width="40"
+                        Height="40"
+                        Background="White"
+                        Margin="20 0 20 4"
+                        Style="{StaticResource IconButtonStyle}"
+                        Command="{Binding PlayOrPauseCommand}"
+                        Visibility="{Binding SongManager.IsPlaying, Converter={StaticResource BoolToVisibility}}"
+                        >
+
+                    <fa:IconBlock Icon="Pause"
+                                  Foreground="Black"
+                                  FontSize="18"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    
+                    
+                </Button>
+
+                <fa:IconBlock Icon="StepForward"
+                              Foreground="White"
+                              FontSize="18"
+                              Margin="12,0"/>
+
+                <fa:IconBlock Icon="RedoAlt"
+                              Foreground="White"
+                              FontSize="16"
+                              Margin="12,0"/>
+            </StackPanel>
+
+            <!-- Progress bar -->
+            <Grid Width="420"
+                  VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="1:26"
+                           Foreground="#AAAAAA"
+                           FontSize="11"
+                           VerticalAlignment="Center"/>
+
+                <Slider Grid.Column="1"
+                        Margin="8,0"
+                        Height="4"
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        Background="Wheat"
+                        Value="30"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="4:39"
+                           Foreground="#AAAAAA"
+                           FontSize="11"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- ================= RIGHT: ACTIONS + VOLUME ================= -->
+        <StackPanel Grid.Column="2"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right">
+
+            <Button Background="Transparent"
+                    BorderThickness="0" Margin="10 0">
+                <fa:IconBlock Icon="VolumeUp"
+                              Foreground="White"
+                              FontSize="16"
+                              Margin="4 0"/>
+            </Button>
+
+            <Slider Width="90"
+                    Height="4"
+                    VerticalAlignment="Center"
+                    Margin="16 0"
+                    Background="Gray"/>
+
+            <Button Background="Transparent"
+                    BorderThickness="0" Margin="10 0"
+                    Command="{Binding TogglePanelCommand}">
+                <fa:IconBlock Icon="List"
+                              Foreground="White"
+                              FontSize="16"
+                              Margin="4 0"/>
+            </Button>
+
+            <Button Background="Transparent"
+                    BorderThickness="0" Margin="10 0"
+                    Command="{Binding TogglePanelCommand}">
+                <fa:IconBlock Icon="TabletScreenButton"
+                              Foreground="White"
+                              FontSize="16"
+                              Margin="4 0"/>
+            </Button>
+
+            <Button Background="Transparent"
+                    BorderThickness="0" Margin="10 0 20 0">
+                <fa:IconBlock Icon="Expand"
+                              Foreground="White"
+                              FontSize="24"
+                              Margin="4 0"/>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </UserControl>

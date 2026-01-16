@@ -18,11 +18,14 @@
                     VerticalAlignment="Center"
                     Margin="12,0">
 
-            <Button Style="{StaticResource IconButtonStyle}"
-                    Content="←"/>
-
-            <Button Style="{StaticResource IconButtonStyle}"
-                    Content="→"
+            <Button
+                    Content=""
+                    Width="100"
+                    Height="32"
+                    Margin="8,0,0,0"/>
+            <Button Content=""
+                    Width="32"
+                    Height="32"
                     Margin="8,0,0,0"/>
         </StackPanel>
 
@@ -35,12 +38,17 @@
 
             <Button
                 Style="{StaticResource IconButtonStyle}"
-                Content="⌂"
                 VerticalAlignment="Center"
                 FontSize="28"
                 HorizontalAlignment="Right" Height="52" Width="52"
                 Margin="0 0 10 0"
-                Command="{Binding HomeCommand}" />
+                Command="{Binding HomeCommand}">
+                <fa:IconBlock Icon="Home"
+                              Foreground="White"
+                              FontSize="20"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+            </Button>
 
             <Border 
                 Height="50"
@@ -99,12 +107,17 @@
             <!-- Avatar -->
             <Button
                 Style="{StaticResource IconButtonStyle}"
-                Content="🐷"
                 VerticalAlignment="Center"
                 FontSize="16"
-                HorizontalAlignment="Right" Height="48" Width="48"
+                HorizontalAlignment="Right" Height="44" Width="44"
                 Margin="0 0 10 0"
-                Command="{Binding UserClickCommand}" />
+                Command="{Binding UserClickCommand}" >
+                <fa:IconBlock Icon="UserCircle"
+                              Foreground="White"
+                              FontSize="20"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+            </Button>
 
             <!-- WINDOW BUTTONS -->
             <Button Style="{StaticResource WindowButton}" Width="52" Height="70" FontSize="24" Margin="0 -7 0 0"

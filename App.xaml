@@ -7,8 +7,15 @@
              xmlns:vm3="clr-namespace:Vibra_DesktopApp.ViewModels.Components"
              xmlns:views="clr-namespace:Vibra_DesktopApp.Views"
              xmlns:pages="clr-namespace:Vibra_DesktopApp.Views.Pages"
-             xmlns:components="clr-namespace:Vibra_DesktopApp.Views.Components">
+             xmlns:components="clr-namespace:Vibra_DesktopApp.Views.Components"
+             xmlns:converters="clr-namespace:Vibra_DesktopApp.Converters"
+             >
     <Application.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibility"
+                                    Inverse="True"/>
+        <converters:BoolToIconConverter x:Key="BoolToIconConverter" />
+
         <DataTemplate DataType="{x:Type vm:LoginViewModel}">
             <views:LoginView />
         </DataTemplate>
@@ -35,7 +42,9 @@
         <DataTemplate DataType="{x:Type vm3:HeaderViewModel}">
             <components:Header />
         </DataTemplate>
-
+        <DataTemplate DataType="{x:Type vm3:PlayerViewModel}">
+            <components:Player />
+        </DataTemplate>
 
 
 

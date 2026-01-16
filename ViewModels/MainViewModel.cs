@@ -10,7 +10,7 @@ namespace Vibra_DesktopApp.ViewModels
     {
         public SidebarViewModel SidebarVM { get; }
         public HeaderViewModel HeaderVM { get; }
-
+        public PlayerViewModel PlayerVM { get; }
 
 
         [ObservableProperty] private ObservableObject currentPageViewModel;
@@ -19,10 +19,12 @@ namespace Vibra_DesktopApp.ViewModels
 
         public GridLength PanelWidth => IsPanelOpen ? new GridLength(1, GridUnitType.Star) : new GridLength(0);
 
+
         public MainViewModel()
         {
             SidebarVM = new SidebarViewModel(this);
             HeaderVM = new HeaderViewModel(this);
+            PlayerVM = new PlayerViewModel(this);
 
             currentPageViewModel = new HomeViewModel(this);
         }
@@ -38,7 +40,7 @@ namespace Vibra_DesktopApp.ViewModels
         }
 
         [RelayCommand]
-        void ToggleSidebar()
+        public void TogglePanel()
         {
             IsPanelOpen = !IsPanelOpen;
         }

@@ -41,6 +41,6 @@
             </Grid>
 
         </Grid>
-        <views:Player Grid.Row="2"/>
+        <views:Player DataContext="{Binding PlayerVM}" Grid.Row="2"/>
     </Grid>
 </Window>

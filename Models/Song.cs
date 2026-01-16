@@ -14,9 +14,9 @@ namespace Vibra_DesktopApp.Models
         public int? total_played { get; set; }
         public int? status { get; set; }
         public int? price { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
-        public string? song_path { get; set; }
+        public DateTime? created_at { get; set; }
+        public DateTime? updated_at { get; set; }
+        public string song_path { get; set; } = default!;
         public string? lyrics_path { get; set; }
         public string? thumbnail_path { get; set; }
         public List<string>? list_lyric { get; set; }
