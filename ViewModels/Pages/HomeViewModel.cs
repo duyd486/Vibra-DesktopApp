@@ -28,15 +28,15 @@ namespace Vibra_DesktopApp.ViewModels
 
         public async void RefreshListSong()
         {
-            ListSong = await ApiManager.GetInstance().GetListSong();
+            ListSong = await ApiManager.GetInstance().HttpGetAsync<List<Song>>("home/list-song");
         }
         public async void RefreshListAlbum()
         {
-            ListAlbum = await ApiManager.GetInstance().GetListAlbum();
+            ListAlbum = await ApiManager.GetInstance().HttpGetAsync<List<Album>>("home/list-album");
         }
         public async void RefreshListArtist()
         {
-            ListArtist = await ApiManager.GetInstance().GetListArtist();
+            ListArtist = await ApiManager.GetInstance().HttpGetAsync<List<User>>("home/list-artist");
         }
 
 

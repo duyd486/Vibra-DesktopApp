@@ -83,35 +83,30 @@ namespace Vibra_DesktopApp.Singleton
 
         #region HomePage
 
-        public async Task<List<Song>> GetListSong()
-        {
-            HttpResponseMessage response = await client.GetAsync(baseUrl + "home/list-song");
-
-            string result = await response.Content.ReadAsStringAsync();
-
-            ResponseBase<List<Song>>? res = JsonSerializer.Deserialize<ResponseBase<List<Song>>>(result);
-            return res?.data ?? new List<Song>();
-        }
-
-        public async Task<List<Album>> GetListAlbum()
-        {
-            HttpResponseMessage response = await client.GetAsync(baseUrl + "home/list-album");
-
-            string result = await response.Content.ReadAsStringAsync();
-
-            ResponseBase<List<Album>>? res = JsonSerializer.Deserialize<ResponseBase<List<Album>>>(result);
-            return res?.data ?? new List<Album>();
-        }
-
-        public async Task<List<User>> GetListArtist()
-        {
-            HttpResponseMessage response = await client.GetAsync(baseUrl + "home/list-artist");
-            string result = await response.Content.ReadAsStringAsync();
-            ResponseBase<List<User>>? res = JsonSerializer.Deserialize<ResponseBase<List<User>>>(result);
-            return res?.data ?? new List<User>();
-        }
 
         #endregion
+
+        public async Task<T> HttpGetAsync<T>(string url)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(baseUrl + url);
+
+                response.EnsureSuccessStatusCode();
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                ResponseBase<T>? res = JsonSerializer.Deserialize<ResponseBase<T>>(result);
+
+                return res!.data;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return default!;
+            }
+        }
+
 
 
         public User? GetCurrentUser()
@@ -123,7 +118,7 @@ namespace Vibra_DesktopApp.Singleton
     public class ResponseBase<T>
     {
         public int? code { get; set; }
-        public T? data { get; set; }
+        public T data { get; set; } = default!;
         public string? message { get; set; }
     }
 }
