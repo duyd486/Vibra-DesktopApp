@@ -48,6 +48,70 @@
 
 
 
+
+
+
+
+
+        <Style x:Key="HorizontalScrollBarStyle" TargetType="ScrollBar">
+            <Setter Property="Background" Value="#FFE5D6"/>
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track"
+                           Height="8">
+                                <Track.Thumb>
+                                    <Thumb Height="8"
+                                   MinHeight="8">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Height="8"
+                                                Background="#FFE5D6"
+                                                CornerRadius="4"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="VerticalScrollBarStyle" TargetType="ScrollBar">
+            <Setter Property="Background" Value="#FFE5D6"/>
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track"
+                           Width="8"
+                           IsDirectionReversed="True">
+                                <Track.Thumb>
+                                    <Thumb Width="8"
+                                   MinWidth="8">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Width="8"
+                                                Background="#FFE5D6"
+                                                CornerRadius="4"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
         <Style x:Key="IconButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="32"/>
             <Setter Property="Height" Value="32"/>

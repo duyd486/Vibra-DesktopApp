@@ -43,6 +43,7 @@ namespace Vibra_DesktopApp.Singleton
             {
                 MessageBox.Show("Đăng nhập thành công" + res.data?.name);
                 currentUser = res?.data;
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + currentUser?.token);
                 return true;
             }
             else
@@ -84,26 +85,31 @@ namespace Vibra_DesktopApp.Singleton
 
         public async Task<List<Song>> GetListSong()
         {
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + currentUser?.token);
             HttpResponseMessage response = await client.GetAsync(baseUrl + "home/list-song");
 
             string result = await response.Content.ReadAsStringAsync();
 
-            //ListSongResponse? res = JsonSerializer.Deserialize<ListSongResponse>(result);
-
             ResponseBase<List<Song>>? res = JsonSerializer.Deserialize<ResponseBase<List<Song>>>(result);
-            //if (res?.code == 200)
-            //{
-            //    MessageBox.Show("Lấy danh sách nhạc thành công");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Call api thất bại");
-            //}
             return res?.data ?? new List<Song>();
         }
 
+        public async Task<List<Album>> GetListAlbum()
+        {
+            HttpResponseMessage response = await client.GetAsync(baseUrl + "home/list-album");
 
+            string result = await response.Content.ReadAsStringAsync();
+
+            ResponseBase<List<Album>>? res = JsonSerializer.Deserialize<ResponseBase<List<Album>>>(result);
+            return res?.data ?? new List<Album>();
+        }
+
+        public async Task<List<User>> GetListArtist()
+        {
+            HttpResponseMessage response = await client.GetAsync(baseUrl + "home/list-artist");
+            string result = await response.Content.ReadAsStringAsync();
+            ResponseBase<List<User>>? res = JsonSerializer.Deserialize<ResponseBase<List<User>>>(result);
+            return res?.data ?? new List<User>();
+        }
 
         #endregion
 

@@ -5,46 +5,194 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Pages"
              xmlns:vm="clr-namespace:Vibra_DesktopApp.ViewModels"
+             xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1250">
     <Grid Background="Transparent">
-        <Border CornerRadius="20" Background="#1D1512" Margin="0 0 5 5">
+        <Border CornerRadius="20" Background="Black" Margin="0 0 5 5">
             <Grid VerticalAlignment="Top">
-                <StackPanel Height="330" HorizontalAlignment="Left" Margin="0 10 0 0">
-                    <TextBlock Text="Bài hát có nhiều lượt nghe" Width="auto" FontWeight="Bold" FontSize="28" Foreground="#FFE5D6" HorizontalAlignment="Left" Margin="20,20,0,10"/>
-                    <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <ItemsControl ItemsSource="{Binding ListSong}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+                    </ScrollViewer.Resources>
 
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Width="200" Height="240" HorizontalAlignment="Left">
-                                        <Button CommandParameter="{Binding}" Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Width="160" Height="160" Cursor="Hand" Margin="0,0,0,10" Background="Transparent" BorderThickness="0">
-                                            <Ellipse Width="160" Height="160">
-                                                <Ellipse.Fill>
-                                                    <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
-                                                </Ellipse.Fill>
-                                            </Ellipse>
-                                        </Button>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding name}" FontSize="16" FontWeight="Bold" Foreground="#FFE5D6" Margin="20,5,0,0" Grid.Column="0"/>
-                                            <TextBlock Text="View" FontSize="16" Foreground="#FFE5D6" Margin="20,25,0,0" Grid.Column="0"/>
-                                            <Button Width="20" Height="20" FontSize="18" Grid.Column="1" Margin="0,0,25,0"/>
-                                        </Grid>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" Margin="0 10 0 0">
+                        <TextBlock Text="Bài hát phù hợp với bạn" Width="auto" FontWeight="Bold" FontSize="26" Foreground="#FFE5D6" HorizontalAlignment="Left" Margin="20,20,0,10"/>
+                        <ScrollViewer Width="1250"  CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                            <ScrollViewer.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                            </ScrollViewer.Resources>
+                            <ItemsControl ItemsSource="{Binding ListSong}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Width="200" Height="220" HorizontalAlignment="Left">
+                                            <Button CommandParameter="{Binding}" Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Width="160" Height="160" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                                                <Ellipse Width="136" Height="136">
+                                                    <Ellipse.Fill>
+                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+                                            </Button>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="32 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="View" FontSize="14" Foreground="#FFE5D6" Margin="32 20 0 10" Grid.Column="0"/>
+                                                <Button Width="20" Height="20" FontSize="16" Grid.Column="1" Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
+                                                    <fa:IconBlock Icon="List" Foreground="#FFE5D6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Button>
+                                            </Grid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+
+
+
+
+
+                        <TextBlock Text="Album phổ biến" Width="auto" FontWeight="Bold" FontSize="26" Foreground="#FFE5D6" HorizontalAlignment="Left" Margin="20,20,0,10"/>
+                        <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                            <ScrollViewer.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                            </ScrollViewer.Resources>
+                            <ItemsControl ItemsSource="{Binding ListAlbum}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Width="180" Height="240" Margin="20 0 0 0" HorizontalAlignment="Left">
+                                            <Button CommandParameter="{Binding}" Command="{Binding DataContext.OpenAlbumDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"  Width="180" Height="180" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                                                <Border Width="172"
+                                                        Height="172"
+                                                        CornerRadius="12">
+                                                    <Border.Background>
+                                                        <ImageBrush ImageSource="{Binding thumbnail_path}"
+                                                                    Stretch="UniformToFill"/>
+                                                    </Border.Background>
+                                                </Border>
+                                            </Button>
+                                            <Grid HorizontalAlignment="Left">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="4 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="{Binding total_song}" FontSize="14" Foreground="#FFE5D6" Margin="4 20 0 10" Grid.Column="0"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+
+
+
+
+
+
+
+
+                        <TextBlock Text="Nghệ sĩ với nhiều người theo dõi" Width="auto" FontWeight="Bold" FontSize="26" Foreground="#FFE5D6" HorizontalAlignment="Left" Margin="20,20,0,10"/>
+                        <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                            <ScrollViewer.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                            </ScrollViewer.Resources>
+                            <ItemsControl ItemsSource="{Binding ListArtist}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Width="180" Height="240" Margin="20 0 0 0" HorizontalAlignment="Left">
+                                            <Button CommandParameter="{Binding}"  Width="180" Height="180" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                                                <Ellipse Width="172" Height="172">
+                                                    <Ellipse.Fill>
+                                                        <ImageBrush ImageSource="{Binding avatar_path}" Stretch="UniformToFill"/>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+                                            </Button>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="4 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="Người theo dõi" FontSize="14" Foreground="#FFE5D6" Margin="4 20 0 10" Grid.Column="0"/>
+
+                                            </Grid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+
+
+
+
+
+                        <TextBlock Text="Bài hát có nhiều lượt nghe" Width="auto" FontWeight="Bold" FontSize="26" Foreground="#FFE5D6" HorizontalAlignment="Left" Margin="20,20,0,10"/>
+                        <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                            <ScrollViewer.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                            </ScrollViewer.Resources>
+                            <ItemsControl ItemsSource="{Binding ListSong}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Width="200" Height="220" HorizontalAlignment="Left">
+                                            <Button CommandParameter="{Binding}" Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Width="160" Height="160" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                                                <Ellipse Width="136" Height="136">
+                                                    <Ellipse.Fill>
+                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+                                            </Button>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="32 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="View" FontSize="14" Foreground="#FFE5D6" Margin="32 20 0 10" Grid.Column="0"/>
+                                                <Button Width="20" Height="20" FontSize="16" Grid.Column="1" Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
+                                                    <fa:IconBlock Icon="List" Foreground="#FFE5D6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Button>
+                                            </Grid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                    </StackPanel>
+                </ScrollViewer>
+                
+                
             </Grid>
         </Border>
     </Grid>

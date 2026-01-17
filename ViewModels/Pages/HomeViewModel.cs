@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using Vibra_DesktopApp.Models;
 using Vibra_DesktopApp.Singleton;
+using Vibra_DesktopApp.ViewModels.Pages;
 
 namespace Vibra_DesktopApp.ViewModels
 {
@@ -14,23 +15,42 @@ namespace Vibra_DesktopApp.ViewModels
     {
         private readonly MainViewModel _mainVM;
         [ObservableProperty] private List<Song>? listSong;
+        [ObservableProperty] private List<Album>? listAlbum;
+        [ObservableProperty] private List<User>? listArtist;
 
         public HomeViewModel(MainViewModel mainVM)
         {
             _mainVM = mainVM;
             RefreshListSong();
+            RefreshListAlbum();
+            RefreshListArtist();
         }
 
         public async void RefreshListSong()
         {
             ListSong = await ApiManager.GetInstance().GetListSong();
         }
+        public async void RefreshListAlbum()
+        {
+            ListAlbum = await ApiManager.GetInstance().GetListAlbum();
+        }
+        public async void RefreshListArtist()
+        {
+            ListArtist = await ApiManager.GetInstance().GetListArtist();
+        }
+
 
 
         [RelayCommand]
         public void PlayOrPauseThisSong(Song song)
         {
             SongManager.GetInstace().PlayOrPauseThisSong(song);
+        }
+
+        [RelayCommand]
+        public void OpenAlbumDetail(Album album)
+        {
+            _mainVM.NavigateTo(new AlbumViewModel(_mainVM, album));
         }
     }
 }

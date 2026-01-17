@@ -23,32 +23,24 @@
             <!-- Thumbnail -->
             <Border Width="52"
                     Height="52"
-                    CornerRadius="28"
-                    Background="#222"
-                    >
-                <Image Source="{Binding SongManager.CurrentTrack.thumbnail}"
-                       Stretch="UniformToFill"/>
+                    CornerRadius="26">
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding SongManager.CurrentTrack.thumbnail_path}" Stretch="UniformToFill"/>
+                </Border.Background>
             </Border>
 
             <!-- Song title + artist -->
             <StackPanel VerticalAlignment="Center" Margin="16 0 0 0">
-                <TextBlock Text="Đừng làm trái tim anh đau"
+                <TextBlock Text="{Binding SongManager.CurrentTrack.name}"
                            Foreground="White"
                            FontWeight="SemiBold"
                            FontSize="14"
                            TextTrimming="CharacterEllipsis"/>
 
-                <TextBlock Text="Sơn Tùng M-TP"
+                <TextBlock Text="{Binding SongManager.CurrentTrack.author.name}"
                            Foreground="#AAAAAA"
                            FontSize="12"/>
             </StackPanel>
-
-            <!-- Like -->
-            <fa:IconBlock Icon="CheckCircle"
-                          Foreground="#1DB954"
-                          FontSize="16"
-                          VerticalAlignment="Center"
-                          Margin="20 0 0 0"/>
         </StackPanel>
 
         <!-- ================= CENTER: CONTROLS ================= -->
@@ -78,31 +70,13 @@
                         Margin="20 0 20 4"
                         Style="{StaticResource IconButtonStyle}"
                         Command="{Binding PlayOrPauseCommand}"
-                        Visibility="{Binding SongManager.IsPlaying, Converter={StaticResource InverseBoolToVisibility}}"
                         >
 
-                    <fa:IconBlock Icon="Play"
+                    <fa:IconBlock Icon="{Binding SongManager.IsPlaying, Converter={StaticResource BoolToIconConverter}}"
                                   Foreground="Black"
                                   FontSize="18"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
-                </Button>
-                <Button Width="40"
-                        Height="40"
-                        Background="White"
-                        Margin="20 0 20 4"
-                        Style="{StaticResource IconButtonStyle}"
-                        Command="{Binding PlayOrPauseCommand}"
-                        Visibility="{Binding SongManager.IsPlaying, Converter={StaticResource BoolToVisibility}}"
-                        >
-
-                    <fa:IconBlock Icon="Pause"
-                                  Foreground="Black"
-                                  FontSize="18"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-                    
-                    
                 </Button>
 
                 <fa:IconBlock Icon="StepForward"
