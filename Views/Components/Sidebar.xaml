@@ -22,7 +22,7 @@
                     <!-- List -->
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="0,0,0,12">
+                <Grid Grid.Row="0" Margin="24 24 24 20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
@@ -34,11 +34,8 @@
                            Foreground="#FFE5D6"/>
 
                     <Button Grid.Column="1"
-                        Padding="12,4"
-                        Background="#47342D"
-                        Foreground="#FFE5D6"
-                        BorderThickness="0"
-                        Cursor="Hand"
+                            Width="60"
+                        Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding CreatePlaylistCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="+" FontWeight="Bold"/>
@@ -56,17 +53,22 @@
                     <Button Content="Tất cả"
                         Command="{Binding SetFilterCommand}"
                         CommandParameter="All"
-                        Style="{Binding FilterButtonStyleAll}"/>
+                            Width="60"
+                            Margin="20 0 10 0"
+                        Style="{StaticResource SidebarButtonStyle}"/>
 
                     <Button Content="Danh sách phát"
                         Command="{Binding SetFilterCommand}"
                         CommandParameter="Playlist"
-                        Style="{Binding FilterButtonStylePlaylist}"/>
+                            Width="120"
+                            Margin="10 0"
+                        Style="{StaticResource SidebarButtonStyle}"/>
 
                     <Button Content="Nghệ sĩ"
                         Command="{Binding SetFilterCommand}"
                         CommandParameter="Artist"
-                        Style="{Binding FilterButtonStyleArtist}"/>
+                            Width="64" Margin="10 0"
+                        Style="{StaticResource SidebarButtonStyle}"/>
                 </StackPanel>
 
 
@@ -104,9 +106,17 @@
                                 <DataTemplate>
 
                                     <!-- ITEM -->
-                                    <Border Padding="12"
+                                    <Border Padding="20 12 12 12"
                                             Margin="0,0,0,8"
                                             CornerRadius="8">
+
+                                        <Border.InputBindings>
+                                            <MouseBinding MouseAction="LeftClick"
+                                                          Command="{Binding DataContext.AlbumClickCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          CommandParameter="{Binding}" />
+                                        </Border.InputBindings>
+
                                         <Border.Style>
                                             <Style TargetType="Border">
                                                 <Setter Property="Background" Value="Transparent"/>
@@ -121,6 +131,7 @@
                                             </Style>
                                         </Border.Style>
 
+
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="40"/>
@@ -131,9 +142,12 @@
                                             <!-- Thumbnail -->
                                             <Border Width="40"
                                                     Height="40"
-                                                    CornerRadius="6"
-                                                    Background="#20FFFFFF">
-                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                    CornerRadius="4">
+
+                                                <Border.Background>
+                                                    <ImageBrush ImageSource="{Binding thumbnail_path}"
+                                                                    Stretch="UniformToFill"/>
+                                                </Border.Background>
                                             </Border>
 
                                             <!-- Info -->
@@ -148,13 +162,8 @@
 
                                             <!-- Actions -->
                                             <StackPanel Grid.Column="2" Orientation="Horizontal" >
-                                                <Button Content="✏"
-                                                        Command="{Binding EditCommand}"
-                                                        Background="Transparent"
-                                                        Foreground="#80FFE5D6"
-                                                        BorderThickness="0"/>
-
                                                 <Button Content="🗑"
+                                                        Width="32"
                                                         Command="{Binding DeleteCommand}"
                                                         Background="Transparent"
                                                         Foreground="#80FFE5D6"
@@ -186,7 +195,7 @@
                                 <DataTemplate>
 
                                     <!-- ITEM -->
-                                    <Border Padding="12"
+                                    <Border Padding="20 12 12 12"
                                             Margin="0,0,0,8"
                                             CornerRadius="8">
                                         <Border.Style>
@@ -213,9 +222,12 @@
                                             <!-- Thumbnail -->
                                             <Border Width="40"
                                                     Height="40"
-                                                    CornerRadius="6"
-                                                    Background="#20FFFFFF">
-                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                    CornerRadius="4">
+
+                                                <Border.Background>
+                                                    <ImageBrush ImageSource="{Binding thumbnail_path}"
+                                                                    Stretch="UniformToFill"/>
+                                                </Border.Background>
                                             </Border>
 
                                             <!-- Info -->
@@ -231,12 +243,14 @@
                                             <!-- Actions -->
                                             <StackPanel Grid.Column="2" Orientation="Horizontal" >
                                                 <Button Content="✏"
+                                                        Width="32"
                                                         Command="{Binding EditCommand}"
                                                         Background="Transparent"
                                                         Foreground="#80FFE5D6"
                                                         BorderThickness="0"/>
 
                                                 <Button Content="🗑"
+                                                        Width="32"
                                                         Command="{Binding DeleteCommand}"
                                                         Background="Transparent"
                                                         Foreground="#80FFE5D6"
@@ -269,16 +283,13 @@
                                 <DataTemplate>
 
                                     <!-- ITEM -->
-                                    <Border Padding="12"
+                                    <Border Padding="20 12 12 12"
                                             Margin="0,0,0,8"
                                             CornerRadius="8">
                                         <Border.Style>
                                             <Style TargetType="Border">
                                                 <Setter Property="Background" Value="Transparent"/>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                                        <Setter Property="Background" Value="#20FFFFFF"/>
-                                                    </DataTrigger>
                                                     <Trigger Property="IsMouseOver" Value="True">
                                                         <Setter Property="Background" Value="#1AFFFFFF"/>
                                                     </Trigger>
@@ -296,14 +307,17 @@
                                             <!-- Thumbnail -->
                                             <Border Width="40"
                                                     Height="40"
-                                                    CornerRadius="6"
-                                                    Background="#20FFFFFF">
-                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                    CornerRadius="40">
+
+                                                <Border.Background>
+                                                    <ImageBrush ImageSource="{Binding artist.avatar_path}"
+                                                                    Stretch="UniformToFill"/>
+                                                </Border.Background>
                                             </Border>
 
                                             <!-- Info -->
                                             <StackPanel Grid.Column="1" Margin="12,0">
-                                                <TextBlock Text="{Binding name}"
+                                                <TextBlock Text="{Binding artist.name}"
                                                            FontWeight="SemiBold"
                                                            Foreground="#FFE5D6"/>
                                                 <TextBlock Text="Nghệ sĩ"
@@ -313,13 +327,9 @@
 
                                             <!-- Actions -->
                                             <StackPanel Grid.Column="2" Orientation="Horizontal" >
-                                                <Button Content="✏"
-                                                        Command="{Binding EditCommand}"
-                                                        Background="Transparent"
-                                                        Foreground="#80FFE5D6"
-                                                        BorderThickness="0"/>
 
                                                 <Button Content="🗑"
+                                                        Width="32"
                                                         Command="{Binding DeleteCommand}"
                                                         Background="Transparent"
                                                         Foreground="#80FFE5D6"

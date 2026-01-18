@@ -105,12 +105,66 @@
                            VerticalAlignment="Center"/>
 
                 <Slider Grid.Column="1"
+                        Minimum="0"
+                        Maximum="{Binding SongManager.Duration}"
+                        Value="{Binding SongManager.CurrentTime, Mode=TwoWay}"
                         Margin="8,0"
-                        Height="4"
                         VerticalAlignment="Center"
                         Foreground="White"
-                        Background="Wheat"
-                        Value="30"/>
+                        Background="Wheat">
+                    <Slider.Template>
+                        <ControlTemplate TargetType="Slider">
+                            <Grid VerticalAlignment="Center">
+                                <Track x:Name="PART_Track" Height="4">
+
+                                    <!-- PHẦN ĐÃ CHẠY -->
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton IsHitTestVisible="False"
+                                      Height="4"
+                                      Background="#BC4D15"
+                                      BorderThickness="0">
+                                            <RepeatButton.Template>
+                                                <ControlTemplate TargetType="RepeatButton">
+                                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="2"/>
+                                                </ControlTemplate>
+                                            </RepeatButton.Template>
+                                        </RepeatButton>
+                                    </Track.DecreaseRepeatButton>
+
+                                    <!-- PHẦN CHƯA CHẠY -->
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton IsHitTestVisible="False"
+                                                      Height="4"
+                                                      Background="#FFE5D6"
+                                                      BorderThickness="0">
+                                            <RepeatButton.Template>
+                                                <ControlTemplate TargetType="RepeatButton">
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="2"/>
+                                                </ControlTemplate>
+                                            </RepeatButton.Template>
+                                        </RepeatButton>
+                                    </Track.IncreaseRepeatButton>
+
+                                    <!-- THUMB -->
+                                    <Track.Thumb>
+                                        <Thumb Width="10"
+                                               Height="10"
+                                               Background="#BC4D15"
+                                               VerticalAlignment="Center">
+                                            <Thumb.Template>
+                                                <ControlTemplate TargetType="Thumb">
+                                                    <Ellipse Fill="{TemplateBinding Background}"/>
+                                                </ControlTemplate>
+                                            </Thumb.Template>
+                                        </Thumb>
+                                    </Track.Thumb>
+
+                                </Track>
+                            </Grid>
+                        </ControlTemplate>
+                    </Slider.Template>
+                </Slider>
 
                 <TextBlock Grid.Column="2"
                            Text="4:39"

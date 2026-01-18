@@ -19,5 +19,6 @@ namespace Vibra_DesktopApp.Models
         public int? followers { get; set; }
         public string? token { get; set; }
         public string? avatar_path { get; set; }
+        public User? artist { get; set; }
     }
 }

@@ -91,7 +91,7 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="4 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Width="160" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="4 0 0 10" Grid.Column="0"/>
                                                 <TextBlock Text="{Binding total_song}" FontSize="14" Foreground="#FFE5D6" Margin="4 20 0 10" Grid.Column="0"/>
                                             </Grid>
                                         </StackPanel>

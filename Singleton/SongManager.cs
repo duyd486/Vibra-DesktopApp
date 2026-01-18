@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Vibra_DesktopApp.Models;
 using Vibra_DesktopApp.Views.Components;
 
@@ -15,9 +16,30 @@ namespace Vibra_DesktopApp.Singleton
 
         private readonly MediaPlayer mediaPlayer = new();
 
+        private readonly DispatcherTimer _timer;
+
         [ObservableProperty] public Song? currentTrack;
 
         [ObservableProperty] public bool isPlaying;
+
+        [ObservableProperty] public double duration;
+
+        [ObservableProperty] public double currentTime;
+
+        public SongManager()
+        {
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += (s, e) =>
+            {
+                if (IsPlaying)
+                {
+                    // You can add code here to update UI components with the current playback position
+                    CurrentTime = mediaPlayer.Position.TotalSeconds;
+                }
+            };
+        }
+
 
         public static SongManager GetInstace()
         {
@@ -69,6 +91,17 @@ namespace Vibra_DesktopApp.Singleton
 
             }
         }
+        public void Play(string url)
+        {
+            mediaPlayer.Open(new Uri(url));
+            mediaPlayer.MediaOpened += (s, e) =>
+            {
+                Duration = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                _timer.Start();
+            };
+            mediaPlayer.Play();
+            IsPlaying = true;
+        }
 
         public void Play()
         {
@@ -76,12 +109,6 @@ namespace Vibra_DesktopApp.Singleton
             IsPlaying = true;
         }
 
-        public void Play(string url)
-        {
-            mediaPlayer.Open(new Uri(url));
-            mediaPlayer.Play();
-            IsPlaying = true;
-        }
 
         public void Pause()
         {

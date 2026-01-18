@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,6 +41,14 @@ namespace Vibra_DesktopApp.ViewModels.Components
         public async void GetMyArtist()
         {
             MyArtists = await ApiManager.GetInstance().HttpGetAsync<List<User>>("library/list-artist");
+        }
+
+
+
+        [RelayCommand]
+        public void AlbumClick(Album album)
+        {
+            MessageBox.Show($"Album Clicked: {album.name}");
         }
     }
 }
