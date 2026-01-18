@@ -17,7 +17,7 @@ namespace Vibra_DesktopApp
 
             var indexVM = new IndexViewModel();
 
-            var indexWindow = new IndexWindow
+            var indexWindow = new IndexWindow (indexVM)
             {
                 DataContext = indexVM
             };

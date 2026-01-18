@@ -123,7 +123,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Width="180" Height="240" Margin="20 0 0 0" HorizontalAlignment="Left">
-                                            <Button CommandParameter="{Binding}"  Width="180" Height="180" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                                            <Button CommandParameter="{Binding}"  Command="{Binding DataContext.OpenArtistDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"  Width="180" Height="180" Cursor="Hand" Background="Transparent" BorderThickness="0">
                                                 <Ellipse Width="172" Height="172">
                                                     <Ellipse.Fill>
                                                         <ImageBrush ImageSource="{Binding avatar_path}" Stretch="UniformToFill"/>

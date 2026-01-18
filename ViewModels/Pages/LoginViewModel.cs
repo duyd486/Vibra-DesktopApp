@@ -19,6 +19,7 @@ namespace Vibra_DesktopApp.ViewModels
         [ObservableProperty] private string? rePasswordText;
 
 
+
         public LoginViewModel(IndexViewModel indexVM)
         {
             _indexVM = indexVM;
@@ -50,8 +51,11 @@ namespace Vibra_DesktopApp.ViewModels
             {
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
+                _indexVM.CloseWindow();
             }
         }
+
+
 
         [RelayCommand]
         private void OpenSignUp()

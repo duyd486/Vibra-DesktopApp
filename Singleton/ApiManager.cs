@@ -81,11 +81,6 @@ namespace Vibra_DesktopApp.Singleton
 
         #endregion
 
-        #region HomePage
-
-
-        #endregion
-
         public async Task<T> HttpGetAsync<T>(string url)
         {
             try
@@ -106,8 +101,6 @@ namespace Vibra_DesktopApp.Singleton
                 return default!;
             }
         }
-
-
 
         public User? GetCurrentUser()
         {

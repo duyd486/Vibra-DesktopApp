@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Vibra_DesktopApp.ViewModels;
 
 namespace Vibra_DesktopApp.Views
 {
@@ -17,9 +18,11 @@ namespace Vibra_DesktopApp.Views
     /// </summary>
     public partial class IndexWindow : Window
     {
-        public IndexWindow()
+        public IndexWindow(IndexViewModel vm)
         {
             InitializeComponent();
+
+            vm.OnWindowClose += (s, e) => this.Close();
         }
     }
 }

@@ -26,6 +26,8 @@ namespace Vibra_DesktopApp.ViewModels
             RefreshListArtist();
         }
 
+
+
         public async void RefreshListSong()
         {
             ListSong = await ApiManager.GetInstance().HttpGetAsync<List<Song>>("home/list-song");
@@ -38,7 +40,7 @@ namespace Vibra_DesktopApp.ViewModels
         {
             ListArtist = await ApiManager.GetInstance().HttpGetAsync<List<User>>("home/list-artist");
         }
-
+        
 
 
         [RelayCommand]
@@ -51,6 +53,12 @@ namespace Vibra_DesktopApp.ViewModels
         public void OpenAlbumDetail(Album album)
         {
             _mainVM.NavigateTo(new AlbumViewModel(_mainVM, album));
+        }
+
+        [RelayCommand]
+        public void OpenArtistDetail(User artist)
+        {
+            _mainVM.NavigateTo(new ArtistViewModel(_mainVM, artist));
         }
     }
 }

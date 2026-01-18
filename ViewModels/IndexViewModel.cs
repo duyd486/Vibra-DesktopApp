@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace Vibra_DesktopApp.ViewModels
 {
@@ -13,6 +14,11 @@ namespace Vibra_DesktopApp.ViewModels
         public LoginViewModel LoginVM { get; }
         public SignUpViewModel SignUpVM { get; }
 
+
+        public event EventHandler? OnWindowClose;
+
+
+
         public IndexViewModel()
         {
             LoginVM = new LoginViewModel(this);
@@ -20,6 +26,13 @@ namespace Vibra_DesktopApp.ViewModels
 
             CurrentViewModel = LoginVM;
         }
+
+
+        public void CloseWindow()
+        {
+            OnWindowClose?.Invoke(this, EventArgs.Empty);
+        }
+
 
         public void ShowSignUp()
             => CurrentViewModel = SignUpVM;

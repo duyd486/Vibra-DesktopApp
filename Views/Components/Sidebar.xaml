@@ -8,7 +8,332 @@
              d:DesignHeight="750" d:DesignWidth="350">
     <Grid Background="Transparent">
         <Border CornerRadius="20" Background="Black" Margin="5 0 5 5">
-            
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Header -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Filter -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Search -->
+                    <RowDefinition Height="*"/>
+                    <!-- List -->
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Thư viện"
+                           FontSize="20"
+                           FontWeight="SemiBold"
+                           Foreground="#FFE5D6"/>
+
+                    <Button Grid.Column="1"
+                        Padding="12,4"
+                        Background="#47342D"
+                        Foreground="#FFE5D6"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Command="{Binding CreatePlaylistCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="+" FontWeight="Bold"/>
+                            <TextBlock Text="Tạo" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+
+                <!-- FILTER -->
+                <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
+                        Margin="0,0,0,12">
+
+                    <Button Content="Tất cả"
+                        Command="{Binding SetFilterCommand}"
+                        CommandParameter="All"
+                        Style="{Binding FilterButtonStyleAll}"/>
+
+                    <Button Content="Danh sách phát"
+                        Command="{Binding SetFilterCommand}"
+                        CommandParameter="Playlist"
+                        Style="{Binding FilterButtonStylePlaylist}"/>
+
+                    <Button Content="Nghệ sĩ"
+                        Command="{Binding SetFilterCommand}"
+                        CommandParameter="Artist"
+                        Style="{Binding FilterButtonStyleArtist}"/>
+                </StackPanel>
+
+
+                <!-- SEARCH -->
+                <TextBox Grid.Row="2"
+                     Margin="0,0,0,12"
+                     Padding="16,6"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     Foreground="#FFE5D6"
+                     Background="#1D1512"
+                     BorderThickness="2"
+                     BorderBrush="{Binding CurrentColor}"
+                     CaretBrush="#FFE5D6"
+                     FontSize="14"/>
+
+
+
+
+
+
+
+                <ScrollViewer Grid.Row="3"
+              VerticalScrollBarVisibility="Auto"
+              HorizontalScrollBarVisibility="Disabled">
+
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding MyAlbums}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <!-- ITEM -->
+                                    <Border Padding="12"
+                                            Margin="0,0,0,8"
+                                            CornerRadius="8">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="Background" Value="#20FFFFFF"/>
+                                                    </DataTrigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#1AFFFFFF"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Thumbnail -->
+                                            <Border Width="40"
+                                                    Height="40"
+                                                    CornerRadius="6"
+                                                    Background="#20FFFFFF">
+                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                            </Border>
+
+                                            <!-- Info -->
+                                            <StackPanel Grid.Column="1" Margin="12,0">
+                                                <TextBlock Text="{Binding name}"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#FFE5D6"/>
+                                                <TextBlock Text="Album của nghệ sĩ"
+                                                               FontSize="12"
+                                                               Foreground="#80FFE5D6"/>
+                                            </StackPanel>
+
+                                            <!-- Actions -->
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal" >
+                                                <Button Content="✏"
+                                                        Command="{Binding EditCommand}"
+                                                        Background="Transparent"
+                                                        Foreground="#80FFE5D6"
+                                                        BorderThickness="0"/>
+
+                                                <Button Content="🗑"
+                                                        Command="{Binding DeleteCommand}"
+                                                        Background="Transparent"
+                                                        Foreground="#80FFE5D6"
+                                                        BorderThickness="0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+
+
+
+
+
+
+
+
+                        <ItemsControl ItemsSource="{Binding MyPlaylists}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <!-- ITEM -->
+                                    <Border Padding="12"
+                                            Margin="0,0,0,8"
+                                            CornerRadius="8">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="Background" Value="#20FFFFFF"/>
+                                                    </DataTrigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#1AFFFFFF"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Thumbnail -->
+                                            <Border Width="40"
+                                                    Height="40"
+                                                    CornerRadius="6"
+                                                    Background="#20FFFFFF">
+                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                            </Border>
+
+                                            <!-- Info -->
+                                            <StackPanel Grid.Column="1" Margin="12,0">
+                                                <TextBlock Text="{Binding name}"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#FFE5D6"/>
+                                                <TextBlock Text="Danh sách phát"
+                                                           FontSize="12"
+                                                           Foreground="#80FFE5D6"/>
+                                            </StackPanel>
+
+                                            <!-- Actions -->
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal" >
+                                                <Button Content="✏"
+                                                        Command="{Binding EditCommand}"
+                                                        Background="Transparent"
+                                                        Foreground="#80FFE5D6"
+                                                        BorderThickness="0"/>
+
+                                                <Button Content="🗑"
+                                                        Command="{Binding DeleteCommand}"
+                                                        Background="Transparent"
+                                                        Foreground="#80FFE5D6"
+                                                        BorderThickness="0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+
+
+
+
+
+
+
+
+
+                        <ItemsControl ItemsSource="{Binding MyArtists}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <!-- ITEM -->
+                                    <Border Padding="12"
+                                            Margin="0,0,0,8"
+                                            CornerRadius="8">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="Background" Value="#20FFFFFF"/>
+                                                    </DataTrigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#1AFFFFFF"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Thumbnail -->
+                                            <Border Width="40"
+                                                    Height="40"
+                                                    CornerRadius="6"
+                                                    Background="#20FFFFFF">
+                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                            </Border>
+
+                                            <!-- Info -->
+                                            <StackPanel Grid.Column="1" Margin="12,0">
+                                                <TextBlock Text="{Binding name}"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="#FFE5D6"/>
+                                                <TextBlock Text="Nghệ sĩ"
+                                                           FontSize="12"
+                                                           Foreground="#80FFE5D6"/>
+                                            </StackPanel>
+
+                                            <!-- Actions -->
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal" >
+                                                <Button Content="✏"
+                                                        Command="{Binding EditCommand}"
+                                                        Background="Transparent"
+                                                        Foreground="#80FFE5D6"
+                                                        BorderThickness="0"/>
+
+                                                <Button Content="🗑"
+                                                        Command="{Binding DeleteCommand}"
+                                                        Background="Transparent"
+                                                        Foreground="#80FFE5D6"
+                                                        BorderThickness="0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
