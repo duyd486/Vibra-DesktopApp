@@ -198,6 +198,14 @@
                                     <Border Padding="20 12 12 12"
                                             Margin="0,0,0,8"
                                             CornerRadius="8">
+
+                                        <Border.InputBindings>
+                                            <MouseBinding MouseAction="LeftClick"
+                                                          Command="{Binding DataContext.PlaylistClickCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          CommandParameter="{Binding}" />
+                                        </Border.InputBindings>
+
                                         <Border.Style>
                                             <Style TargetType="Border">
                                                 <Setter Property="Background" Value="Transparent"/>
@@ -286,6 +294,14 @@
                                     <Border Padding="20 12 12 12"
                                             Margin="0,0,0,8"
                                             CornerRadius="8">
+
+                                        <Border.InputBindings>
+                                            <MouseBinding MouseAction="LeftClick"
+                                                          Command="{Binding DataContext.ArtistClickCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          CommandParameter="{Binding artist}" />
+                                        </Border.InputBindings>
+
                                         <Border.Style>
                                             <Style TargetType="Border">
                                                 <Setter Property="Background" Value="Transparent"/>

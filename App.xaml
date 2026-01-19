@@ -15,6 +15,7 @@
         <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibility"
                                     Inverse="True"/>
         <converters:BoolToIconConverter x:Key="BoolToIconConverter" />
+        <converters:TimeConverter x:Key="TimeConverter" />
 
         <DataTemplate DataType="{x:Type vm:LoginViewModel}">
             <views:LoginView />

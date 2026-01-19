@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Vibra_DesktopApp.Models;
 using Vibra_DesktopApp.Singleton;
+using Vibra_DesktopApp.ViewModels.Pages;
+using Vibra_DesktopApp.Views.Pages;
 
 namespace Vibra_DesktopApp.ViewModels.Components
 {
@@ -48,7 +50,19 @@ namespace Vibra_DesktopApp.ViewModels.Components
         [RelayCommand]
         public void AlbumClick(Album album)
         {
-            MessageBox.Show($"Album Clicked: {album.name}");
+            _mainVM.NavigateTo(new AlbumViewModel(_mainVM, album));
+        }
+
+        [RelayCommand]
+        public void ArtistClick(User artist)
+        {
+            _mainVM.NavigateTo(new ArtistViewModel(_mainVM, artist));
+        }
+
+        [RelayCommand]
+        public void PlaylistClick(Album playlist)
+        {
+            _mainVM.NavigateTo(new AlbumViewModel(_mainVM, playlist));
         }
     }
 }

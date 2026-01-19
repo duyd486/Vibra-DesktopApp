@@ -99,7 +99,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="1:26"
+                <TextBlock Text="{Binding SongManager.CurrentTime, Converter={StaticResource TimeConverter}}"
                            Foreground="#AAAAAA"
                            FontSize="11"
                            VerticalAlignment="Center"/>
@@ -109,24 +109,24 @@
                         Maximum="{Binding SongManager.Duration}"
                         Value="{Binding SongManager.CurrentTime, Mode=TwoWay}"
                         Margin="8,0"
+                        Height="20"
                         VerticalAlignment="Center"
                         Foreground="White"
                         Background="Wheat">
                     <Slider.Template>
                         <ControlTemplate TargetType="Slider">
                             <Grid VerticalAlignment="Center">
-                                <Track x:Name="PART_Track" Height="4">
+                                <Track x:Name="PART_Track" Height="10">
 
                                     <!-- PHẦN ĐÃ CHẠY -->
                                     <Track.DecreaseRepeatButton>
                                         <RepeatButton IsHitTestVisible="False"
-                                      Height="4"
-                                      Background="#BC4D15"
-                                      BorderThickness="0">
+                                                      Height="4"
+                                                      Background="#BC4D15"
+                                                      BorderThickness="0">
                                             <RepeatButton.Template>
                                                 <ControlTemplate TargetType="RepeatButton">
-                                                    <Border Background="{TemplateBinding Background}"
-                                            CornerRadius="2"/>
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="2"/>
                                                 </ControlTemplate>
                                             </RepeatButton.Template>
                                         </RepeatButton>
@@ -167,7 +167,7 @@
                 </Slider>
 
                 <TextBlock Grid.Column="2"
-                           Text="4:39"
+                           Text="{Binding SongManager.Duration, Converter={StaticResource TimeConverter}}"
                            Foreground="#AAAAAA"
                            FontSize="11"
                            VerticalAlignment="Center"/>
@@ -189,10 +189,62 @@
             </Button>
 
             <Slider Width="90"
-                    Height="4"
+                    Height="10"
                     VerticalAlignment="Center"
-                    Margin="16 0"
-                    Background="Gray"/>
+                    Margin="0 0 16 0"
+                    Background="Gray">
+                <Slider.Template>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid VerticalAlignment="Center">
+                            <Track x:Name="PART_Track" Height="10">
+
+                                <!-- PHẦN ĐÃ CHẠY -->
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton IsHitTestVisible="False"
+                                  Height="4"
+                                  Background="#BC4D15"
+                                  BorderThickness="0">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="2"/>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.DecreaseRepeatButton>
+
+                                <!-- PHẦN CHƯA CHẠY -->
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton IsHitTestVisible="False"
+                                  Height="4"
+                                  Background="Gray"
+                                  BorderThickness="0">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="2"/>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.IncreaseRepeatButton>
+
+                                <!-- THUMB -->
+                                <Track.Thumb>
+                                    <Thumb Width="10"
+                           Height="10"
+                           Background="#BC4D15"
+                           VerticalAlignment="Center">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Ellipse Fill="{TemplateBinding Background}"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Slider.Template>
+            </Slider>
 
             <Button Background="Transparent"
                     BorderThickness="0" Margin="10 0"

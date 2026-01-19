@@ -9,12 +9,12 @@ namespace Vibra_DesktopApp.ViewModels.Pages
     public partial class AlbumViewModel : ObservableObject
     {
         private readonly MainViewModel _mainVM;
-        private Album album;
+        [ObservableProperty] private Album album;
 
         public AlbumViewModel(MainViewModel mainVM, Album album)
         {
             _mainVM = mainVM;
-            this.album = album;
+            Album = album;
         }
     }
 }

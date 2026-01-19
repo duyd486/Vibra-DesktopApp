@@ -4,11 +4,96 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Pages"
+             xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1250">
     <Grid>
         <Border CornerRadius="20" Background="#1D1512" Margin="0 0 5 5">
-            <TextBlock Text="Album Page" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"/>
+            <StackPanel>
+                <Grid Margin="44 44 44 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="192"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- COVER -->
+                    <Border Width="192"
+                            Height="192"
+                            CornerRadius="16"
+                            Background="#666">
+                        <Image Stretch="UniformToFill"
+                             Source="{Binding Album.thumbnail_path}" />
+                    </Border>
+
+                    <!-- INFO -->
+                    <StackPanel Grid.Column="1" Margin="20,0,0,0">
+
+                        <TextBlock FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="White"
+                                   Text="Album"/>
+
+                        <TextBlock FontSize="64"
+                                   FontWeight="Bold"
+                                   Foreground="White"
+                                   TextWrapping="Wrap"
+                                   Text="{Binding Album.name}"/>
+
+                        <!-- META -->
+                        <StackPanel Orientation="Horizontal" Margin="0,28,0,0">
+
+                            <!-- FOLLOW / UNFOLLOW -->
+                            <Button Command="{Binding ToggleFollowCommand}"
+                                    Background="Transparent"
+                                    BorderThickness="0">
+                                <fa:IconBlock Icon="PlusCircle"
+                                              FontSize="32"
+                                              Foreground="#FFE5D6"/>
+                            </Button>
+
+                            <!-- ADD TO QUEUE -->
+                            <Button Command="{Binding AddPlaylistToQueueCommand}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Margin="12 0 0 0">
+                                <fa:IconBlock Icon="List"
+                                              FontSize="28"
+                                              Foreground="#FFE5D6"/>
+                            </Button>
+
+                            <!-- DOWNLOAD -->
+                            <Button Command="{Binding DownloadPlaylistCommand}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Margin="12 0 0 4">
+                                <fa:IconBlock Icon="Download"
+                                              FontSize="28"
+                                              Foreground="#FFE5D6"/>
+                            </Button>
+
+                            <TextBlock Margin="16,12,0,0"
+                                       Foreground="#AAA"
+                                       FontSize="13"
+                                       Text="{Binding Album.author.name}"/>
+
+                            <TextBlock Margin="12,12,0,0"
+                                       Foreground="#AAA"
+                                       FontSize="13"
+                                       Text="{Binding Album.created_at, StringFormat={}{0:yyyy}}"/>
+
+                            <TextBlock Margin="12,12,0,0"
+                                       Foreground="#AAA"
+                                       FontSize="13"
+                                       Text="{Binding Album.total_song, StringFormat={}{0} bài hát}"/>
+
+                            <TextBlock Margin="12,12,0,0"
+                                       Foreground="#AAA"
+                                       FontSize="13"
+                                       Text="{Binding Album.price, StringFormat={}{0} vnd}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>
