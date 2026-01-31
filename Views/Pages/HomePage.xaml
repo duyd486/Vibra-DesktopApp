@@ -33,11 +33,72 @@
                                     <DataTemplate>
                                         <StackPanel Width="200" Height="220" HorizontalAlignment="Left">
                                             <Button CommandParameter="{Binding}" Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Width="160" Height="160" Cursor="Hand" Background="Transparent" BorderThickness="0">
-                                                <Ellipse Width="136" Height="136">
-                                                    <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
-                                                    </Ellipse.Fill>
-                                                </Ellipse>
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border x:Name="Root"
+            RenderTransformOrigin="0.5,0.5">
+
+                                                            <!-- Scale transform -->
+                                                            <Border.RenderTransform>
+                                                                <ScaleTransform ScaleX="1"
+                    ScaleY="1"/>
+                                                            </Border.RenderTransform>
+
+                                                            <Grid>
+                                                                <!-- Album image -->
+                                                                <Ellipse Width="136"
+                    Height="136">
+                                                                    <Ellipse.Fill>
+                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}"
+                            Stretch="UniformToFill"/>
+                                                                    </Ellipse.Fill>
+                                                                </Ellipse>
+
+                                                                <!-- Play icon -->
+                                                                <Border x:Name="PlayIcon"
+                    Width="50"
+                    Height="50"
+                    CornerRadius="60"
+                    Background="#FFE5D6"
+                    Opacity="0"
+                    HorizontalAlignment="Right"
+                    Margin="0 0 0 10"
+                    VerticalAlignment="Bottom">
+
+                                                                    <TextBlock Text="▶"
+                       FontSize="18"
+                       Foreground="#1D1512"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </Border>
+
+                                                        <!-- Hover & Press -->
+                                                        <ControlTemplate.Triggers>
+
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="PlayIcon" Property="Opacity" Value="1"/>
+                                                                <Setter TargetName="Root"
+                    Property="RenderTransform">
+                                                                    <Setter.Value>
+                                                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter TargetName="Root"
+                    Property="RenderTransform">
+                                                                    <Setter.Value>
+                                                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
                                             </Button>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -76,16 +137,89 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Width="180" Height="240" Margin="20 0 0 0" HorizontalAlignment="Left">
-                                            <Button CommandParameter="{Binding}" Command="{Binding DataContext.OpenAlbumDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"  Width="180" Height="180" Cursor="Hand" Background="Transparent" BorderThickness="0">
-                                                <Border Width="172"
-                                                        Height="172"
-                                                        CornerRadius="12">
-                                                    <Border.Background>
-                                                        <ImageBrush ImageSource="{Binding thumbnail_path}"
-                                                                    Stretch="UniformToFill"/>
-                                                    </Border.Background>
-                                                </Border>
+                                            <Button Width="180"
+                                                Height="180"
+                                                Cursor="Hand"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Command="{Binding DataContext.OpenAlbumDetailCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}">
+
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border x:Name="Root"
+                                                            Width="172"
+                                                            Height="172"
+                                                            CornerRadius="12"
+                                                            RenderTransformOrigin="0.5,0.5">
+
+                                                            <!-- Scale transform -->
+                                                            <Border.RenderTransform>
+                                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                                            </Border.RenderTransform>
+
+                                                            <Grid>
+                                                                <!-- Album image -->
+                                                                <Border CornerRadius="12" ClipToBounds="True">
+                                                                    <Border.Background>
+                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                                    </Border.Background>
+                                                                </Border>
+
+                                                                <!-- Dark overlay -->
+                                                                <Border x:Name="Overlay"
+                                                                    Background="#66000000"
+                                                                    CornerRadius="12"
+                                                                    Opacity="0"/>
+
+                                                                <!-- Center icon -->
+                                                                <Border x:Name="CenterIcon"
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    CornerRadius="32"
+                                                                    Background="#FFE5D6"
+                                                                    Opacity="0"
+                                                                    Margin="0 0 10 10"
+                                                                    HorizontalAlignment="Right"
+                                                                    VerticalAlignment="Bottom">
+
+                                                                    <!-- Bạn có thể đổi icon -->
+                                                                    <TextBlock Text="▶"
+                                                                       FontSize="20"
+                                                                       Foreground="#1D1512"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </Border>
+
+                                                        <!-- Hover / Press -->
+                                                        <ControlTemplate.Triggers>
+
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Overlay" Property="Opacity" Value="1"/>
+                                                                <Setter TargetName="CenterIcon" Property="Opacity" Value="1"/>
+                                                                <Setter TargetName="Root" Property="RenderTransform">
+                                                                    <Setter.Value>
+                                                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter TargetName="Root" Property="RenderTransform">
+                                                                    <Setter.Value>
+                                                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
                                             </Button>
+
                                             <Grid HorizontalAlignment="Left">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -124,11 +258,66 @@
                                     <DataTemplate>
                                         <StackPanel Width="180" Height="240" Margin="20 0 0 0" HorizontalAlignment="Left">
                                             <Button CommandParameter="{Binding}"  Command="{Binding DataContext.OpenArtistDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"  Width="180" Height="180" Cursor="Hand" Background="Transparent" BorderThickness="0">
-                                                <Ellipse Width="172" Height="172">
-                                                    <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="{Binding avatar_path}" Stretch="UniformToFill"/>
-                                                    </Ellipse.Fill>
-                                                </Ellipse>
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border x:Name="Root" RenderTransformOrigin="0.5,0.5">
+
+                                                            <!-- Scale transform -->
+                                                            <Border.RenderTransform>
+                                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                                            </Border.RenderTransform>
+
+                                                            <Grid>
+                                                                <!-- Album image -->
+                                                                <Ellipse Width="172" Height="172">
+                                                                    <Ellipse.Fill>
+                                                                        <ImageBrush ImageSource="{Binding avatar_path}" Stretch="UniformToFill"/>
+                                                                    </Ellipse.Fill>
+                                                                </Ellipse>
+
+                                                                <!-- Play icon -->
+                                                                <Border x:Name="PlayIcon"
+                                                                    Width="50"
+                                                                    Height="50"
+                                                                    CornerRadius="60"
+                                                                    Background="#FFE5D6"
+                                                                    Opacity="0"
+                                                                    HorizontalAlignment="Right"
+                                                                    Margin="0 0 0 10"
+                                                                    VerticalAlignment="Bottom">
+
+                                                                    <TextBlock Text="▶"
+                                                                       FontSize="18"
+                                                                       Foreground="#1D1512"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </Border>
+
+                                                        <!-- Hover & Press -->
+                                                        <ControlTemplate.Triggers>
+
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="PlayIcon" Property="Opacity" Value="1"/>
+                                                                <Setter TargetName="Root" Property="RenderTransform">
+                                                                    <Setter.Value>
+                                                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter TargetName="Root" Property="RenderTransform">
+                                                                    <Setter.Value>
+                                                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
                                             </Button>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -165,13 +354,83 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Width="200" Height="220" HorizontalAlignment="Left">
-                                            <Button CommandParameter="{Binding}" Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Width="160" Height="160" Cursor="Hand" Background="Transparent" BorderThickness="0">
-                                                <Ellipse Width="136" Height="136">
-                                                    <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
-                                                    </Ellipse.Fill>
-                                                </Ellipse>
+                                            <Button Width="160"
+                                                Height="160"
+                                                Cursor="Hand"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Command="{Binding DataContext.PlayOrPauseThisSongCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}">
+
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border x:Name="Root"
+                                                            RenderTransformOrigin="0.5,0.5">
+
+                                                            <!-- Scale transform -->
+                                                            <Border.RenderTransform>
+                                                                <ScaleTransform ScaleX="1"
+                                                                    ScaleY="1"/>
+                                                            </Border.RenderTransform>
+
+                                                            <Grid>
+                                                                <!-- Album image -->
+                                                                <Ellipse Width="136"
+                                                                    Height="136">
+                                                                    <Ellipse.Fill>
+                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}"
+                                                                            Stretch="UniformToFill"/>
+                                                                    </Ellipse.Fill>
+                                                                </Ellipse>
+
+                                                                <!-- Play icon -->
+                                                                <Border x:Name="PlayIcon"
+                                                                    Width="50"
+                                                                    Height="50"
+                                                                    CornerRadius="60"
+                                                                    Background="#FFE5D6"
+                                                                    Opacity="0"
+                                                                    HorizontalAlignment="Right"
+                                                                    Margin="0 0 0 10"
+                                                                    VerticalAlignment="Bottom">
+
+                                                                    <TextBlock Text="▶"
+                                                                       FontSize="18"
+                                                                       Foreground="#1D1512"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </Border>
+
+                                                        <!-- Hover & Press -->
+                                                        <ControlTemplate.Triggers>
+
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="PlayIcon" Property="Opacity" Value="1"/>
+                                                                <Setter TargetName="Root"
+                                                                    Property="RenderTransform">
+                                                                    <Setter.Value>
+                                                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter TargetName="Root"
+                                                                    Property="RenderTransform">
+                                                                    <Setter.Value>
+                                                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
                                             </Button>
+
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
