@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using Vibra_DesktopApp.Models;
 using Vibra_DesktopApp.Singleton;
@@ -44,9 +45,9 @@ namespace Vibra_DesktopApp.ViewModels
 
 
         [RelayCommand]
-        public void PlayOrPauseThisSong(Song song)
+        public async Task PlayOrPauseThisSong(Song song)
         {
-            SongManager.GetInstace().PlayOrPauseThisSong(song);
+            await SongManager.GetInstace().PlayOrPauseThisSongAsync(song);
         }
 
         [RelayCommand]

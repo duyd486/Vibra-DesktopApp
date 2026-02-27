@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using Vibra_DesktopApp.Singleton;
 
@@ -26,9 +27,9 @@ namespace Vibra_DesktopApp.ViewModels.Components
         }
 
         [RelayCommand]
-        public void PlayOrPause()
+        public async Task PlayOrPause()
         {
-            SongManager.PlayOrPauseSong();
+            await SongManager.PlayOrPauseAsync();
         }
 
     }
