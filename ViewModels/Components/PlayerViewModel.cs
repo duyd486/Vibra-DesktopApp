@@ -1,10 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using Vibra_DesktopApp.Singleton;
 
 namespace Vibra_DesktopApp.ViewModels.Components
@@ -29,8 +26,32 @@ namespace Vibra_DesktopApp.ViewModels.Components
         [RelayCommand]
         public async Task PlayOrPause()
         {
-            await SongManager.PlayOrPauseAsync();
+            await SongManager.PlayOrPauseAsync().ConfigureAwait(false);
         }
 
+        // Seek to an absolute time (seconds)
+        [RelayCommand]
+        public async Task Seek(double seconds)
+        {
+            if (double.IsNaN(seconds) || double.IsInfinity(seconds))
+                return;
+
+            // clamp to valid range
+            var target = Math.Max(0.0, seconds);
+            if (SongManager.Duration > 0)
+                target = Math.Min(target, SongManager.Duration);
+
+            await SongManager.SeekAsync(target).ConfigureAwait(false);
+        }
+
+        // Seek by percentage (0.0 - 1.0) of the track duration
+        [RelayCommand]
+        public async Task SeekToPercentage(double percentage)
+        {
+            // normalize and clamp
+            percentage = Math.Clamp(percentage, 0.0, 1.0);
+
+            await SongManager.SeekToPercentageAsync(percentage).ConfigureAwait(false);
+        }
     }
 }

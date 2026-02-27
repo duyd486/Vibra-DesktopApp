@@ -5,12 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Components"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="76" d:DesignWidth="1600">
     
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>      
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
@@ -107,12 +108,25 @@
                 <Slider Grid.Column="1"
                         Minimum="0"
                         Maximum="{Binding SongManager.Duration}"
-                        Value="{Binding SongManager.CurrentTime, Mode=TwoWay}"
+                        Value="{Binding SongManager.CurrentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Margin="8,0"
                         Height="20"
                         VerticalAlignment="Center"
                         Foreground="White"
                         Background="Wheat">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding SeekCommand}"
+                                                   CommandParameter="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=Slider}}"/>
+                        </i:EventTrigger>
+
+                        <!-- Touch support -->
+                        <i:EventTrigger EventName="PreviewTouchUp">
+                            <i:InvokeCommandAction Command="{Binding SeekCommand}"
+                                                   CommandParameter="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=Slider}}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
                     <Slider.Template>
                         <ControlTemplate TargetType="Slider">
                             <Grid VerticalAlignment="Center">
