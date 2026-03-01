@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Vibra_DesktopApp.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Background="#121212"
+        Background="{DynamicResource CurrentColor}"
         WindowStyle="None"
         Title="IndexWindow" Height="680" Width="680">
     <Grid>

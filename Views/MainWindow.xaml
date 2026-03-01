@@ -11,11 +11,12 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
+        Background="{DynamicResource CurrentColor}"
         Title="MainWindow" Height="900" Width="1600">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
-    <Grid Background="AliceBlue">
+    <Grid Background="{DynamicResource CurrentColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="12*"/>

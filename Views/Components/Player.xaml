@@ -108,22 +108,37 @@
                 <Slider Grid.Column="1"
                         Minimum="0"
                         Maximum="{Binding SongManager.Duration}"
-                        Value="{Binding SongManager.CurrentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Value="{Binding SliderValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Margin="8,0"
                         Height="20"
                         VerticalAlignment="Center"
                         Foreground="White"
                         Background="Wheat">
+                    <!-- Use behaviors to pause on drag start and seek+resume on drag complete.
+                         Requires Microsoft.Xaml.Behaviors.Wpf package. -->
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                            <i:InvokeCommandAction Command="{Binding SeekCommand}"
-                                                   CommandParameter="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=Slider}}"/>
+                        <!-- Use pointer-down to detect start of user drag (Slider doesn't expose DragStarted to behaviors reliably) -->
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding SeekStartedCommand}" />
                         </i:EventTrigger>
 
-                        <!-- Touch support -->
+                        <i:EventTrigger EventName="PreviewTouchDown">
+                            <i:InvokeCommandAction Command="{Binding SeekStartedCommand}" />
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="DragCompleted">
+                            <i:InvokeCommandAction Command="{Binding SeekCompletedCommand}"
+                                   CommandParameter="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=Slider}}"/>
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding SeekCompletedCommand}"
+                                   CommandParameter="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=Slider}}"/>
+                        </i:EventTrigger>
+
                         <i:EventTrigger EventName="PreviewTouchUp">
-                            <i:InvokeCommandAction Command="{Binding SeekCommand}"
-                                                   CommandParameter="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=Slider}}"/>
+                            <i:InvokeCommandAction Command="{Binding SeekCompletedCommand}"
+                                   CommandParameter="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=Slider}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
@@ -131,12 +146,10 @@
                         <ControlTemplate TargetType="Slider">
                             <Grid VerticalAlignment="Center">
                                 <Track x:Name="PART_Track" Height="10">
-
-                                    <!-- PHẦN ĐÃ CHẠY -->
                                     <Track.DecreaseRepeatButton>
                                         <RepeatButton IsHitTestVisible="False"
                                                       Height="4"
-                                                      Background="#BC4D15"
+                                                      Background="{DynamicResource CurrentColor}"
                                                       BorderThickness="0">
                                             <RepeatButton.Template>
                                                 <ControlTemplate TargetType="RepeatButton">
@@ -146,7 +159,6 @@
                                         </RepeatButton>
                                     </Track.DecreaseRepeatButton>
 
-                                    <!-- PHẦN CHƯA CHẠY -->
                                     <Track.IncreaseRepeatButton>
                                         <RepeatButton IsHitTestVisible="False"
                                                       Height="4"
@@ -160,11 +172,10 @@
                                         </RepeatButton>
                                     </Track.IncreaseRepeatButton>
 
-                                    <!-- THUMB -->
                                     <Track.Thumb>
                                         <Thumb Width="10"
                                                Height="10"
-                                               Background="#BC4D15"
+                                               Background="{DynamicResource CurrentColor}"
                                                VerticalAlignment="Center">
                                             <Thumb.Template>
                                                 <ControlTemplate TargetType="Thumb">
@@ -202,11 +213,15 @@
                               Margin="4 0"/>
             </Button>
 
+            <!-- Volume slider -->
             <Slider Width="90"
                     Height="10"
                     VerticalAlignment="Center"
                     Margin="0 0 16 0"
-                    Background="Gray">
+                    Background="Gray"
+                    Minimum="0"
+                    Maximum="1"
+                    Value="{Binding Volume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <Slider.Template>
                     <ControlTemplate TargetType="Slider">
                         <Grid VerticalAlignment="Center">
@@ -216,7 +231,7 @@
                                 <Track.DecreaseRepeatButton>
                                     <RepeatButton IsHitTestVisible="False"
                                   Height="4"
-                                  Background="#BC4D15"
+                                  Background="{DynamicResource CurrentColor}"
                                   BorderThickness="0">
                                         <RepeatButton.Template>
                                             <ControlTemplate TargetType="RepeatButton">
@@ -244,7 +259,7 @@
                                 <Track.Thumb>
                                     <Thumb Width="10"
                            Height="10"
-                           Background="#BC4D15"
+                           Background="{DynamicResource CurrentColor}"
                            VerticalAlignment="Center">
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="Thumb">

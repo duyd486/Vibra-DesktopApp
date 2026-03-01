@@ -9,8 +9,22 @@
              xmlns:pages="clr-namespace:Vibra_DesktopApp.Views.Pages"
              xmlns:components="clr-namespace:Vibra_DesktopApp.Views.Components"
              xmlns:converters="clr-namespace:Vibra_DesktopApp.Converters"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              >
     <Application.Resources>
+        <!-- ===== THEME STATE ===== -->
+        <sys:Boolean x:Key="IsDarkMode">True</sys:Boolean>
+
+        <!-- ===== BASE BRUSHES (will be overridden at runtime) ===== -->
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FAFAFA"/>
+        
+        <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#F5F5F5"/>
+        <SolidColorBrush x:Key="ControlSelectedBrush" Color="#FFE5D6"/>
+        
+        <SolidColorBrush x:Key="AppTextBrush" Color="Black"/>
+        <!-- Dynamic application accent color (change at runtime by updating this resource) -->
+        <SolidColorBrush x:Key="CurrentColor" Color="#BC4D15" />
+
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
         <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibility"
                                     Inverse="True"/>
@@ -47,15 +61,8 @@
             <components:Player />
         </DataTemplate>
 
-
-
-
-
-
-
-
         <Style x:Key="HorizontalScrollBarStyle" TargetType="ScrollBar">
-            <Setter Property="Background" Value="#FFE5D6"/>
+            <Setter Property="Background" Value="{DynamicResource AppTextBrush}"/>
             <Setter Property="Height" Value="8"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -69,7 +76,7 @@
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="Thumb">
                                                 <Border Height="8"
-                                                Background="#FFE5D6"
+                                                Background="{DynamicResource AppTextBrush}"
                                                 CornerRadius="4"/>
                                             </ControlTemplate>
                                         </Thumb.Template>
@@ -83,7 +90,7 @@
         </Style>
 
         <Style x:Key="VerticalScrollBarStyle" TargetType="ScrollBar">
-            <Setter Property="Background" Value="#FFE5D6"/>
+            <Setter Property="Background" Value="{DynamicResource AppTextBrush}"/>
             <Setter Property="Width" Value="8"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -98,7 +105,7 @@
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="Thumb">
                                                 <Border Width="8"
-                                                Background="#FFE5D6"
+                                                Background="{DynamicResource AppTextBrush}"
                                                 CornerRadius="4"/>
                                             </ControlTemplate>
                                         </Thumb.Template>
@@ -124,7 +131,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                        CornerRadius="6">
+                        CornerRadius="18">
                             <ContentPresenter
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"/>
@@ -133,8 +140,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-
 
         <Style x:Key="IconButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="32"/>
@@ -157,7 +162,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
 
         <Style x:Key="WindowButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>

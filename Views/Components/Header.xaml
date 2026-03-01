@@ -3,141 +3,313 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
-             Height="60">
+             Height="60"
+             Background="{DynamicResource CurrentColor}">
 
-    <Grid Background="AliceBlue">
+    <UserControl.Resources>
+        <Style x:Key="ToggleIconButtonStyle" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+
+        <!-- Slightly rounded pill button for actions (Logout) -->
+        <Style x:Key="PillButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#1F1F1F"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="20"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.95"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ColorListBox" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="4"/>
+                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Dark toggle switch style -->
+        <Style x:Key="DarkToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Width" Value="52"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Background" Value="#BDBDBD"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Track"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="14"
+                                Padding="4">
+                            <Grid>
+                                <Ellipse x:Name="Knob"
+                                         Width="20" Height="20"
+                                         Fill="White"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Center"
+                                         Margin="0"/>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Track" Property="Background" Value="#333333"/>
+                                <Setter TargetName="Knob" Property="HorizontalAlignment" Value="Right"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Track" Property="Opacity" Value="0.95"/>
+                                <Setter TargetName="Knob" Property="Width" Value="22"/>
+                                <Setter TargetName="Knob" Property="Height" Value="22"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Knob" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- Use contained padding on grid for better balance -->
+    <Grid VerticalAlignment="Center" Margin="8,4">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <!-- LEFT: Back / Forward -->
-        <StackPanel Grid.Column="0"
-                    Orientation="Horizontal"
+        <!-- LEFT: Logo + Theme + Color Picker -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,12,0">
+            <!-- Increased right margin to avoid overlap with toggle -->
+            <Button Command="{Binding HomeCommand}"
+                    Style="{StaticResource IconButtonStyle}"
                     VerticalAlignment="Center"
-                    Margin="12,0">
-
-            <Button
-                    Content="Vibra"
-                    Width="100"
-                    Height="32"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    Margin="8,0,0,0"
+                    ToolTip="Home"
+                    Width="100" Height="44"
                     Background="Transparent"
-                    BorderThickness="0"
-                />
-            <Button 
-                Style="{StaticResource IconButtonStyle}"
-                Content=""
-                    
-                Width="32"
-                    Height="32"
-                    Margin="8,0,0,0"/>
+                    Margin="0,0,12,0">
+                <TextBlock Text="Vibra" FontWeight="Bold" Foreground="White" FontSize="22" Margin="6,0"/>
+            </Button>
+
+            <!-- Theme toggle placed immediately right of logo, before color picker -->
+            <ToggleButton
+                    Style="{StaticResource DarkToggleStyle}"
+                    IsChecked="{Binding IsDarkMode, Mode=TwoWay}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,12,0"
+                    ToolTip="Toggle dark / light theme" />
+
+            <!-- Move toggle to the right of logo and reduce corner radius so it doesn't crowd -->
+            <ToggleButton x:Name="ColorToggle"
+                          Width="36" Height="36"
+                          VerticalAlignment="Center"
+                          ToolTip="Choose Accent Color"
+                          Style="{StaticResource ToggleIconButtonStyle}"
+                          IsChecked="{Binding IsColorMenuOpen, Mode=TwoWay}"
+                          Margin="0,0,0,0">
+                <Border Width="26" Height="26" CornerRadius="20" Background="{DynamicResource CurrentColor}" BorderBrush="Black" BorderThickness="2" />
+            </ToggleButton>
+
+            <Popup PlacementTarget="{Binding ElementName=ColorToggle}"
+                   Placement="Bottom"
+                   StaysOpen="False"
+                   IsOpen="{Binding IsColorMenuOpen, Mode=TwoWay}"
+                   AllowsTransparency="True"
+                   PopupAnimation="Fade">
+                <Border Background="#111" CornerRadius="8" Padding="8" BorderBrush="#333" BorderThickness="1" >
+                    <!-- Use ListBox so selection is built-in and bindable -->
+                    <ListBox Style="{StaticResource ColorListBox}"
+                             ItemsSource="{Binding ColorList}"
+                             SelectedItem="{Binding SelectedColor, Mode=TwoWay}"
+                             SelectionMode="Single">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="36" Height="28">
+                                    <Border x:Name="SwatchBorder"
+                                            Width="28"
+                                            Height="28"
+                                            CornerRadius="14"
+                                            BorderBrush="Black"
+                                            BorderThickness="0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            RenderTransformOrigin="0.5,0.5">
+                                        <Border.RenderTransform>
+                                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        </Border.RenderTransform>
+
+                                        <Ellipse Fill="{Binding .}" Stroke="Transparent" />
+                                    </Border>
+
+                                    <TextBlock x:Name="Check"
+                                               Text="✔"
+                                               Foreground="White"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Visibility="Collapsed"/>
+                                </Grid>
+
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                        <Setter TargetName="SwatchBorder" Property="BorderThickness" Value="3"/>
+                                        <Setter TargetName="SwatchBorder" Property="RenderTransform">
+                                            <Setter.Value>
+                                                <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter TargetName="Check" Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                        <Setter TargetName="SwatchBorder" Property="RenderTransform">
+                                            <Setter.Value>
+                                                <ScaleTransform ScaleX="1.06" ScaleY="1.06"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter TargetName="SwatchBorder" Property="Opacity" Value="0.95"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+            </Popup>
         </StackPanel>
 
         <!-- CENTER: Search -->
+        <StackPanel Orientation="Horizontal" Margin="28 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+            <Button Command="{Binding HomeCommand}" Style="{StaticResource IconButtonStyle}" Width="48" Height="48" Margin="0,0,8,0">
+                <fa:IconBlock Icon="Home" Foreground="White" FontSize="20"/>
+            </Button>
+            <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Background="#1F1F1F" CornerRadius="26" Height="48" Width="500" Padding="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
+                        <TextBlock Text="🔍" VerticalAlignment="Center" FontSize="22" Foreground="#B3B3B3" Margin="10 0 0 0"/>
 
-            <Button
-                Style="{StaticResource IconButtonStyle}"
-                VerticalAlignment="Center"
-                FontSize="28"
-                HorizontalAlignment="Right" Height="52" Width="52"
-                Margin="0 0 10 0"
-                Command="{Binding HomeCommand}">
-                <fa:IconBlock Icon="Home"
-                              Foreground="White"
-                              FontSize="20"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     Foreground="White"
+                     FontSize="14"
+                     VerticalAlignment="Center"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     CaretBrush="White"
+                     Padding="6,0">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding SearchCommand}"/>
+                            </TextBox.InputBindings>
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding SearchBoxFocusedCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+
+                        <Button Grid.Column="2" Command="{Binding OpenCategoriesCommand}" Background="Transparent" BorderThickness="0" Margin="6,0,0,0">
+                            <fa:IconBlock Icon="BoxesStacked" Foreground="#B3B3B3" Margin="0 0 10 0" FontSize="22"/>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+        </StackPanel>
+        
+
+        <!-- RIGHT: User / Actions -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
+            <Button Command="{Binding UserClickCommand}" Style="{StaticResource IconButtonStyle}" Width="44" Height="44" Margin="0,0,8,0">
+                <fa:IconBlock Icon="UserCircle" Foreground="White" FontSize="20"/>
             </Button>
 
-            <Border 
-                Height="50"
-                Width="500"
-                CornerRadius="26"
-                Background="#1F1F1F"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center">
-
-                <Grid Margin="12,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Search icon -->
-                    <TextBlock Text="🔍"
-                               FontSize="20"
-                               VerticalAlignment="Center"
-                               Foreground="#B3B3B3"
-                               Margin="6,0,0,0"/>
-
-                    <!-- Search box -->
-                    <TextBox Grid.Column="1"
-                             Margin="8,0,0,0"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             Foreground="White"
-                             FontSize="18"
-                             VerticalAlignment="Center"
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             CaretBrush="White">
-                        <i:Interaction.Triggers>
-                            <!-- Khi focus -->
-                            <i:EventTrigger EventName="GotFocus">
-                                <i:InvokeCommandAction Command="{Binding SearchBoxFocusedCommand}"/>
-                            </i:EventTrigger>
-                            <!-- Khi nhấn Enter -->
-                            <i:EventTrigger EventName="TextChanged">
-                                <i:InvokeCommandAction Command="{Binding SearchCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TextBox>
-                </Grid>
-            </Border>
-        </StackPanel>
-
-
-
-        <!-- RIGHT: Premium / Notification / Avatar -->
-        <StackPanel Grid.Column="2"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right">
-
-            <!-- Avatar -->
-            <Button
-                Style="{StaticResource IconButtonStyle}"
-                VerticalAlignment="Center"
-                FontSize="16"
-                HorizontalAlignment="Right" Height="44" Width="44"
-                Margin="0 0 10 0"
-                Command="{Binding UserClickCommand}" >
-                <fa:IconBlock Icon="UserCircle"
-                              Foreground="White"
-                              FontSize="20"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+            <Button Command="{Binding LogoutCommand}" Style="{StaticResource PillButtonStyle}" Width="96" Height="36" Margin="0,0,12,0">
+                <TextBlock Text="Đăng xuất" Foreground="White" FontWeight="SemiBold" HorizontalAlignment="Center"/>
             </Button>
 
-            <!-- WINDOW BUTTONS -->
-            <Button Style="{StaticResource WindowButton}" Width="52" Height="70" FontSize="24" Margin="0 -7 0 0"
-                        Content="─"
-                        Command="{Binding UserClickCommand}"/>
-
-            <Button Style="{StaticResource WindowButton}" Width="52" Height="69" FontSize="24" Margin="0 -7 0 0"
-                        Content="□"/>
-
-            <Button Style="{StaticResource CloseButton}" Width="52" Height="60" FontSize="20" 
-                        Content="✕"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0" >
+                <Button Style="{StaticResource WindowButton}" Content="─" FontSize="20" VerticalContentAlignment="Center" Width="44" Height="52" Margin="4,0,0,0"/>
+                <Button Style="{StaticResource WindowButton}" Content="□" FontSize="20" VerticalContentAlignment="Center" Width="44" Height="52" Margin="4,0,4,0"/>
+                <Button Style="{StaticResource CloseButton}" Content="✕" FontSize="20" VerticalContentAlignment="Center" Width="48"  Margin="4,0,-10,0"/>
+            </StackPanel>
         </StackPanel>
-
     </Grid>
 </UserControl>

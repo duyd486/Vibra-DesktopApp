@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1250">
     <Grid Background="Transparent">
-        <Border CornerRadius="20" Background="Black" Margin="0 0 5 5">
+        <Border CornerRadius="20" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 0 5 5">
             <Grid VerticalAlignment="Top">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ScrollViewer.Resources>
@@ -17,7 +17,7 @@
                     </ScrollViewer.Resources>
 
                     <StackPanel HorizontalAlignment="Left" Margin="0 10 0 0">
-                        <TextBlock Text="Bài hát phù hợp với bạn" Width="auto" FontWeight="Bold" FontSize="26" Foreground="#FFE5D6" HorizontalAlignment="Left" Margin="20,20,0,10"/>
+                        <TextBlock Text="Bài hát phù hợp với bạn" Width="auto" FontWeight="Bold" FontSize="26" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Left" Margin="20,20,0,10"/>
                         <ScrollViewer Width="1250"  CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                             <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
@@ -59,7 +59,7 @@
                     Width="50"
                     Height="50"
                     CornerRadius="60"
-                    Background="#FFE5D6"
+                    Background="{DynamicResource CurrentColor}"
                     Opacity="0"
                     HorizontalAlignment="Right"
                     Margin="0 0 0 10"
@@ -105,10 +105,10 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="32 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="View" FontSize="14" Foreground="#FFE5D6" Margin="32 20 0 10" Grid.Column="0"/>
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" Margin="32 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" Margin="32 20 0 10" Grid.Column="0"/>
                                                 <Button Width="20" Height="20" FontSize="16" Grid.Column="1" Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
-                                                    <fa:IconBlock Icon="List" Foreground="#FFE5D6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Button>
                                             </Grid>
                                         </StackPanel>
@@ -122,7 +122,7 @@
 
 
 
-                        <TextBlock Text="Album phổ biến" Width="auto" FontWeight="Bold" FontSize="26" Foreground="#FFE5D6" HorizontalAlignment="Left" Margin="20,20,0,10"/>
+                        <TextBlock Text="Album phổ biến" Width="auto" FontWeight="Bold" FontSize="26" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Left" Margin="20,20,0,10"/>
                         <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                             <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
@@ -178,7 +178,7 @@
                                                                     Width="48"
                                                                     Height="48"
                                                                     CornerRadius="32"
-                                                                    Background="#FFE5D6"
+                                                                    Background="{DynamicResource CurrentColor}"
                                                                     Opacity="0"
                                                                     Margin="0 0 10 10"
                                                                     HorizontalAlignment="Right"
@@ -225,8 +225,8 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Width="160" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="4 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="{Binding total_song}" FontSize="14" Foreground="#FFE5D6" Margin="4 20 0 10" Grid.Column="0"/>
+                                                <TextBlock Width="160" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" Margin="4 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="{Binding total_song}" FontSize="14" Foreground="{DynamicResource AppTextBrush}" Margin="4 20 0 10" Grid.Column="0"/>
                                             </Grid>
                                         </StackPanel>
                                     </DataTemplate>
@@ -242,7 +242,7 @@
 
 
 
-                        <TextBlock Text="Nghệ sĩ với nhiều người theo dõi" Width="auto" FontWeight="Bold" FontSize="26" Foreground="#FFE5D6" HorizontalAlignment="Left" Margin="20,20,0,10"/>
+                        <TextBlock Text="Nghệ sĩ với nhiều người theo dõi" Width="auto" FontWeight="Bold" FontSize="26" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Left" Margin="20,20,0,10"/>
                         <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                             <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
@@ -280,7 +280,7 @@
                                                                     Width="50"
                                                                     Height="50"
                                                                     CornerRadius="60"
-                                                                    Background="#FFE5D6"
+                                                                    Background="{DynamicResource CurrentColor}"
                                                                     Opacity="0"
                                                                     HorizontalAlignment="Right"
                                                                     Margin="0 0 0 10"
@@ -324,8 +324,8 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="4 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="Người theo dõi" FontSize="14" Foreground="#FFE5D6" Margin="4 20 0 10" Grid.Column="0"/>
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" Margin="4 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="Người theo dõi" FontSize="14" Foreground="{DynamicResource AppTextBrush}" Margin="4 20 0 10" Grid.Column="0"/>
 
                                             </Grid>
                                         </StackPanel>
@@ -339,7 +339,7 @@
 
 
 
-                        <TextBlock Text="Bài hát có nhiều lượt nghe" Width="auto" FontWeight="Bold" FontSize="26" Foreground="#FFE5D6" HorizontalAlignment="Left" Margin="20,20,0,10"/>
+                        <TextBlock Text="Bài hát có nhiều lượt nghe" Width="auto" FontWeight="Bold" FontSize="26" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Left" Margin="20,20,0,10"/>
                         <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                             <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
@@ -389,7 +389,7 @@
                                                                     Width="50"
                                                                     Height="50"
                                                                     CornerRadius="60"
-                                                                    Background="#FFE5D6"
+                                                                    Background="{DynamicResource CurrentColor}"
                                                                     Opacity="0"
                                                                     HorizontalAlignment="Right"
                                                                     Margin="0 0 0 10"
@@ -397,7 +397,7 @@
 
                                                                     <TextBlock Text="▶"
                                                                        FontSize="18"
-                                                                       Foreground="#1D1512"
+                                                                       Foreground="{DynamicResource AppTextBrush}"
                                                                        HorizontalAlignment="Center"
                                                                        VerticalAlignment="Center"/>
                                                                 </Border>
@@ -436,10 +436,10 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="#FFE5D6" Margin="32 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="View" FontSize="14" Foreground="#FFE5D6" Margin="32 20 0 10" Grid.Column="0"/>
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" Margin="32 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" Margin="32 20 0 10" Grid.Column="0"/>
                                                 <Button Width="20" Height="20" FontSize="16" Grid.Column="1" Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
-                                                    <fa:IconBlock Icon="List" Foreground="#FFE5D6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Button>
                                             </Grid>
                                         </StackPanel>

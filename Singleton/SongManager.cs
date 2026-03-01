@@ -17,6 +17,9 @@ namespace Vibra_DesktopApp.Singleton
         [ObservableProperty] private double _duration;
         [ObservableProperty] private double _currentTime;
 
+        // Volume (0.0 - 1.0). Changes are applied to the MediaPlayer on the UI dispatcher.
+        [ObservableProperty] private double _volume = 1.0;
+
         // NOTE: kept existing factory name to avoid breaking callers. Prefer DI registration instead.
         public static SongManager? Instance { get; private set; }
 
@@ -31,6 +34,16 @@ namespace Vibra_DesktopApp.Singleton
         public SongManager()
         {
             _dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+
+            // apply initial volume to media player
+            try
+            {
+                _mediaPlayer.Volume = Math.Clamp(_volume, 0.0, 1.0);
+            }
+            catch
+            {
+                // ignore; will be applied once dispatcher is available
+            }
 
             // Timer updates CurrentTime on the UI dispatcher
             _timer = new DispatcherTimer(DispatcherPriority.Normal, _dispatcher)
@@ -55,6 +68,24 @@ namespace Vibra_DesktopApp.Singleton
             // Attach media events once to avoid multiple subscriptions
             _mediaPlayer.MediaOpened += OnMediaOpened;
             _mediaPlayer.MediaEnded += OnMediaEnded;
+        }
+
+        partial void OnVolumeChanged(double value)
+        {
+            var v = Math.Clamp(value, 0.0, 1.0);
+
+            // Marshal to UI dispatcher to respect MediaPlayer affinity
+            _dispatcher?.InvokeAsync(() =>
+            {
+                try
+                {
+                    _mediaPlayer.Volume = v;
+                }
+                catch
+                {
+                    // swallow, do not throw from property change
+                }
+            }, DispatcherPriority.Normal);
         }
 
         public static SongManager GetInstace()
