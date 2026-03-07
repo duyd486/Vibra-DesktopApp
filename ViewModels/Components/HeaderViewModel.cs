@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using Vibra_DesktopApp.Models;
 using Vibra_DesktopApp.ViewModels.Pages;
 
 namespace Vibra_DesktopApp.ViewModels.Components
@@ -15,12 +16,11 @@ namespace Vibra_DesktopApp.ViewModels.Components
         [ObservableProperty] private string _searchText;
         [ObservableProperty] private bool _isColorMenuOpen;
         public IReadOnlyList<string> ColorList { get; }
-
-        // Selected color string (hex). Two-way bound to the ListBox SelectedItem.
         [ObservableProperty] private string _selectedColor;
-
-        // Dark mode flag
         [ObservableProperty] private bool _isDarkMode;
+
+        // Navigation state properties
+        public NavigationItem CurrentNavigationItem => _mainVM.CurrentNavigationItem;
 
         public HeaderViewModel(MainViewModel mainVM)
         {
@@ -28,19 +28,10 @@ namespace Vibra_DesktopApp.ViewModels.Components
 
             ColorList = new List<string>
             {
-                "#BC4D15",
-                "#645283",
-                "#a8bfc9",
-                "#CD5C5C",
-                "#a3b18a",
-                "#9e9fa5",
-                "#926F4F",
-                "#FEA7A0",
-                "#c3a995",
-                "#44B78B",
+                "#BC4D15", "#645283", "#a8bfc9", "#CD5C5C", "#a3b18a",
+                "#9e9fa5", "#926F4F", "#FEA7A0", "#c3a995", "#44B78B",
             };
 
-            // Initialize selected color from app resources if present
             if (Application.Current?.Resources["CurrentColorString"] is string s)
             {
                 SelectedColor = s;
@@ -55,20 +46,27 @@ namespace Vibra_DesktopApp.ViewModels.Components
                 ApplyColorToResources(SelectedColor);
             }
 
-            // Initialize dark mode from app resources if present
             if (Application.Current?.Resources["IsDarkMode"] is bool dark)
             {
                 IsDarkMode = dark;
             }
             else
             {
-                // default to dark for this app
                 IsDarkMode = true;
                 ApplyTheme(IsDarkMode);
             }
 
             SearchText = string.Empty;
             IsColorMenuOpen = false;
+
+            // Subscribe to navigation changes
+            _mainVM.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(MainViewModel.CurrentNavigationItem))
+                {
+                    OnPropertyChanged(nameof(CurrentNavigationItem));
+                }
+            };
         }
 
         partial void OnSelectedColorChanged(string value)
@@ -77,8 +75,6 @@ namespace Vibra_DesktopApp.ViewModels.Components
                 return;
 
             ApplyColorToResources(value);
-
-            // close popup after selecting
             IsColorMenuOpen = false;
         }
 
@@ -93,12 +89,10 @@ namespace Vibra_DesktopApp.ViewModels.Components
             {
                 Application.Current.Resources["IsDarkMode"] = isDark;
 
-                // simple theme brushes - replace or extend with full dictionaries as needed
                 var windowBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(18, 18, 18)) : new SolidColorBrush(Color.FromRgb(250, 250, 250));
                 var controlBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(31, 31, 31)) : new SolidColorBrush(Color.FromRgb(245, 245, 245));
-                var textBrush = isDark ? BrushFromHex("#FFE5D6") : (Brush)Brushes.Black;
+                var textBrush = isDark ? (Brush)Brushes.White : Brushes.Black;
 
-                // Freeze brushes for performance
                 if (windowBg is SolidColorBrush sb1) sb1.Freeze();
                 if (controlBg is SolidColorBrush sb2) sb2.Freeze();
 
@@ -109,16 +103,7 @@ namespace Vibra_DesktopApp.ViewModels.Components
             catch
             {
                 // swallow - theme toggling should not throw
-                MessageBox.Show("Error Applying Theme");
             }
-        }
-
-        private SolidColorBrush BrushFromHex(string hex)
-        {
-            var color = (Color)ColorConverter.ConvertFromString(hex);
-            var brush = new SolidColorBrush(color);
-            brush.Freeze();
-            return brush;
         }
 
         private void ApplyColorToResources(string colorString)
@@ -164,38 +149,38 @@ namespace Vibra_DesktopApp.ViewModels.Components
         [RelayCommand]
         public void UserClick()
         {
-            _mainVM.NavigateTo(new UserViewModel(_mainVM));
+            _mainVM.NavigateTo(new UserViewModel(_mainVM), NavigationItem.User);
         }
 
         [RelayCommand]
         public void Home()
         {
-            _mainVM.NavigateTo(new HomeViewModel(_mainVM));
+            _mainVM.NavigateTo(new HomeViewModel(_mainVM), NavigationItem.Home);
         }
 
         [RelayCommand]
         public void SearchBoxFocused()
         {
             SearchText = string.Empty;
-            _mainVM.NavigateTo(new SearchViewModel(_mainVM, string.Empty));
+            _mainVM.NavigateTo(new SearchViewModel(_mainVM, string.Empty), NavigationItem.Search);
         }
 
         [RelayCommand]
         public void Search()
         {
-            _mainVM.NavigateTo(new SearchViewModel(_mainVM, SearchText ?? string.Empty));
+            _mainVM.NavigateTo(new SearchViewModel(_mainVM, SearchText ?? string.Empty), NavigationItem.Search);
         }
 
         [RelayCommand]
         public void OpenCategories()
         {
-            _mainVM.NavigateTo(new HomeViewModel(_mainVM));
+            _mainVM.NavigateTo(new HomeViewModel(_mainVM), NavigationItem.Categories);
         }
 
         [RelayCommand]
         public void Logout()
         {
-            _mainVM.NavigateTo(new HomeViewModel(_mainVM));
+            _mainVM.NavigateTo(new HomeViewModel(_mainVM), NavigationItem.Home);
         }
     }
 }

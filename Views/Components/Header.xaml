@@ -3,10 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+             xmlns:converters="clr-namespace:Vibra_DesktopApp.Converters"
              Height="60"
              Background="{DynamicResource CurrentColor}">
 
     <UserControl.Resources>
+        <converters:NavigationItemToBoolConverter x:Key="NavItemToBool"/>
+        <converters:NavigationItemToTagConverter x:Key="NavItemToTag"/>
+
         <Style x:Key="ToggleIconButtonStyle" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -31,7 +35,7 @@
 
         <!-- Slightly rounded pill button for actions (Logout) -->
         <Style x:Key="PillButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#1F1F1F"/>
+            <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="12,6"/>
@@ -152,9 +156,11 @@
 
         <!-- LEFT: Logo + Theme + Color Picker -->
         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,12,0">
-            <!-- Increased right margin to avoid overlap with toggle -->
+    
+            <!-- ✅ YOUR HOME BUTTON - STILL HERE, JUST ENHANCED -->
             <Button Command="{Binding HomeCommand}"
                     Style="{StaticResource IconButtonStyle}"
+                    Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Home}"
                     VerticalAlignment="Center"
                     ToolTip="Home"
                     Width="100" Height="44"
@@ -163,25 +169,26 @@
                 <TextBlock Text="Vibra" FontWeight="Bold" Foreground="White" FontSize="22" Margin="6,0"/>
             </Button>
 
-            <!-- Theme toggle placed immediately right of logo, before color picker -->
-            <ToggleButton
-                    Style="{StaticResource DarkToggleStyle}"
-                    IsChecked="{Binding IsDarkMode, Mode=TwoWay}"
-                    VerticalAlignment="Center"
-                    Margin="0,0,12,0"
-                    ToolTip="Toggle dark / light theme" />
+            <!-- ✅ YOUR THEME TOGGLE - STILL HERE -->
+            <ToggleButton Style="{StaticResource DarkToggleStyle}"
+                          IsChecked="{Binding IsDarkMode, Mode=TwoWay}"
+                          VerticalAlignment="Center"
+                          Margin="0,0,12,0"
+                          ToolTip="Toggle dark / light theme" />
 
-            <!-- Move toggle to the right of logo and reduce corner radius so it doesn't crowd -->
+            <!-- ✅ YOUR COLOR PICKER - STILL HERE -->
             <ToggleButton x:Name="ColorToggle"
                           Width="36" Height="36"
                           VerticalAlignment="Center"
                           ToolTip="Choose Accent Color"
                           Style="{StaticResource ToggleIconButtonStyle}"
-                          IsChecked="{Binding IsColorMenuOpen, Mode=TwoWay}"
-                          Margin="0,0,0,0">
-                <Border Width="26" Height="26" CornerRadius="20" Background="{DynamicResource CurrentColor}" BorderBrush="Black" BorderThickness="2" />
+                          IsChecked="{Binding IsColorMenuOpen, Mode=TwoWay}">
+                <Border Width="24" Height="24" CornerRadius="12" 
+                        Background="{DynamicResource CurrentColor}" 
+                        BorderBrush="Black" BorderThickness="1" />
             </ToggleButton>
 
+            <!-- ✅ YOUR COLOR POPUP - STILL HERE -->
             <Popup PlacementTarget="{Binding ElementName=ColorToggle}"
                    Placement="Bottom"
                    StaysOpen="False"
@@ -250,64 +257,86 @@
             </Popup>
         </StackPanel>
 
-        <!-- CENTER: Search -->
-        <StackPanel Orientation="Horizontal" Margin="28 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
-            <Button Command="{Binding HomeCommand}" Style="{StaticResource IconButtonStyle}" Width="48" Height="48" Margin="0,0,8,0">
-                <fa:IconBlock Icon="Home" Foreground="White" FontSize="20"/>
+        <!-- CENTER: Home button + Search box -->
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            
+            <!-- ✅ HOME ICON BUTTON (like Spotify) -->
+            <Button Command="{Binding HomeCommand}"
+                    Style="{StaticResource IconNavigationButtonStyle}"
+                    Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Home}"
+                    Width="44" Height="44"
+                    Margin="0 0 12 0"
+                    ToolTip="Home">
+                <fa:IconBlock Icon="Home" FontSize="20"/>
             </Button>
-            <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Border Background="#1F1F1F" CornerRadius="26" Height="48" Width="500" Padding="10">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="🔍" VerticalAlignment="Center" FontSize="22" Foreground="#B3B3B3" Margin="10 0 0 0"/>
+            <!-- Search box -->
+            <Border Background="{DynamicResource ControlBackgroundBrush}" CornerRadius="26" Height="44" Width="520" Padding="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                        <TextBox Grid.Column="1"
-                     Background="Transparent"
-                     BorderThickness="0"
-                     Foreground="White"
-                     FontSize="14"
-                     VerticalAlignment="Center"
-                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                     CaretBrush="White"
-                     Padding="6,0">
-                            <TextBox.InputBindings>
-                                <KeyBinding Key="Enter" Command="{Binding SearchCommand}"/>
-                            </TextBox.InputBindings>
+                    <Button Grid.Column="0" 
+                            Width="32" Height="32"
+                            Background="Transparent" 
+                            BorderThickness="0"
+                            Command="{Binding SearchBoxFocusedCommand}"
+                            Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Search}">
+                        <TextBlock Text="🔍" VerticalAlignment="Center" Foreground="#B3B3B3" Margin="4,0"/>
+                    </Button>
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="GotFocus">
-                                    <i:InvokeCommandAction Command="{Binding SearchBoxFocusedCommand}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
+                    <TextBox Grid.Column="1"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Foreground="White"
+                             FontSize="14"
+                             VerticalAlignment="Center"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             CaretBrush="White"
+                             Padding="6,0">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SearchCommand}"/>
+                        </TextBox.InputBindings>
 
-                        <Button Grid.Column="2" Command="{Binding OpenCategoriesCommand}" Background="Transparent" BorderThickness="0" Margin="6,0,0,0">
-                            <fa:IconBlock Icon="BoxesStacked" Foreground="#B3B3B3" Margin="0 0 10 0" FontSize="22"/>
-                        </Button>
-                    </Grid>
-                </Border>
-            </Grid>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="GotFocus">
+                                <i:InvokeCommandAction Command="{Binding SearchBoxFocusedCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Grid.Column="2" 
+                            Command="{Binding OpenCategoriesCommand}" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Margin="6,0,0,0"
+                            Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Categories}">
+                        <fa:IconBlock Icon="BoxesStacked" Foreground="#B3B3B3" FontSize="18"/>
+                    </Button>
+                </Grid>
+            </Border>
         </StackPanel>
-        
 
         <!-- RIGHT: User / Actions -->
         <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
-            <Button Command="{Binding UserClickCommand}" Style="{StaticResource IconButtonStyle}" Width="44" Height="44" Margin="0,0,8,0">
+            <!-- User button with active state -->
+            <Button Command="{Binding UserClickCommand}" 
+                    Style="{StaticResource IconButtonStyle}" 
+                    Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=User}"
+                    Width="44" Height="44" Margin="0,0,8,0">
                 <fa:IconBlock Icon="UserCircle" Foreground="White" FontSize="20"/>
             </Button>
 
             <Button Command="{Binding LogoutCommand}" Style="{StaticResource PillButtonStyle}" Width="96" Height="36" Margin="0,0,12,0">
-                <TextBlock Text="Đăng xuất" Foreground="White" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                <TextBlock Text="Đăng xuất" Foreground="{DynamicResource AppTextBrush}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
             </Button>
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0" >
                 <Button Style="{StaticResource WindowButton}" Content="─" FontSize="20" VerticalContentAlignment="Center" Width="44" Height="52" Margin="4,0,0,0"/>
-                <Button Style="{StaticResource WindowButton}" Content="□" FontSize="20" VerticalContentAlignment="Center" Width="44" Height="52" Margin="4,0,4,0"/>
+                <Button Style="{StaticResource WindowButton}" Content="□" FontSize="20" VerticalContentAlignment="Center" Width="44" Height="52" Margin="4,0,0,0"/>
                 <Button Style="{StaticResource CloseButton}" Content="✕" FontSize="20" VerticalContentAlignment="Center" Width="48"  Margin="4,0,-10,0"/>
             </StackPanel>
         </StackPanel>

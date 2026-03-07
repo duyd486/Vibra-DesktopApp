@@ -1,6 +1,7 @@
 ﻿<Application x:Class="Vibra_DesktopApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              xmlns:local="clr-namespace:Vibra_DesktopApp"
              xmlns:vm="clr-namespace:Vibra_DesktopApp.ViewModels"
              xmlns:vm2="clr-namespace:Vibra_DesktopApp.ViewModels.Pages"
@@ -8,76 +9,145 @@
              xmlns:views="clr-namespace:Vibra_DesktopApp.Views"
              xmlns:pages="clr-namespace:Vibra_DesktopApp.Views.Pages"
              xmlns:components="clr-namespace:Vibra_DesktopApp.Views.Components"
-             xmlns:converters="clr-namespace:Vibra_DesktopApp.Converters"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             >
+             xmlns:converters="clr-namespace:Vibra_DesktopApp.Converters">
     <Application.Resources>
-        <!-- ===== THEME STATE ===== -->
+
+        <!-- Accent color and supporting runtime theme resources -->
+        <SolidColorBrush x:Key="CurrentColor" Color="#BC4D15" />
+        <sys:String x:Key="CurrentColorString">#BC4D15</sys:String>
+
+        <!-- App theme brushes (defaults) -->
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#121212" />
+        <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#1F1F1F" />
+        <SolidColorBrush x:Key="AppTextBrush" Color="White" />
+        <SolidColorBrush x:Key="AppTextMutedBrush" Color="#B3B3B3" />
+        
+        <!-- Navigation active state brushes -->
+        <SolidColorBrush x:Key="NavActiveBackgroundBrush" Color="#282828" />
+        <SolidColorBrush x:Key="NavActiveTextBrush" Color="White" />
+        <SolidColorBrush x:Key="NavInactiveTextBrush" Color="#B3B3B3" />
+
+        <!-- Theme flag -->
         <sys:Boolean x:Key="IsDarkMode">True</sys:Boolean>
 
-        <!-- ===== BASE BRUSHES (will be overridden at runtime) ===== -->
-        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FAFAFA"/>
-        
-        <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#F5F5F5"/>
-        <SolidColorBrush x:Key="ControlSelectedBrush" Color="#FFE5D6"/>
-        
-        <SolidColorBrush x:Key="AppTextBrush" Color="Black"/>
-        <!-- Dynamic application accent color (change at runtime by updating this resource) -->
-        <SolidColorBrush x:Key="CurrentColor" Color="#BC4D15" />
-
+        <!-- Converters -->
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
-        <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibility"
-                                    Inverse="True"/>
+        <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibility" Inverse="True"/>
         <converters:BoolToIconConverter x:Key="BoolToIconConverter" />
         <converters:TimeConverter x:Key="TimeConverter" />
+        <converters:NavigationItemToBoolConverter x:Key="NavItemToBool"/>
+        <converters:NavigationItemToTagConverter x:Key="NavItemToTag"/>
 
-        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
-            <views:LoginView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:SignUpViewModel}">
-            <views:SignUpView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:HomeViewModel}">
-            <pages:HomePage />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm2:AlbumViewModel}">
-            <pages:AlbumPage />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm2:ArtistViewModel}">
-            <pages:ArtistPage />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm2:SearchViewModel}">
-            <pages:SearchPage />
-        </DataTemplate>
+        <!-- View templates -->
+        <DataTemplate DataType="{x:Type vm:LoginViewModel}"><views:LoginView /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SignUpViewModel}"><views:SignUpView /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:HomeViewModel}"><pages:HomePage /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm2:AlbumViewModel}"><pages:AlbumPage /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm2:ArtistViewModel}"><pages:ArtistPage /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm2:SearchViewModel}"><pages:SearchPage /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm2:UserViewModel}"><pages:UserPage /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm3:HeaderViewModel}"><components:Header /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm3:PlayerViewModel}"><components:Player /></DataTemplate>
 
-        <DataTemplate DataType="{x:Type vm2:UserViewModel}">
-            <pages:UserPage />
-        </DataTemplate>
+        <!-- Navigation Button Style (Spotify-like) -->
+        <Style x:Key="NavigationButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource NavInactiveTextBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,12"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <!-- Active indicator bar (left side) -->
+                                <Rectangle x:Name="ActiveIndicator"
+                                           Width="4"
+                                           HorizontalAlignment="Left"
+                                           Fill="{StaticResource CurrentColor}"
+                                           Opacity="0"
+                                           Margin="-16,0,0,0"/>
+                                
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Grid>
+                        </Border>
+                        
+                        <ControlTemplate.Triggers>
+                            <!-- Hover state -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            
+                            <!-- Active state (controlled by Tag property) -->
+                            <Trigger Property="Tag" Value="Active">
+                                <Setter Property="Foreground" Value="{StaticResource NavActiveTextBrush}"/>
+                                <Setter Property="Background" Value="{StaticResource NavActiveBackgroundBrush}"/>
+                                <Setter TargetName="ActiveIndicator" Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <DataTemplate DataType="{x:Type vm3:HeaderViewModel}">
-            <components:Header />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm3:PlayerViewModel}">
-            <components:Player />
-        </DataTemplate>
+        <!-- Icon Navigation Button Style (for header) -->
+        <Style x:Key="IconNavigationButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource NavInactiveTextBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="24"
+                                Padding="12">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#20FFFFFF"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            
+                            <Trigger Property="Tag" Value="Active">
+                                <Setter Property="Foreground" Value="{StaticResource NavActiveTextBrush}"/>
+                                <Setter Property="Background" Value="{StaticResource NavActiveBackgroundBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
+        <!-- ... (keep all other existing styles) ... -->
         <Style x:Key="HorizontalScrollBarStyle" TargetType="ScrollBar">
-            <Setter Property="Background" Value="{DynamicResource AppTextBrush}"/>
+            <Setter Property="Background" Value="#FFE5D6"/>
             <Setter Property="Height" Value="8"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollBar">
                         <Grid Background="Transparent">
-                            <Track x:Name="PART_Track"
-                           Height="8">
+                            <Track x:Name="PART_Track" Height="8">
                                 <Track.Thumb>
-                                    <Thumb Height="8"
-                                   MinHeight="8">
+                                    <Thumb Height="8" MinHeight="8">
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="Thumb">
-                                                <Border Height="8"
-                                                Background="{DynamicResource AppTextBrush}"
-                                                CornerRadius="4"/>
+                                                <Border Height="8" Background="#FFE5D6" CornerRadius="4"/>
                                             </ControlTemplate>
                                         </Thumb.Template>
                                     </Thumb>
@@ -90,23 +160,18 @@
         </Style>
 
         <Style x:Key="VerticalScrollBarStyle" TargetType="ScrollBar">
-            <Setter Property="Background" Value="{DynamicResource AppTextBrush}"/>
+            <Setter Property="Background" Value="#FFE5D6"/>
             <Setter Property="Width" Value="8"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollBar">
                         <Grid Background="Transparent">
-                            <Track x:Name="PART_Track"
-                           Width="8"
-                           IsDirectionReversed="True">
+                            <Track x:Name="PART_Track" Width="8" IsDirectionReversed="True">
                                 <Track.Thumb>
-                                    <Thumb Width="8"
-                                   MinWidth="8">
+                                    <Thumb Width="8" MinWidth="8">
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="Thumb">
-                                                <Border Width="8"
-                                                Background="{DynamicResource AppTextBrush}"
-                                                CornerRadius="4"/>
+                                                <Border Width="8" Background="#FFE5D6" CornerRadius="4"/>
                                             </ControlTemplate>
                                         </Thumb.Template>
                                     </Thumb>
@@ -130,11 +195,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                        CornerRadius="18">
-                            <ContentPresenter
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"/>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -152,11 +214,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                        CornerRadius="40">
-                            <ContentPresenter
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"/>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="40">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -171,8 +230,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                          VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -192,8 +250,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">

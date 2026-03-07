@@ -6,19 +6,35 @@
              xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Pages"
              xmlns:vm="clr-namespace:Vibra_DesktopApp.ViewModels"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+             xmlns:behaviors="clr-namespace:Vibra_DesktopApp.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1250">
     <Grid Background="Transparent">
-        <Border CornerRadius="20" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 0 5 5">
+        <Border CornerRadius="10" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 0 5 5">
             <Grid VerticalAlignment="Top">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <!-- Main vertical ScrollViewer -->
+                <ScrollViewer x:Name="MainScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <ScrollViewer.Resources>
                         <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
                     </ScrollViewer.Resources>
 
                     <StackPanel HorizontalAlignment="Left" Margin="0 10 0 0">
-                        <TextBlock Text="Bài hát phù hợp với bạn" Width="auto" FontWeight="Bold" FontSize="26" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Left" Margin="20,20,0,10"/>
-                        <ScrollViewer Width="1250"  CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        
+                        <!-- Section 1: Bài hát phù hợp với bạn -->
+                        <TextBlock Text="Bài hát phù hợp với bạn" 
+                                   Width="auto" 
+                                   FontWeight="Bold" 
+                                   FontSize="26" 
+                                   Foreground="{DynamicResource AppTextBrush}" 
+                                   HorizontalAlignment="Left" 
+                                   Margin="20,20,0,10"/>
+                        
+                        <ScrollViewer Width="1250" 
+                                      CanContentScroll="True" 
+                                      HorizontalContentAlignment="Left" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Disabled"
+                                      behaviors:ScrollBehavior.HorizontalScrollOnly="True">
                             <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
                             </ScrollViewer.Resources>
@@ -32,70 +48,46 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Width="200" Height="220" HorizontalAlignment="Left">
-                                            <Button CommandParameter="{Binding}" Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Width="160" Height="160" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                                            <Button CommandParameter="{Binding}" 
+                                                    Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                                                    Width="160" Height="160" Cursor="Hand" Background="Transparent" BorderThickness="0">
                                                 <Button.Template>
                                                     <ControlTemplate TargetType="Button">
-                                                        <Border x:Name="Root"
-            RenderTransformOrigin="0.5,0.5">
-
-                                                            <!-- Scale transform -->
+                                                        <Border x:Name="Root" RenderTransformOrigin="0.5,0.5">
                                                             <Border.RenderTransform>
-                                                                <ScaleTransform ScaleX="1"
-                    ScaleY="1"/>
+                                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
                                                             </Border.RenderTransform>
 
                                                             <Grid>
-                                                                <!-- Album image -->
-                                                                <Ellipse Width="136"
-                    Height="136">
+                                                                <Ellipse Width="136" Height="136">
                                                                     <Ellipse.Fill>
-                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}"
-                            Stretch="UniformToFill"/>
+                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
                                                                     </Ellipse.Fill>
                                                                 </Ellipse>
 
-                                                                <!-- Play icon -->
                                                                 <Border x:Name="PlayIcon"
-                    Width="50"
-                    Height="50"
-                    CornerRadius="60"
-                    Background="{DynamicResource CurrentColor}"
-                    Opacity="0"
-                    HorizontalAlignment="Right"
-                    Margin="0 0 0 10"
-                    VerticalAlignment="Bottom">
-
-                                                                    <TextBlock Text="▶"
-                       FontSize="18"
-                       Foreground="#1D1512"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+                                                                        Width="50" Height="50"
+                                                                        CornerRadius="60"
+                                                                        Background="{DynamicResource CurrentColor}"
+                                                                        Opacity="0"
+                                                                        HorizontalAlignment="Right"
+                                                                        Margin="0 0 0 10"
+                                                                        VerticalAlignment="Bottom">
+                                                                    <TextBlock Text="▶" FontSize="18" Foreground="#1D1512" 
+                                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </Border>
                                                             </Grid>
                                                         </Border>
 
-                                                        <!-- Hover & Press -->
                                                         <ControlTemplate.Triggers>
-
                                                             <Trigger Property="IsMouseOver" Value="True">
                                                                 <Setter TargetName="PlayIcon" Property="Opacity" Value="1"/>
-                                                                <Setter TargetName="Root"
-                    Property="RenderTransform">
+                                                                <Setter TargetName="Root" Property="RenderTransform">
                                                                     <Setter.Value>
                                                                         <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
                                                                     </Setter.Value>
                                                                 </Setter>
                                                             </Trigger>
-
-                                                            <Trigger Property="IsPressed" Value="True">
-                                                                <Setter TargetName="Root"
-                    Property="RenderTransform">
-                                                                    <Setter.Value>
-                                                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Trigger>
-
                                                         </ControlTemplate.Triggers>
                                                     </ControlTemplate>
                                                 </Button.Template>
@@ -105,10 +97,15 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" Margin="32 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" Margin="32 20 0 10" Grid.Column="0"/>
-                                                <Button Width="20" Height="20" FontSize="16" Grid.Column="1" Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
-                                                    <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" 
+                                                           FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" 
+                                                           Margin="32 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
+                                                           Margin="32 20 0 10" Grid.Column="0"/>
+                                                <Button Width="20" Height="20" FontSize="16" Grid.Column="1" 
+                                                        Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
+                                                    <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" 
+                                                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Button>
                                             </Grid>
                                         </StackPanel>
@@ -117,13 +114,22 @@
                             </ItemsControl>
                         </ScrollViewer>
 
-
-
-
-
-
-                        <TextBlock Text="Album phổ biến" Width="auto" FontWeight="Bold" FontSize="26" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Left" Margin="20,20,0,10"/>
-                        <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <!-- Section 2: Album phổ biến -->
+                        <TextBlock Text="Album phổ biến" 
+                                   Width="auto" 
+                                   FontWeight="Bold" 
+                                   FontSize="26" 
+                                   Foreground="{DynamicResource AppTextBrush}" 
+                                   HorizontalAlignment="Left" 
+                                   Margin="20,20,0,10"/>
+                        
+                        <ScrollViewer Width="1250" 
+                                      PanningMode="HorizontalOnly" 
+                                      CanContentScroll="True" 
+                                      HorizontalContentAlignment="Left" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Disabled"
+                                      behaviors:ScrollBehavior.HorizontalScrollOnly="True">
                             <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
                             </ScrollViewer.Resources>
@@ -137,84 +143,47 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Width="180" Height="240" Margin="20 0 0 0" HorizontalAlignment="Left">
-                                            <Button Width="180"
-                                                Height="180"
-                                                Cursor="Hand"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Command="{Binding DataContext.OpenAlbumDetailCommand,
-                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                CommandParameter="{Binding}">
-
+                                            <Button Width="180" Height="180"
+                                                    Cursor="Hand"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Command="{Binding DataContext.OpenAlbumDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
                                                 <Button.Template>
                                                     <ControlTemplate TargetType="Button">
-                                                        <Border x:Name="Root"
-                                                            Width="172"
-                                                            Height="172"
-                                                            CornerRadius="12"
-                                                            RenderTransformOrigin="0.5,0.5">
-
-                                                            <!-- Scale transform -->
+                                                        <Border x:Name="Root" Width="172" Height="172" CornerRadius="12" RenderTransformOrigin="0.5,0.5">
                                                             <Border.RenderTransform>
                                                                 <ScaleTransform ScaleX="1" ScaleY="1"/>
                                                             </Border.RenderTransform>
 
                                                             <Grid>
-                                                                <!-- Album image -->
                                                                 <Border CornerRadius="12" ClipToBounds="True">
                                                                     <Border.Background>
                                                                         <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
                                                                     </Border.Background>
                                                                 </Border>
 
-                                                                <!-- Dark overlay -->
-                                                                <Border x:Name="Overlay"
-                                                                    Background="#66000000"
-                                                                    CornerRadius="12"
-                                                                    Opacity="0"/>
+                                                                <Border x:Name="Overlay" Background="#66000000" CornerRadius="12" Opacity="0"/>
 
-                                                                <!-- Center icon -->
                                                                 <Border x:Name="CenterIcon"
-                                                                    Width="48"
-                                                                    Height="48"
-                                                                    CornerRadius="32"
-                                                                    Background="{DynamicResource CurrentColor}"
-                                                                    Opacity="0"
-                                                                    Margin="0 0 10 10"
-                                                                    HorizontalAlignment="Right"
-                                                                    VerticalAlignment="Bottom">
-
-                                                                    <!-- Bạn có thể đổi icon -->
-                                                                    <TextBlock Text="▶"
-                                                                       FontSize="20"
-                                                                       Foreground="#1D1512"
-                                                                       HorizontalAlignment="Center"
-                                                                       VerticalAlignment="Center"/>
+                                                                        Width="48" Height="48"
+                                                                        CornerRadius="32"
+                                                                        Background="{DynamicResource CurrentColor}"
+                                                                        Opacity="0"
+                                                                        Margin="0 0 10 10"
+                                                                        HorizontalAlignment="Right"
+                                                                        VerticalAlignment="Bottom">
+                                                                    <TextBlock Text="▶" FontSize="20" Foreground="#1D1512" 
+                                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </Border>
                                                             </Grid>
                                                         </Border>
 
-                                                        <!-- Hover / Press -->
                                                         <ControlTemplate.Triggers>
-
                                                             <Trigger Property="IsMouseOver" Value="True">
                                                                 <Setter TargetName="Overlay" Property="Opacity" Value="1"/>
                                                                 <Setter TargetName="CenterIcon" Property="Opacity" Value="1"/>
-                                                                <Setter TargetName="Root" Property="RenderTransform">
-                                                                    <Setter.Value>
-                                                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
                                                             </Trigger>
-
-                                                            <Trigger Property="IsPressed" Value="True">
-                                                                <Setter TargetName="Root" Property="RenderTransform">
-                                                                    <Setter.Value>
-                                                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Trigger>
-
                                                         </ControlTemplate.Triggers>
                                                     </ControlTemplate>
                                                 </Button.Template>
@@ -225,8 +194,11 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Width="160" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" Margin="4 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="{Binding total_song}" FontSize="14" Foreground="{DynamicResource AppTextBrush}" Margin="4 20 0 10" Grid.Column="0"/>
+                                                <TextBlock Width="160" HorizontalAlignment="Left" Text="{Binding name}" 
+                                                           FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" 
+                                                           Margin="4 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="{Binding total_song}" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
+                                                           Margin="4 20 0 10" Grid.Column="0"/>
                                             </Grid>
                                         </StackPanel>
                                     </DataTemplate>
@@ -234,16 +206,22 @@
                             </ItemsControl>
                         </ScrollViewer>
 
-
-
-
-
-
-
-
-
-                        <TextBlock Text="Nghệ sĩ với nhiều người theo dõi" Width="auto" FontWeight="Bold" FontSize="26" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Left" Margin="20,20,0,10"/>
-                        <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <!-- Section 3: Nghệ sĩ với nhiều người theo dõi -->
+                        <TextBlock Text="Nghệ sĩ với nhiều người theo dõi" 
+                                   Width="auto" 
+                                   FontWeight="Bold" 
+                                   FontSize="26" 
+                                   Foreground="{DynamicResource AppTextBrush}" 
+                                   HorizontalAlignment="Left" 
+                                   Margin="20,20,0,10"/>
+                        
+                        <ScrollViewer Width="1250" 
+                                      PanningMode="HorizontalOnly" 
+                                      CanContentScroll="True" 
+                                      HorizontalContentAlignment="Left" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Disabled"
+                                      behaviors:ScrollBehavior.HorizontalScrollOnly="True">
                             <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
                             </ScrollViewer.Resources>
@@ -257,64 +235,41 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Width="180" Height="240" Margin="20 0 0 0" HorizontalAlignment="Left">
-                                            <Button CommandParameter="{Binding}"  Command="{Binding DataContext.OpenArtistDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"  Width="180" Height="180" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                                            <Button CommandParameter="{Binding}"  
+                                                    Command="{Binding DataContext.OpenArtistDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"  
+                                                    Width="180" Height="180" Cursor="Hand" Background="Transparent" BorderThickness="0">
                                                 <Button.Template>
                                                     <ControlTemplate TargetType="Button">
                                                         <Border x:Name="Root" RenderTransformOrigin="0.5,0.5">
-
-                                                            <!-- Scale transform -->
                                                             <Border.RenderTransform>
                                                                 <ScaleTransform ScaleX="1" ScaleY="1"/>
                                                             </Border.RenderTransform>
 
                                                             <Grid>
-                                                                <!-- Album image -->
                                                                 <Ellipse Width="172" Height="172">
                                                                     <Ellipse.Fill>
                                                                         <ImageBrush ImageSource="{Binding avatar_path}" Stretch="UniformToFill"/>
                                                                     </Ellipse.Fill>
                                                                 </Ellipse>
 
-                                                                <!-- Play icon -->
                                                                 <Border x:Name="PlayIcon"
-                                                                    Width="50"
-                                                                    Height="50"
-                                                                    CornerRadius="60"
-                                                                    Background="{DynamicResource CurrentColor}"
-                                                                    Opacity="0"
-                                                                    HorizontalAlignment="Right"
-                                                                    Margin="0 0 0 10"
-                                                                    VerticalAlignment="Bottom">
-
-                                                                    <TextBlock Text="▶"
-                                                                       FontSize="18"
-                                                                       Foreground="#1D1512"
-                                                                       HorizontalAlignment="Center"
-                                                                       VerticalAlignment="Center"/>
+                                                                        Width="50" Height="50"
+                                                                        CornerRadius="60"
+                                                                        Background="{DynamicResource CurrentColor}"
+                                                                        Opacity="0"
+                                                                        HorizontalAlignment="Right"
+                                                                        Margin="0 0 0 10"
+                                                                        VerticalAlignment="Bottom">
+                                                                    <TextBlock Text="▶" FontSize="18" Foreground="#1D1512" 
+                                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </Border>
                                                             </Grid>
                                                         </Border>
 
-                                                        <!-- Hover & Press -->
                                                         <ControlTemplate.Triggers>
-
                                                             <Trigger Property="IsMouseOver" Value="True">
                                                                 <Setter TargetName="PlayIcon" Property="Opacity" Value="1"/>
-                                                                <Setter TargetName="Root" Property="RenderTransform">
-                                                                    <Setter.Value>
-                                                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
                                                             </Trigger>
-
-                                                            <Trigger Property="IsPressed" Value="True">
-                                                                <Setter TargetName="Root" Property="RenderTransform">
-                                                                    <Setter.Value>
-                                                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Trigger>
-
                                                         </ControlTemplate.Triggers>
                                                     </ControlTemplate>
                                                 </Button.Template>
@@ -324,9 +279,11 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" Margin="4 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="Người theo dõi" FontSize="14" Foreground="{DynamicResource AppTextBrush}" Margin="4 20 0 10" Grid.Column="0"/>
-
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" 
+                                                           FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" 
+                                                           Margin="4 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="Người theo dõi" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
+                                                           Margin="4 20 0 10" Grid.Column="0"/>
                                             </Grid>
                                         </StackPanel>
                                     </DataTemplate>
@@ -334,13 +291,22 @@
                             </ItemsControl>
                         </ScrollViewer>
 
-
-
-
-
-
-                        <TextBlock Text="Bài hát có nhiều lượt nghe" Width="auto" FontWeight="Bold" FontSize="26" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Left" Margin="20,20,0,10"/>
-                        <ScrollViewer Width="1250" PanningMode="HorizontalOnly" CanContentScroll="True" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <!-- Section 4: Bài hát có nhiều lượt nghe -->
+                        <TextBlock Text="Bài hát có nhiều lượt nghe" 
+                                   Width="auto" 
+                                   FontWeight="Bold" 
+                                   FontSize="26" 
+                                   Foreground="{DynamicResource AppTextBrush}" 
+                                   HorizontalAlignment="Left" 
+                                   Margin="20,20,0,10"/>
+                        
+                        <ScrollViewer Width="1250" 
+                                      PanningMode="HorizontalOnly" 
+                                      CanContentScroll="True" 
+                                      HorizontalContentAlignment="Left" 
+                                      HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Disabled"
+                                      behaviors:ScrollBehavior.HorizontalScrollOnly="True">
                             <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
                             </ScrollViewer.Resources>
@@ -354,78 +320,44 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Width="200" Height="220" HorizontalAlignment="Left">
-                                            <Button Width="160"
-                                                Height="160"
-                                                Cursor="Hand"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Command="{Binding DataContext.PlayOrPauseThisSongCommand,
-                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                CommandParameter="{Binding}">
-
+                                            <Button Width="160" Height="160"
+                                                    Cursor="Hand"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
                                                 <Button.Template>
                                                     <ControlTemplate TargetType="Button">
-                                                        <Border x:Name="Root"
-                                                            RenderTransformOrigin="0.5,0.5">
-
-                                                            <!-- Scale transform -->
+                                                        <Border x:Name="Root" RenderTransformOrigin="0.5,0.5">
                                                             <Border.RenderTransform>
-                                                                <ScaleTransform ScaleX="1"
-                                                                    ScaleY="1"/>
+                                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
                                                             </Border.RenderTransform>
 
                                                             <Grid>
-                                                                <!-- Album image -->
-                                                                <Ellipse Width="136"
-                                                                    Height="136">
+                                                                <Ellipse Width="136" Height="136">
                                                                     <Ellipse.Fill>
-                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}"
-                                                                            Stretch="UniformToFill"/>
+                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
                                                                     </Ellipse.Fill>
                                                                 </Ellipse>
 
-                                                                <!-- Play icon -->
                                                                 <Border x:Name="PlayIcon"
-                                                                    Width="50"
-                                                                    Height="50"
-                                                                    CornerRadius="60"
-                                                                    Background="{DynamicResource CurrentColor}"
-                                                                    Opacity="0"
-                                                                    HorizontalAlignment="Right"
-                                                                    Margin="0 0 0 10"
-                                                                    VerticalAlignment="Bottom">
-
-                                                                    <TextBlock Text="▶"
-                                                                       FontSize="18"
-                                                                       Foreground="{DynamicResource AppTextBrush}"
-                                                                       HorizontalAlignment="Center"
-                                                                       VerticalAlignment="Center"/>
+                                                                        Width="50" Height="50"
+                                                                        CornerRadius="60"
+                                                                        Background="{DynamicResource CurrentColor}"
+                                                                        Opacity="0"
+                                                                        HorizontalAlignment="Right"
+                                                                        Margin="0 0 0 10"
+                                                                        VerticalAlignment="Bottom">
+                                                                    <TextBlock Text="▶" FontSize="18" Foreground="{DynamicResource AppTextBrush}" 
+                                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </Border>
                                                             </Grid>
                                                         </Border>
 
-                                                        <!-- Hover & Press -->
                                                         <ControlTemplate.Triggers>
-
                                                             <Trigger Property="IsMouseOver" Value="True">
                                                                 <Setter TargetName="PlayIcon" Property="Opacity" Value="1"/>
-                                                                <Setter TargetName="Root"
-                                                                    Property="RenderTransform">
-                                                                    <Setter.Value>
-                                                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
                                                             </Trigger>
-
-                                                            <Trigger Property="IsPressed" Value="True">
-                                                                <Setter TargetName="Root"
-                                                                    Property="RenderTransform">
-                                                                    <Setter.Value>
-                                                                        <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Trigger>
-
                                                         </ControlTemplate.Triggers>
                                                     </ControlTemplate>
                                                 </Button.Template>
@@ -436,10 +368,15 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" Margin="32 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" Margin="32 20 0 10" Grid.Column="0"/>
-                                                <Button Width="20" Height="20" FontSize="16" Grid.Column="1" Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
-                                                    <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" 
+                                                           FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" 
+                                                           Margin="32 0 0 10" Grid.Column="0"/>
+                                                <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
+                                                           Margin="32 20 0 10" Grid.Column="0"/>
+                                                <Button Width="20" Height="20" FontSize="16" Grid.Column="1" 
+                                                        Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
+                                                    <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" 
+                                                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Button>
                                             </Grid>
                                         </StackPanel>
@@ -450,8 +387,6 @@
 
                     </StackPanel>
                 </ScrollViewer>
-                
-                
             </Grid>
         </Border>
     </Grid>

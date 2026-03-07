@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="76" d:DesignWidth="1600">
     
-    <Grid Background="Black">
+    <Grid Background="{DynamicResource WindowBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>      
             <ColumnDefinition Width="5*"/>
@@ -33,7 +33,7 @@
             <!-- Song title + artist -->
             <StackPanel VerticalAlignment="Center" Margin="16 0 0 0">
                 <TextBlock Text="{Binding SongManager.CurrentTrack.name}"
-                           Foreground="White"
+                           Foreground="{DynamicResource AppTextBrush}"
                            FontWeight="SemiBold"
                            FontSize="14"
                            TextTrimming="CharacterEllipsis"/>
@@ -54,12 +54,12 @@
                         HorizontalAlignment="Center">
 
                 <fa:IconBlock Icon="Random"
-                              Foreground="White"
+                              Foreground="{DynamicResource AppTextBrush}"
                               FontSize="16"
                               Margin="12,0"/>
 
                 <fa:IconBlock Icon="StepBackward"
-                              Foreground="White"
+                              Foreground="{DynamicResource AppTextBrush}"
                               FontSize="18"
                               Margin="12,0"/>
 
@@ -67,26 +67,27 @@
 
                 <Button Width="40"
                         Height="40"
-                        Background="White"
+                        Background="{DynamicResource AppTextBrush}"
                         Margin="20 0 20 4"
                         Style="{StaticResource IconButtonStyle}"
                         Command="{Binding PlayOrPauseCommand}"
                         >
 
                     <fa:IconBlock Icon="{Binding SongManager.IsPlaying, Converter={StaticResource BoolToIconConverter}}"
-                                  Foreground="Black"
+                                  Foreground="{DynamicResource ControlBackgroundBrush}"
                                   FontSize="18"
+                                  Margin="2 0 0 0"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
                 </Button>
 
                 <fa:IconBlock Icon="StepForward"
-                              Foreground="White"
+                              Foreground="{DynamicResource AppTextBrush}"
                               FontSize="18"
                               Margin="12,0"/>
 
                 <fa:IconBlock Icon="RedoAlt"
-                              Foreground="White"
+                              Foreground="{DynamicResource AppTextBrush}"
                               FontSize="16"
                               Margin="12,0"/>
             </StackPanel>
@@ -101,7 +102,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="{Binding SongManager.CurrentTime, Converter={StaticResource TimeConverter}}"
-                           Foreground="#AAAAAA"
+                           Foreground="{DynamicResource AppTextBrush}"
                            FontSize="11"
                            VerticalAlignment="Center"/>
 
@@ -112,7 +113,7 @@
                         Margin="8,0"
                         Height="20"
                         VerticalAlignment="Center"
-                        Foreground="White"
+                        Foreground="{DynamicResource AppTextBrush}"
                         Background="Wheat">
                     <!-- Use behaviors to pause on drag start and seek+resume on drag complete.
                          Requires Microsoft.Xaml.Behaviors.Wpf package. -->
@@ -193,7 +194,7 @@
 
                 <TextBlock Grid.Column="2"
                            Text="{Binding SongManager.Duration, Converter={StaticResource TimeConverter}}"
-                           Foreground="#AAAAAA"
+                           Foreground="{DynamicResource AppTextBrush}"
                            FontSize="11"
                            VerticalAlignment="Center"/>
             </Grid>
@@ -208,7 +209,7 @@
             <Button Background="Transparent"
                     BorderThickness="0" Margin="10 0">
                 <fa:IconBlock Icon="VolumeUp"
-                              Foreground="White"
+                              Foreground="{DynamicResource AppTextBrush}"
                               FontSize="16"
                               Margin="4 0"/>
             </Button>
@@ -279,7 +280,7 @@
                     BorderThickness="0" Margin="10 0"
                     Command="{Binding TogglePanelCommand}">
                 <fa:IconBlock Icon="List"
-                              Foreground="White"
+                              Foreground="{DynamicResource AppTextBrush}"
                               FontSize="16"
                               Margin="4 0"/>
             </Button>
@@ -288,7 +289,7 @@
                     BorderThickness="0" Margin="10 0"
                     Command="{Binding TogglePanelCommand}">
                 <fa:IconBlock Icon="TabletScreenButton"
-                              Foreground="White"
+                              Foreground="{DynamicResource AppTextBrush}"
                               FontSize="16"
                               Margin="4 0"/>
             </Button>
@@ -296,7 +297,7 @@
             <Button Background="Transparent"
                     BorderThickness="0" Margin="10 0 20 0">
                 <fa:IconBlock Icon="Expand"
-                              Foreground="White"
+                              Foreground="{DynamicResource AppTextBrush}"
                               FontSize="24"
                               Margin="4 0"/>
             </Button>
