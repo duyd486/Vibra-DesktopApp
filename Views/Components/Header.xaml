@@ -265,13 +265,36 @@
                     Style="{StaticResource IconNavigationButtonStyle}"
                     Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Home}"
                     Width="44" Height="44"
-                    Margin="0 0 12 0"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    Margin="0 0 8 0"
                     ToolTip="Home">
-                <fa:IconBlock Icon="Home" FontSize="20"/>
+                <fa:IconBlock Icon="Home" FontSize="18" Margin="0 0 0 0"/>
             </Button>
 
             <!-- Search box -->
-            <Border Background="{DynamicResource ControlBackgroundBrush}" CornerRadius="26" Height="44" Width="520" Padding="10">
+            <Border x:Name="SearchBorder"
+                    Background="{DynamicResource ControlBackgroundBrush}"
+                    CornerRadius="24"
+                    Height="44"
+                    Width="520"
+                    Padding="10">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <!-- default -->
+                        <Setter Property="BorderBrush" Value="{DynamicResource ControlBackgroundBrush}"/>
+                        <Setter Property="BorderThickness" Value="1.5"/>
+
+                        <Style.Triggers>
+                            <!-- active when Search page is the current nav item -->
+                            <DataTrigger Binding="{Binding CurrentNavigationItem}" Value="Search">
+                                <Setter Property="BorderBrush" Value="White"/>
+                                <Setter Property="BorderThickness" Value="1.5"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -279,14 +302,24 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" 
-                            Width="32" Height="32"
-                            Background="Transparent" 
-                            BorderThickness="0"
-                            Command="{Binding SearchBoxFocusedCommand}"
-                            Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Search}">
-                        <TextBlock Text="🔍" VerticalAlignment="Center" Foreground="#B3B3B3" Margin="4,0"/>
-                    </Button>
+                    <TextBlock x:Name="SearchIcon"
+                               Text="🔍"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Margin="4 0 0 2"
+                               Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Search}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#B3B3B3"/>
+
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentNavigationItem}" Value="Search">
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
                     <TextBox Grid.Column="1"
                              Background="Transparent"
@@ -308,11 +341,11 @@
                         </i:Interaction.Triggers>
                     </TextBox>
 
-                    <Button Grid.Column="2" 
-                            Command="{Binding OpenCategoriesCommand}" 
-                            Background="Transparent" 
-                            BorderThickness="0" 
-                            Margin="6,0,0,0"
+                    <Button Grid.Column="2"
+                            Command="{Binding OpenCategoriesCommand}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Margin="6,0,8,0"
                             Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Categories}">
                         <fa:IconBlock Icon="BoxesStacked" Foreground="#B3B3B3" FontSize="18"/>
                     </Button>
