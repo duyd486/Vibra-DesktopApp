@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
@@ -100,6 +101,12 @@ namespace Vibra_DesktopApp.Singleton
                 MessageBox.Show(ex.Message);
                 return default!;
             }
+        }
+
+        public async Task HttpGetNoDataAsync(string url)
+        {
+            HttpResponseMessage response = await client.GetAsync(baseUrl + url);
+            response.EnsureSuccessStatusCode();
         }
 
         public User? GetCurrentUser()

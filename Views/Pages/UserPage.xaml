@@ -1,14 +1,298 @@
 ﻿<UserControl x:Class="Vibra_DesktopApp.Views.Pages.UserPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Pages"
-             mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+             mc:Ignorable="d"
              d:DesignHeight="750" d:DesignWidth="1250">
-    <Grid>
-        <Border CornerRadius="20" Background="#1D1512" Margin="0 0 5 5">
-            <TextBlock Text="User Page" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"/>
+
+    <Grid Background="Transparent">
+        <Border CornerRadius="20"
+                Background="{DynamicResource WindowBackgroundBrush}"
+                Margin="0 0 5 5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="220"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Border Grid.Row="0" CornerRadius="20,20,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#33FFFFFF" Offset="0"/>
+                            <GradientStop Color="#22222222" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="36 0">
+                        <Border Width="160" Height="160"
+                                CornerRadius="80"
+                                Background="#333"
+                                ClipToBounds="True">
+                            <Image Source="{Binding CurrentUser.avatar_path}" Stretch="UniformToFill"/>
+                        </Border>
+
+                        <StackPanel Margin="20 0 0 0" VerticalAlignment="Center">
+                            <TextBlock Text="Hồ sơ" Foreground="#888" FontSize="16"/>
+                            <TextBlock Text="{Binding CurrentUser.name}"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       FontSize="54"
+                                       FontWeight="Bold"/>
+                            <TextBlock Foreground="#888" FontSize="16" Margin="0 6 0 0">
+                                <Run Text="{Binding MyPlaylists.Count, Mode=OneWay}"/>
+                                <Run Text=" Playlist • "/>
+                                <Run Text="{Binding FollowArtists.Count, Mode=OneWay}"/>
+                                <Run Text=" nghệ sĩ đang theo dõi"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Body -->
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              PanningMode="VerticalOnly"
+                              PanningDeceleration="0.001"
+                              CanContentScroll="False">
+                    <StackPanel Margin="36 16 36 24">
+
+                        <!-- Menu button -->
+                        <Grid>
+                            <Button Width="46" Height="46"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    HorizontalAlignment="Left"
+                                    Command="{Binding ToggleMenuCommand}">
+                                <fa:IconBlock Icon="EllipsisH" Foreground="#888" FontSize="22"/>
+                            </Button>
+
+                            <Border Background="#222"
+                                    CornerRadius="10"
+                                    Padding="8"
+                                    HorizontalAlignment="Left"
+                                    Margin="0 54 0 0"
+                                    Width="220">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMenuOpen}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+
+                                <StackPanel>
+                                    <Button Content="Tạo một album"
+                                            HorizontalContentAlignment="Left"
+                                            Background="Transparent"
+                                            Foreground="White"
+                                            BorderThickness="0"
+                                            Padding="10,8"
+                                            Command="{Binding CreateAlbumCommand}"/>
+                                    <Button Content="Làm mới"
+                                            HorizontalContentAlignment="Left"
+                                            Background="Transparent"
+                                            Foreground="White"
+                                            BorderThickness="0"
+                                            Padding="10,8"
+                                            Command="{Binding RefreshCommand}"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- My Albums -->
+                        <StackPanel Margin="0 18 0 0">
+                            <TextBlock Text="Album của tôi"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       Margin="0 0 0 10"/>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly">
+                                <ItemsControl ItemsSource="{Binding MyAlbums}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Width="190"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Padding="0"
+                                                    Margin="0 0 18 0"
+                                                    Command="{Binding DataContext.OpenAlbumCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <StackPanel>
+                                                    <Border Width="180" Height="180" CornerRadius="14" Background="#333" ClipToBounds="True">
+                                                        <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                    </Border>
+                                                    <TextBlock Text="{Binding name}"
+                                                               Foreground="{DynamicResource AppTextBrush}"
+                                                               FontWeight="SemiBold"
+                                                               Margin="0 8 0 0"/>
+                                                    <TextBlock Text="{Binding created_at, StringFormat= Năm {0:yyyy}}"
+                                                               Foreground="#888"
+                                                               FontSize="12"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+
+                        <!-- My Songs -->
+                        <StackPanel Margin="0 18 0 0">
+                            <TextBlock Text="Danh sách bài hát của tôi"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       Margin="0 0 0 10"/>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly">
+                                <ItemsControl ItemsSource="{Binding MySongs}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Margin="0 0 18 0"
+                                                    Command="{Binding DataContext.PlaySongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <StackPanel>
+                                                    <Border Width="128" Height="128" CornerRadius="64" Background="#333" ClipToBounds="True">
+                                                        <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                    </Border>
+                                                    <TextBlock Text="{Binding name}"
+                                                               Foreground="{DynamicResource AppTextBrush}"
+                                                               FontWeight="SemiBold"
+                                                               Margin="0 8 0 0"
+                                                               Width="128"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+
+                        <!-- My Playlists -->
+                        <StackPanel Margin="0 18 0 0">
+                            <TextBlock Text="Playlist của tôi"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       Margin="0 0 0 10"/>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly">
+                                <ItemsControl ItemsSource="{Binding MyPlaylists}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Width="150"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Margin="0 0 18 0"
+                                                    Command="{Binding DataContext.OpenAlbumCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <StackPanel>
+                                                    <Border Width="140" Height="140" CornerRadius="14" Background="#333" ClipToBounds="True">
+                                                        <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                    </Border>
+                                                    <TextBlock Text="{Binding name}"
+                                                               Foreground="{DynamicResource AppTextBrush}"
+                                                               FontWeight="SemiBold"
+                                                               Margin="0 8 0 0"
+                                                               Width="140"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+
+                        <!-- Followed Artists -->
+                        <StackPanel Margin="0 18 0 0">
+                            <TextBlock Text="Đang theo dõi"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       Margin="0 0 0 10"/>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly">
+                                <ItemsControl ItemsSource="{Binding FollowArtists}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Background="Transparent"
+                                                    BorderThickness="0"
+                                                    Margin="0 0 18 0"
+                                                    Command="{Binding DataContext.OpenArtistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <StackPanel>
+                                                    <Border Width="128" Height="128" CornerRadius="64" Background="#333" ClipToBounds="True">
+                                                        <Image Source="{Binding avatar_path}" Stretch="UniformToFill"/>
+                                                    </Border>
+                                                    <TextBlock Text="{Binding name}"
+                                                               Foreground="#888"
+                                                               Margin="0 8 0 0"
+                                                               Width="128"
+                                                               TextAlignment="Center"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+
+                        <!-- Bills -->
+                        <StackPanel Margin="0 22 0 0">
+                            <TextBlock Text="Lịch sử thanh toán"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       Margin="0 0 0 10"/>
+
+                            <DataGrid ItemsSource="{Binding Bills}"
+                                      AutoGenerateColumns="False"
+                                      CanUserAddRows="False"
+                                      HeadersVisibility="Column"
+                                      GridLinesVisibility="None"
+                                      Background="Transparent"
+                                      Foreground="{DynamicResource AppTextBrush}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Mã giao dịch" Binding="{Binding id}"/>
+                                    <DataGridTextColumn Header="Ngày thanh toán" Binding="{Binding created_at, StringFormat={}{0:dd/MM/yyyy}}"/>
+                                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding status}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
