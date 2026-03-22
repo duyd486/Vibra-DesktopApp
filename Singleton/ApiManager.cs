@@ -30,7 +30,7 @@ namespace Vibra_DesktopApp.Singleton
         #region Login & SignUp
 
         public async Task<bool> LoginAsync(string email, string password)
-        {  
+        {
             var payload = new { email = email, password = password };
             string json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -60,7 +60,6 @@ namespace Vibra_DesktopApp.Singleton
             string json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync(baseUrl + "signup", content);
-
 
             string result = await response.Content.ReadAsStringAsync();
 
@@ -106,6 +105,15 @@ namespace Vibra_DesktopApp.Singleton
         public async Task HttpGetNoDataAsync(string url)
         {
             HttpResponseMessage response = await client.GetAsync(baseUrl + url);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task HttpPostNoDataAsync(string url, object? payload = null)
+        {
+            var json = JsonSerializer.Serialize(payload ?? new { });
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync(baseUrl + url, content);
             response.EnsureSuccessStatusCode();
         }
 

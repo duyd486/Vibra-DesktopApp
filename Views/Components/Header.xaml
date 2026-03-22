@@ -266,10 +266,11 @@
                     Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Home}"
                     Width="44" Height="44"
                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Background="{DynamicResource ControlBackgroundBrush}"
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                     Margin="0 0 8 0"
                     ToolTip="Home">
-                <fa:IconBlock Icon="Home" FontSize="18" Margin="0 0 0 0"/>
+                <fa:IconBlock Icon="Home" FontSize="18" Margin="0 0 0 0" />
             </Button>
 
             <!-- Search box -->
@@ -288,7 +289,7 @@
                         <Style.Triggers>
                             <!-- active when Search page is the current nav item -->
                             <DataTrigger Binding="{Binding CurrentNavigationItem}" Value="Search">
-                                <Setter Property="BorderBrush" Value="White"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource AppTextBrush}"/>
                                 <Setter Property="BorderThickness" Value="1.5"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -314,7 +315,7 @@
 
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding CurrentNavigationItem}" Value="Search">
-                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -357,13 +358,64 @@
         <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
             <!-- User button with active state -->
             <Button Command="{Binding UserClickCommand}" 
-                    Style="{StaticResource IconButtonStyle}" 
                     Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=User}"
+                    Background="{DynamicResource ControlBackgroundBrush}"
                     Width="44" Height="44" Margin="0,0,8,0">
-                <fa:IconBlock Icon="UserCircle" Foreground="White" FontSize="20"/>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="#B3B3B3"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="32"
+                    Padding="{TemplateBinding Padding}">
+                                        <Grid>
+                                            <!-- Active indicator bar (left side) -->
+                                            <Rectangle x:Name="ActiveIndicator"
+                               Width="4"
+                               HorizontalAlignment="Left"
+                               Fill="{StaticResource CurrentColor}"
+                               Opacity="0"
+                               Margin="-16,0,0,0"/>
+
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <ControlTemplate.Triggers>
+                                        <!-- Hover state -->
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
+                                        </Trigger>
+
+                                        <!-- Active state (controlled by Tag property) -->
+                                        <Trigger Property="Tag" Value="Active">
+                                            <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
+                                            <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+                                            <Setter TargetName="ActiveIndicator" Property="Opacity" Value="1"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+                
+                <fa:IconBlock Icon="UserCircle" FontSize="20"/>
             </Button>
 
-            <Button Command="{Binding LogoutCommand}" Style="{StaticResource PillButtonStyle}" Width="96" Height="36" Margin="0,0,12,0">
+            <Button Command="{Binding LogoutCommand}" Style="{StaticResource PillButtonStyle}" Background="{DynamicResource ControlBackgroundBrush}" Width="96" Height="36" Margin="0,0,12,0">
                 <TextBlock Text="Đăng xuất" Foreground="{DynamicResource AppTextBrush}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
             </Button>
 

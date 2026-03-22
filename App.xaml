@@ -121,11 +121,11 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#20FFFFFF"/>
-                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
                             </Trigger>
                             
                             <Trigger Property="Tag" Value="Active">
-                                <Setter Property="Foreground" Value="{StaticResource NavActiveTextBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
                                 <Setter Property="Background" Value="{StaticResource NavActiveBackgroundBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
