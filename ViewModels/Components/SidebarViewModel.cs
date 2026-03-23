@@ -41,7 +41,7 @@ namespace Vibra_DesktopApp.ViewModels.Components
             PlaylistsView.Filter = FilterPlaylist;
             ArtistsView.Filter = FilterArtist;
 
-            _ = LoadAsync();
+            _ = LoadAsync();    
         }
 
         partial void OnSelectedFilterChanged(string value)
@@ -84,7 +84,7 @@ namespace Vibra_DesktopApp.ViewModels.Components
         }
 
         [RelayCommand]
-        private async System.Threading.Tasks.Task LoadAsync()
+        private async Task LoadAsync()
         {
             try
             {
@@ -102,12 +102,15 @@ namespace Vibra_DesktopApp.ViewModels.Components
 
                 App.Current.Dispatcher.Invoke(() =>
                 {
-                    MyPlaylists = new ObservableCollection<Album>(playlists ?? []);
-                    MyAlbums = new ObservableCollection<Album>(albums ?? []);
-                    MyArtists = new ObservableCollection<User>(artists ?? []);
+                    MyPlaylists.Clear();
+                    foreach (var p in playlists ?? []) MyPlaylists.Add(p);
 
-                    // Rebind views to the new collections
-                    ((ListCollectionView)PlaylistsView).SourceCollection.Cast<object>();
+                    MyAlbums.Clear();
+                    foreach (var a in albums ?? []) MyAlbums.Add(a);
+
+                    MyArtists.Clear();
+                    foreach (var ar in artists ?? []) MyArtists.Add(ar);
+
                     PlaylistsView.Refresh();
                     AlbumsView.Refresh();
                     ArtistsView.Refresh();
@@ -120,7 +123,7 @@ namespace Vibra_DesktopApp.ViewModels.Components
         }
 
         [RelayCommand]
-        private async System.Threading.Tasks.Task CreatePlaylistAsync()
+        private async Task CreatePlaylistAsync()
         {
             await ApiManager.GetInstance()
                 .HttpPostNoDataAsync("library/store-playlist")
@@ -154,7 +157,7 @@ namespace Vibra_DesktopApp.ViewModels.Components
         }
 
         [RelayCommand]
-        private async System.Threading.Tasks.Task DeletePlaylistAsync(Album playlist)
+        private async Task DeletePlaylistAsync(Album playlist)
         {
             if (playlist.id is null) return;
 
