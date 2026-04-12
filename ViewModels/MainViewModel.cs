@@ -11,6 +11,7 @@ namespace Vibra_DesktopApp.ViewModels
         public SidebarViewModel SidebarVM { get; }
         public HeaderViewModel HeaderVM { get; }
         public PlayerViewModel PlayerVM { get; }
+        public PanelViewModel PanelVM { get; }
 
         [ObservableProperty] private ObservableObject _currentPageViewModel;
         [ObservableProperty] private bool _isPanelOpen = false;
@@ -25,6 +26,7 @@ namespace Vibra_DesktopApp.ViewModels
             SidebarVM = new SidebarViewModel(this);
             HeaderVM = new HeaderViewModel(this);
             PlayerVM = new PlayerViewModel(this);
+            PanelVM = new PanelViewModel(this);
 
             CurrentPageViewModel = new HomeViewModel(this);
             CurrentNavigationItem = NavigationItem.Home;

@@ -420,9 +420,9 @@
             </Button>
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0" >
-                <Button Style="{StaticResource WindowButton}" Content="─" FontSize="20" VerticalContentAlignment="Center" Width="44" Height="52" Margin="4,0,0,0"/>
-                <Button Style="{StaticResource WindowButton}" Content="□" FontSize="20" VerticalContentAlignment="Center" Width="44" Height="52" Margin="4,0,0,0"/>
-                <Button Style="{StaticResource CloseButton}" Content="✕" FontSize="20" VerticalContentAlignment="Center" Width="48"  Margin="4,0,-10,0"/>
+                <Button Command="{Binding MinimizeWindowCommand}" Style="{StaticResource WindowButton}" Content="─" FontSize="20" VerticalContentAlignment="Center" Width="44" Height="52" Margin="4,0,0,0"/>
+                <Button Command="{Binding ToggleMaximizeWindowCommand}" Style="{StaticResource WindowButton}" Content="□" FontSize="20" VerticalContentAlignment="Center" Width="44" Height="52" Margin="4,0,0,0"/>
+                <Button Command="{Binding CloseWindowCommand}" Style="{StaticResource CloseButton}" Content="✕" FontSize="20" VerticalContentAlignment="Center" Width="48"  Margin="4,0,-10,0"/>
             </StackPanel>
         </StackPanel>
     </Grid>

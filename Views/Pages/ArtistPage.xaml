@@ -145,39 +145,37 @@
 
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Image Source="{Binding thumbnail_path}"
-                                                   Width="52" Height="52"
-                                                   Stretch="UniformToFill"
-                                                   Margin="0 0 12 0"/>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding name}"
+                                                           Foreground="{DynamicResource AppTextBrush}"
+                                                           FontWeight="SemiBold"
+                                                           FontSize="16"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding author.name}"
+                                                           Foreground="{DynamicResource AppTextMutedBrush}"
+                                                           FontSize="12"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
 
-                                            <TextBlock Grid.Column="2"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="{DynamicResource AppTextBrush}"
-                                                       FontWeight="SemiBold"
-                                                       FontSize="16"
-                                                       Text="{Binding name}"/>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <Button Background="Transparent"
+                                                        BorderThickness="0"
+                                                        Padding="6"
+                                                        Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}">
+                                                    <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextMutedBrush}" FontSize="16" />
+                                                </Button>
+                                            </StackPanel>
 
-                                            <Button Grid.Column="3"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    Cursor="Hand"
-                                                    Command="{Binding DataContext.PlaySongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding}">
-                                                <fa:IconBlock Icon="PlayCircle" Foreground="{DynamicResource AppTextBrush}" FontSize="22"/>
-                                            </Button>
-
-                                            <!-- Make whole row clickable -->
-                                            <Border Grid.ColumnSpan="4" Background="Transparent">
+                                            <Border Grid.ColumnSpan="2" Background="Transparent">
                                                 <Border.InputBindings>
                                                     <MouseBinding Gesture="LeftClick"
-                                                                  Command="{Binding DataContext.PlaySongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                                  CommandParameter="{Binding}"/>
+                                                                 Command="{Binding DataContext.PlaySongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                 CommandParameter="{Binding}"/>
                                                 </Border.InputBindings>
                                             </Border>
                                         </Grid>

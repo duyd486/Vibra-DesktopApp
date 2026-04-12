@@ -103,7 +103,9 @@
                                                 <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
                                                            Margin="32 20 0 10" Grid.Column="0"/>
                                                 <Button Width="20" Height="20" FontSize="16" Grid.Column="1" 
-                                                        Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
+                                                        Margin="0 0 32 10" BorderThickness="0" Background="Transparent"
+                                                        Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}">
                                                     <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" 
                                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Button>
@@ -374,7 +376,9 @@
                                                 <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
                                                            Margin="32 20 0 10" Grid.Column="0"/>
                                                 <Button Width="20" Height="20" FontSize="16" Grid.Column="1" 
-                                                        Margin="0 0 32 10" BorderThickness="0" Background="Transparent">
+                                                        Margin="0 0 32 10" BorderThickness="0" Background="Transparent"
+                                                        Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}">
                                                     <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" 
                                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Button>

@@ -50,18 +50,66 @@
                     HorizontalAlignment="Center">
 
             <!-- Control buttons -->
+            <!--
+                                <button v-if="isShuffle" class="mx-2" @click="isShuffle = false">
+                        <Icon icon="mdi:shuffle" :class="isFullscreen
+                            ? 'text-white'
+                            : 'text-zinc-700 dark:text-[#FFE5D6]'" class="size-5" />
+                    </button>
+                    <button v-else class="mx-2" @click="isShuffle = true">
+                        <Icon icon="mdi:shuffle-disabled" :class="isFullscreen
+                            ? 'text-white'
+                            : 'text-zinc-700 dark:text-[#FFE5D6]'" class="size-5" />
+                    </button>
+
+                    <button class="mx-2" @click="useSong.prevSongs">
+                        <Icon icon="fa6-solid:backward-step" :class="isFullscreen
+                            ? 'text-white'
+                            : 'text-zinc-700 dark:text-[#FFE5D6]'" class="size-7" />
+                    </button>
+
+                    <button class="mx-3 rounded-full p-1" @click="useSong.playOrPauseThisSong(currentTrack)">
+                        <Icon icon="material-symbols:play-circle-rounded" v-if="!isPlaying" :class="isFullscreen
+                            ? 'text-white'
+                            : 'text-zinc-900 dark:text-white'" class="size-12" />
+                        <Icon icon="material-symbols:pause-circle" v-else :class="isFullscreen
+                            ? 'text-white'
+                            : 'text-zinc-900 dark:text-white'" class="size-12" />
+                    </button>
+
+                    <button class="mx-2" @click="useSong.nextSongs()">
+                        <Icon icon="fa6-solid:forward-step" :class="isFullscreen
+                            ? 'text-white'
+                            : 'text-zinc-700 dark:text-[#FFE5D6]'" class="size-7" />
+                    </button>
+
+                    <img :src="MyLogo" alt="" :class="isFullscreen
+                        ? 'invert'
+                        : 'invert-0 dark:invert'" class="mx-[-18px] h-[80px] w-[80px] select-none transition" />
+            -->
+            
+            
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center">
 
-                <fa:IconBlock Icon="Random"
-                              Foreground="{DynamicResource AppTextBrush}"
-                              FontSize="16"
-                              Margin="12,0"/>
+                <Button Background="Transparent"
+                        BorderThickness="0"
+                        Margin="8,0"
+                        Command="{Binding ToggleShuffleCommand}">
+                    <fa:IconBlock FontSize="16"
+                                  Foreground="{DynamicResource AppTextBrush}"
+                                  Icon="Random"
+                                  Opacity="{Binding IsShuffle, Converter={StaticResource BoolToShuffleOpacityConverter}}" />
+                </Button>
 
-                <fa:IconBlock Icon="StepBackward"
-                              Foreground="{DynamicResource AppTextBrush}"
-                              FontSize="18"
-                              Margin="12,0"/>
+                <Button Background="Transparent"
+                        BorderThickness="0"
+                        Margin="8,0"
+                        Command="{Binding PrevCommand}">
+                    <fa:IconBlock Icon="StepBackward"
+                                  Foreground="{DynamicResource AppTextBrush}"
+                                  FontSize="18" />
+                </Button>
 
                 <!-- Play button -->
 
@@ -81,10 +129,14 @@
                                   VerticalAlignment="Center"/>
                 </Button>
 
-                <fa:IconBlock Icon="StepForward"
-                              Foreground="{DynamicResource AppTextBrush}"
-                              FontSize="18"
-                              Margin="12,0"/>
+                <Button Background="Transparent"
+                        BorderThickness="0"
+                        Margin="8,0"
+                        Command="{Binding NextCommand}">
+                    <fa:IconBlock Icon="StepForward"
+                                  Foreground="{DynamicResource AppTextBrush}"
+                                  FontSize="18" />
+                </Button>
 
                 <fa:IconBlock Icon="RedoAlt"
                               Foreground="{DynamicResource AppTextBrush}"

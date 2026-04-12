@@ -51,6 +51,15 @@ namespace Vibra_DesktopApp.ViewModels
         }
 
         [RelayCommand]
+        private void AddToWaitlist(Song song)
+        {
+            if (song is null)
+                return;
+
+            SongManager.GetInstace().Enqueue(song);
+        }
+
+        [RelayCommand]
         public void OpenAlbumDetail(Album album)
         {
             _mainVM.NavigateTo(new AlbumViewModel(_mainVM, album));

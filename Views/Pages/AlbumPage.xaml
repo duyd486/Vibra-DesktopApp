@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Pages"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+             xmlns:components="clr-namespace:Vibra_DesktopApp.Views.Components"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1250">
     <Grid>
@@ -92,7 +93,176 @@
                                        Text="{Binding Album.price, StringFormat={}{0} vnd}"/>
                         </StackPanel>
                     </StackPanel>
+                    
+                    <!-- 
+                    
+                    <script setup>
+import { api } from '@/api/axios';
+import { onMounted, ref, watch, toRefs, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { Icon } from '@iconify/vue';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+import { useViewStore } from '@/stores/view';
+import { useSongStore } from '@/stores/song';
+import { useModalStore } from '@/stores/modal';
+import { useActivityStore } from '@/stores/activity';
+
+const useView = useViewStore();
+const authStore = useAuthStore();
+const useModal = useModalStore();
+const useActivity = useActivityStore();
+const { favSongList } = storeToRefs(useActivity);
+const useSong = useSongStore();
+const { isPlaying, currentTrack } = storeToRefs(useSong);
+
+let isHover = ref(false);
+let isTrackTime = ref(null);
+
+const props = defineProps({
+    track: Object,
+    playlist: Object,
+    index: Number,
+    isFav: Boolean,
+});
+
+const { track, playlist, index, isFav } = toRefs(props);
+const emit = defineEmits(['deleteFavSong', 'deletePlaylistSong']);
+
+async function unloveThisSong() {
+    try {
+        const res = await api.get(`/library/destroy-favorite-song/${track.value.id}`, {
+            headers: {
+                Authorization: 'Bearer ' + authStore.user.token,
+            },
+        });
+
+        if (res.data.code == 200) {
+            useActivity.fetchData();
+            emit('deleteFavSong', track.value.id);
+            useActivity.addNotify(false, 'Đã bỏ yêu thích bài hát!');
+        }
+    } catch (e) {
+        console.log(e);
+        useActivity.addNotify(true, 'Call Api thất bại!');
+    }
+}
+
+async function removeFromPlaylist() {
+    try {
+        const res = await api.get(`/song/destroy?song_id=${track.value.id}&playlist_id=${playlist.value.id}`, {
+            headers: {
+                Authorization: 'Bearer ' + authStore.user.token,
+            },
+        });
+        if (res.data.code == 200) {
+            useActivity.fetchData();
+            emit('deletePlaylistSong', track.value.id);
+            useActivity.addNotify(false, 'Đã bỏ bài hát khỏi Playlist!');
+        }
+        console.log(res);
+    } catch (e) {
+        console.log(e);
+        useActivity.addNotify(true, 'Call Api thất bại!');
+    }
+}
+
+onMounted(() => {
+    const audio = new Audio(track.value.song_path);
+    audio.addEventListener('loadedmetadata', function () {
+        const duration = audio.duration;
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.floor(duration % 60);
+        isTrackTime.value = minutes + ':' + seconds.toString().padStart(2, '0');
+    });
+});
+</script>
+
+<template>
+    <li class="flex cursor-pointer items-center justify-between rounded-md
+               transition-colors
+               hover:bg-zinc-200 dark:hover:bg-[#2A2929]" @mouseenter="isHover = true" @mouseleave="isHover = false"
+        @click="useSong.playOrPauseThisSong(track)">
+        <div class="flex w-full items-center py-1.5">
+            <div v-if="isHover" class="ml-[14px] mr-[6px] w-[40px] cursor-pointer">
+                <Icon icon="material-symbols:play-arrow-rounded" v-if="!isPlaying"
+                    class="size-7 text-zinc-900 dark:text-white" />
+                <Icon icon="material-symbols:play-arrow-rounded"
+                    v-else-if="isPlaying && currentTrack.name !== track.name"
+                    class="size-7 text-zinc-900 dark:text-white" />
+                <Icon icon="material-symbols:pause-rounded" v-else class="size-7 text-zinc-900 dark:text-white" />
+            </div>
+            <div v-else class="ml-5 w-[40px] p-1 font-semibold
+                       text-zinc-600 dark:text-white">
+                <span :class="{
+                    'text-green-600 dark:text-green-500':
+                        currentTrack && currentTrack.name == track.name,
+                }">
+                    {{ index }}
+                </span>
+            </div>
+            <div>
+                <div class="font-semibold
+                           text-zinc-900 dark:text-white" :class="{
+                            'text-green-600 dark:text-green-500':
+                                currentTrack && currentTrack.name == track.name,
+                        }">
+                    {{ track.name }}
+                </div>
+
+                <span class="text-sm font-semibold
+                           text-zinc-500 dark:text-gray-400">
+                    {{ track.author.name }}
+                </span>
+            </div>
+        </div>
+        <div class="flex items-center">
+            <div v-if="isTrackTime" class="mx-5 text-xs
+                       text-zinc-500 dark:text-gray-400">
+                {{ isTrackTime }}
+            </div>
+
+            <button @click.stop="useSong.addSongToWaitlist(track)" class="mr-4 rounded p-1
+                       text-zinc-500 hover:bg-black/5
+                       dark:text-[#FFE5D6]/50 dark:hover:bg-white/5">
+                <Icon icon="material-symbols:home-storage-outline" class="text-2xl" />
+            </button>
+
+            <button v-if="!isFav" @click.stop="unloveThisSong" class="mr-4 rounded p-1
+                       text-zinc-500 hover:bg-black/5
+                       dark:text-[#FFE5D6]/50 dark:hover:bg-white/5">
+                <Icon icon="material-symbols:delete-rounded" class="text-2xl" />
+            </button>
+
+            <button v-if="playlist.type === 2" @click.stop="removeFromPlaylist" class="mr-4 rounded p-1
+                       text-zinc-500 hover:bg-black/5
+                       dark:text-[#FFE5D6]/50 dark:hover:bg-white/5">
+                <Icon icon="material-symbols:delete-rounded" class="text-2xl" />
+            </button>
+        </div>
+    </li>
+</template>
+
+                    
+                    -->
+                    
                 </Grid>
+
+                <StackPanel Margin="44 10 44 24">
+                    <TextBlock Text="Danh sách bài hát"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource AppTextBrush}"
+                               Margin="0 0 0 10"/>
+
+                    <ItemsControl ItemsSource="{Binding Tracks}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <components:TrackRow />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </StackPanel>
         </Border>
     </Grid>

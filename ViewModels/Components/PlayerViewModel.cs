@@ -78,6 +78,37 @@ namespace Vibra_DesktopApp.ViewModels.Components
             _mainVM.TogglePanel();
         }
 
+        public bool IsShuffle
+        {
+            get => SongManager.IsShuffle;
+            set
+            {
+                if (SongManager.IsShuffle == value)
+                    return;
+
+                SongManager.IsShuffle = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [RelayCommand]
+        private void ToggleShuffle()
+        {
+            IsShuffle = !IsShuffle;
+        }
+
+        [RelayCommand]
+        private async Task Next()
+        {
+            await SongManager.NextAsync().ConfigureAwait(false);
+        }
+
+        [RelayCommand]
+        private async Task Prev()
+        {
+            await SongManager.PrevAsync().ConfigureAwait(false);
+        }
+
         [RelayCommand]
         public async Task PlayOrPause()
         {

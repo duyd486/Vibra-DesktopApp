@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +21,15 @@ namespace Vibra_DesktopApp.Singleton
 
         // Volume (0.0 - 1.0). Changes are applied to the MediaPlayer on the UI dispatcher.
         [ObservableProperty] private double _volume = 1.0;
+
+        public ObservableCollection<Song> Waitlist { get; } = new();
+
+        [ObservableProperty] private bool _isShuffle;
+
+        private readonly Random _random = new();
+
+        // Simple history to support Prev
+        private readonly ObservableCollection<Song> _history = new();
 
         // NOTE: kept existing factory name to avoid breaking callers. Prefer DI registration instead.
         public static SongManager? Instance { get; private set; }
@@ -159,7 +170,91 @@ namespace Vibra_DesktopApp.Singleton
             _timer.Stop();
             IsPlaying = false;
             CurrentTime = 0;
-            // Optionally reset CurrentTrack or leave it as-is for replay
+
+            _ = _dispatcher.InvokeAsync(async () =>
+            {
+                try
+                {
+                    await NextAsync().ConfigureAwait(false);
+                }
+                catch
+                {
+                    // ignore and stay stopped
+                }
+            }, DispatcherPriority.Normal);
+        }
+
+        public async Task NextAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (Waitlist.Count == 0)
+                return;
+
+            var next = PickNextFromWaitlist();
+            if (next is null)
+                return;
+
+            _history.Add(next);
+            await PlayThisSongAsync(next, cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task PrevAsync(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (_history.Count <= 1)
+            {
+                await SeekAsync(0, cancellationToken).ConfigureAwait(false);
+                return;
+            }
+
+            // current is last item, previous is second last
+            var current = _history[^1];
+            _history.RemoveAt(_history.Count - 1);
+
+            // put current back to front of waitlist
+            Waitlist.Insert(0, current);
+
+            var prev = _history[^1];
+            await PlayThisSongAsync(prev, cancellationToken).ConfigureAwait(false);
+        }
+
+        private Song? PickNextFromWaitlist()
+        {
+            if (Waitlist.Count == 0)
+                return null;
+
+            var index = this.IsShuffle ? _random.Next(0, Waitlist.Count) : 0;
+            var song = Waitlist[index];
+            Waitlist.RemoveAt(index);
+            return song;
+        }
+
+        public void ClearWaitlist()
+        {
+            _dispatcher.InvokeAsync(() => Waitlist.Clear(), DispatcherPriority.Normal);
+        }
+
+        public void RemoveFromWaitlist(Song song)
+        {
+            if (song is null)
+                return;
+
+            _dispatcher.InvokeAsync(() =>
+            {
+                var existing = Waitlist.FirstOrDefault(s => s.id == song.id);
+                if (existing is not null)
+                    Waitlist.Remove(existing);
+            }, DispatcherPriority.Normal);
+        }
+
+        public void Enqueue(Song song)
+        {
+            if (song is null)
+                return;
+
+            _dispatcher.InvokeAsync(() => Waitlist.Add(song), DispatcherPriority.Normal);
         }
 
         // Play or toggle for a Song
@@ -171,6 +266,25 @@ namespace Vibra_DesktopApp.Singleton
             {
                 await PlayOrPauseAsync(cancellationToken).ConfigureAwait(false);
                 return;
+            }
+
+            if (CurrentTrack == null || CurrentTrack.id != song.id)
+            {
+                _history.Add(song);
+            }
+
+            CurrentTrack = song;
+            await PlayAsync(song.song_path ?? throw new InvalidOperationException("Song path is null"), cancellationToken).ConfigureAwait(false);
+        }
+
+        // Play a Song
+        public async Task PlayThisSongAsync(Song song, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (CurrentTrack == null)
+            {
+                _history.Add(song);
             }
 
             CurrentTrack = song;

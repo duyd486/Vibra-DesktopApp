@@ -182,5 +182,33 @@ namespace Vibra_DesktopApp.ViewModels.Components
         {
             _mainVM.NavigateTo(new HomeViewModel(_mainVM), NavigationItem.Home);
         }
+
+        [RelayCommand]
+        private void MinimizeWindow()
+        {
+            var window = Application.Current?.MainWindow;
+            if (window is null)
+                return;
+
+            window.WindowState = WindowState.Minimized;
+        }
+
+        [RelayCommand]
+        private void ToggleMaximizeWindow()
+        {
+            var window = Application.Current?.MainWindow;
+            if (window is null)
+                return;
+
+            window.WindowState = window.WindowState == WindowState.Maximized
+                ? WindowState.Normal
+                : WindowState.Maximized;
+        }
+
+        [RelayCommand]
+        private void CloseWindow()
+        {
+            Application.Current?.Shutdown();
+        }
     }
 }

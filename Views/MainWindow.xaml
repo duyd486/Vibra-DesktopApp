@@ -38,6 +38,8 @@
                 </Grid.ColumnDefinitions>
                 
                 <ContentControl Grid.Column="0" Content="{Binding CurrentPageViewModel}"/> 
+
+                <views:Panel Grid.Column="1" DataContext="{Binding PanelVM}" />
                 
             </Grid>
 

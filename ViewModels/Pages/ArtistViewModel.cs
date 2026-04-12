@@ -162,5 +162,12 @@ namespace Vibra_DesktopApp.ViewModels.Pages
             if (song == null) return;
             await SongManager.GetInstace().PlayOrPauseThisSongAsync(song).ConfigureAwait(false);
         }
+
+        [RelayCommand]
+        private void AddToWaitlist(Song song)
+        {
+            if (song == null) return;
+            SongManager.GetInstace().Enqueue(song);
+        }
     }
 }
