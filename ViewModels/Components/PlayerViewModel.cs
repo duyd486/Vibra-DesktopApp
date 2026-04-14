@@ -4,12 +4,15 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Vibra_DesktopApp.Singleton;
+using Vibra_DesktopApp.Models;
 
 namespace Vibra_DesktopApp.ViewModels.Components
 {
     public partial class PlayerViewModel : ObservableObject
     {
         private readonly MainViewModel _mainVM;
+
+        private readonly FavoriteSongManager _favoriteSongManager = FavoriteSongManager.GetInstance();
 
         public SongManager SongManager => SongManager.GetInstace();
 
@@ -35,7 +38,12 @@ namespace Vibra_DesktopApp.ViewModels.Components
 
             // keep SliderValue in sync with SongManager.CurrentTime when not seeking
             SongManager.PropertyChanged += OnSongManagerPropertyChanged;
+
+            _favoriteSongManager.Songs.CollectionChanged += (_, __) =>
+                OnPropertyChanged(nameof(IsCurrentTrackLoved));
         }
+
+        public bool IsCurrentTrackLoved => _favoriteSongManager.IsFavorite(SongManager.CurrentTrack);
 
         partial void OnVolumeChanged(double value)
         {
@@ -59,6 +67,7 @@ namespace Vibra_DesktopApp.ViewModels.Components
                 {
                     SliderValue = SongManager.Duration;
                 }
+
             }
 
             if (e.PropertyName == nameof(SongManager.Volume))
@@ -70,6 +79,25 @@ namespace Vibra_DesktopApp.ViewModels.Components
                     Volume = v;
                 }
             }
+
+            if (e.PropertyName == nameof(SongManager.CurrentTrack))
+            {
+                OnPropertyChanged(nameof(IsCurrentTrackLoved));
+            }
+        }
+
+        [RelayCommand]
+        private async Task ToggleLoveAsync()
+        {
+            var track = SongManager.CurrentTrack;
+            if (track is null || track.id is null) return;
+
+            if (IsCurrentTrackLoved)
+                await _favoriteSongManager.UnloveAsync(track).ConfigureAwait(false);
+            else
+                await _favoriteSongManager.LoveAsync(track).ConfigureAwait(false);
+
+            OnPropertyChanged(nameof(IsCurrentTrackLoved));
         }
 
         [RelayCommand]

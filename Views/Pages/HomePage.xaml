@@ -8,9 +8,9 @@
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
              xmlns:behaviors="clr-namespace:Vibra_DesktopApp.Behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="750" d:DesignWidth="1250">
+             d:DesignHeight="750" d:DesignWidth="1000">
     <Grid Background="Transparent">
-        <Border CornerRadius="10" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 0 5 5">
+        <Border CornerRadius="0" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 0 5 5">
             <Grid VerticalAlignment="Top">
                 <!-- Main vertical ScrollViewer -->
                 <ScrollViewer x:Name="MainScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">

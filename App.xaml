@@ -13,8 +13,10 @@
     <Application.Resources>
 
         <!-- Accent color and supporting runtime theme resources -->
-        <SolidColorBrush x:Key="CurrentColor" Color="#BC4D15" />
-        <sys:String x:Key="CurrentColorString">#BC4D15</sys:String>
+        <SolidColorBrush x:Key="CurrentColor" Color="#FEA7A0" />
+        <sys:String x:Key="CurrentColorString">#FEA7A0</sys:String>
+        <SolidColorBrush x:Key="DarkCurrentColor" Color="#8F3A10" />
+        <SolidColorBrush x:Key="BrightCurrentColor" Color="#D55A19" />
 
         <!-- App theme brushes (defaults) -->
         <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#121212" />
@@ -48,6 +50,7 @@
         <DataTemplate DataType="{x:Type vm2:ArtistViewModel}"><pages:ArtistPage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm2:SearchViewModel}"><pages:SearchPage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm2:UserViewModel}"><pages:UserPage /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm2:FavoriteSongsViewModel}"><pages:FavoriteSongsPage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm3:HeaderViewModel}"><components:Header /></DataTemplate>
         <DataTemplate DataType="{x:Type vm3:PlayerViewModel}"><components:Player /></DataTemplate>
 
@@ -122,7 +125,7 @@
                         
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#20FFFFFF"/>
+                                <Setter Property="Background" Value="#FFFFFF"/>
                                 <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
                             </Trigger>
                             
@@ -138,7 +141,7 @@
 
         <!-- ... (keep all other existing styles) ... -->
         <Style x:Key="HorizontalScrollBarStyle" TargetType="ScrollBar">
-            <Setter Property="Background" Value="#FFE5D6"/>
+            <Setter Property="Background" Value="{DynamicResource DarkCurrentColor}"/>
             <Setter Property="Height" Value="8"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -149,7 +152,7 @@
                                     <Thumb Height="8" MinHeight="8">
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="Thumb">
-                                                <Border Height="8" Background="#FFE5D6" CornerRadius="4"/>
+                                                <Border Height="8" Background="{DynamicResource DarkCurrentColor}" CornerRadius="4"/>
                                             </ControlTemplate>
                                         </Thumb.Template>
                                     </Thumb>
@@ -161,8 +164,9 @@
             </Setter>
         </Style>
 
+       <!-- Color should be more dark  -->
         <Style x:Key="VerticalScrollBarStyle" TargetType="ScrollBar">
-            <Setter Property="Background" Value="#FFE5D6"/>
+            <Setter Property="Background" Value="{DynamicResource DarkCurrentColor}"/>
             <Setter Property="Width" Value="8"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -173,7 +177,7 @@
                                     <Thumb Width="8" MinWidth="8">
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="Thumb">
-                                                <Border Width="8" Background="#FFE5D6" CornerRadius="4"/>
+                                                <Border Width="8" Background="{DynamicResource DarkCurrentColor}" CornerRadius="4"/>
                                             </ControlTemplate>
                                         </Thumb.Template>
                                     </Thumb>
@@ -186,10 +190,10 @@
         </Style>
 
         <Style x:Key="SidebarButtonStyle" TargetType="Button">
-            <Setter Property="Width" Value="32"/>
+            <Setter Property="Width" Value="64"/>
             <Setter Property="Height" Value="32"/>
-            <Setter Property="Background" Value="#47342D"/>
-            <Setter Property="Foreground" Value="#FFE5D6"/>
+            <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -226,7 +230,7 @@
 
         <Style x:Key="WindowButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -246,13 +250,13 @@
 
         <Style x:Key="CloseButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 4 10 0"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">

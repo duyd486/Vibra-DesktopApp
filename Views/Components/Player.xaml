@@ -30,18 +30,60 @@
                 </Border.Background>
             </Border>
 
-            <!-- Song title + artist -->
-            <StackPanel VerticalAlignment="Center" Margin="16 0 0 0">
-                <TextBlock Text="{Binding SongManager.CurrentTrack.name}"
-                           Foreground="{DynamicResource AppTextBrush}"
-                           FontWeight="SemiBold"
-                           FontSize="14"
-                           TextTrimming="CharacterEllipsis"/>
+            <!-- Song title + artist (left) + actions (right), vertically centered with thumbnail -->
+            <Grid Margin="16 0 0 0" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{Binding SongManager.CurrentTrack.author.name}"
-                           Foreground="#AAAAAA"
-                           FontSize="12"/>
-            </StackPanel>
+                <!-- Title + Artist -->
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding SongManager.CurrentTrack.name}"
+                               Foreground="{DynamicResource AppTextBrush}"
+                               FontWeight="SemiBold"
+                               FontSize="14"
+                               TextTrimming="CharacterEllipsis"/>
+
+                    <TextBlock Text="{Binding SongManager.CurrentTrack.author.name}"
+                               Foreground="#AAAAAA"
+                               FontSize="12"
+                               TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+
+                <!-- Actions (placeholders: plus + download will be wired later) -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
+                    <Button Background="Transparent"
+                            BorderThickness="0"
+                            Padding="6"
+                            Command="{Binding ToggleLoveCommand}">
+                        <fa:IconBlock FontSize="16" Foreground="{DynamicResource BrightCurrentColor}">
+                            <fa:IconBlock.Style>
+                                <Style TargetType="fa:IconBlock">
+                                    <Setter Property="Icon" Value="HeartCircleCheck"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsCurrentTrackLoved}" Value="False">
+                                            <Setter Property="Icon" Value="Heart"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </fa:IconBlock.Style>
+                        </fa:IconBlock>
+                    </Button>
+
+                    <Button Background="Transparent"
+                            BorderThickness="0"
+                            Padding="6">
+                        <fa:IconBlock Icon="PlusCircle" FontSize="16" Foreground="{DynamicResource BrightCurrentColor}" />
+                    </Button>
+
+                    <Button Background="Transparent"
+                            BorderThickness="0"
+                            Padding="6">
+                        <fa:IconBlock Icon="Download" FontSize="16" Foreground="{DynamicResource BrightCurrentColor}" />
+                    </Button>
+                </StackPanel>
+            </Grid>
         </StackPanel>
 
         <!-- ================= CENTER: CONTROLS ================= -->
@@ -166,7 +208,7 @@
                         Height="20"
                         VerticalAlignment="Center"
                         Foreground="{DynamicResource AppTextBrush}"
-                        Background="Wheat">
+                        Background="{DynamicResource AppTextBrush}">
                     <!-- Use behaviors to pause on drag start and seek+resume on drag complete.
                          Requires Microsoft.Xaml.Behaviors.Wpf package. -->
                     <i:Interaction.Triggers>
@@ -215,7 +257,7 @@
                                     <Track.IncreaseRepeatButton>
                                         <RepeatButton IsHitTestVisible="False"
                                                       Height="4"
-                                                      Background="#FFE5D6"
+                                                      Background="{DynamicResource AppTextBrush}"
                                                       BorderThickness="0">
                                             <RepeatButton.Template>
                                                 <ControlTemplate TargetType="RepeatButton">

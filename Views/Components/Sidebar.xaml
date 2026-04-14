@@ -39,7 +39,7 @@
         <!-- Search TextBox with placeholder -->
         <Style x:Key="SidebarSearchTextBoxStyle" TargetType="TextBox">
             <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
-            <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="BorderBrush" Value="{DynamicResource CurrentColor}"/>
             <Setter Property="CaretBrush" Value="{DynamicResource AppTextBrush}"/>
@@ -56,7 +56,7 @@
                                 <ScrollViewer x:Name="PART_ContentHost" Margin="0"/>
                                 <TextBlock x:Name="Placeholder"
                                            Text="Tìm kiếm"
-                                           Foreground="#80FFFFFF"
+                                           Foreground="#B3B3B3"
                                            Margin="12,6,0,0"
                                            IsHitTestVisible="False"
                                            Visibility="Collapsed"/>
@@ -86,7 +86,7 @@
     </UserControl.Resources>
 
     <Grid Background="Transparent">
-        <Border CornerRadius="20"
+        <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
                 Margin="5 0 5 5">
             <Grid>
@@ -182,7 +182,31 @@
                               Margin="12 0 12 12"
                               VerticalScrollBarVisibility="Auto"
                               HorizontalScrollBarVisibility="Disabled">
+                    <ScrollViewer.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+                    </ScrollViewer.Resources>
                     <StackPanel>
+
+                        <!-- Fixed favorite songs playlist -->
+                        <Button Style="{StaticResource SidebarListItemButtonStyle}"
+                                Visibility="{Binding ShowPlaylists, Converter={StaticResource BoolToVisibility}}"
+                                Command="{Binding OpenFavoriteSongsCommand}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="44"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Width="40" Height="40" CornerRadius="6" Background="#47342D">
+                                    <TextBlock Text="❤" FontSize="16" Foreground="#FFE5D6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
+                                    <TextBlock Text="Bài hát yêu thích" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
+                                    <TextBlock Text="{Binding FavoriteSongCount, StringFormat={}{0} bài hát}" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Button>
 
                         <!-- Playlists -->
                         <ItemsControl ItemsSource="{Binding PlaylistsView}"

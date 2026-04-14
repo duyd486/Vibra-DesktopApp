@@ -89,9 +89,9 @@ namespace Vibra_DesktopApp.ViewModels.Components
             {
                 Application.Current.Resources["IsDarkMode"] = isDark;
 
-                var windowBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(18, 18, 18)) : new SolidColorBrush(Color.FromRgb(250, 250, 250));
-                var controlBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(31, 31, 31)) : new SolidColorBrush(Color.FromRgb(245, 245, 245));
-                var textBrush = isDark ? (Brush)Brushes.White : Brushes.Black;
+                var windowBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(20, 20, 24)) : new SolidColorBrush(Color.FromRgb(246, 244, 244));
+                var controlBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(31, 31, 31)) : new SolidColorBrush(Color.FromRgb(225, 222, 222));
+                var textBrush = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(247, 244, 239)) : new SolidColorBrush(Color.FromRgb(28, 28, 30));
 
                 if (windowBg is SolidColorBrush sb1) sb1.Freeze();
                 if (controlBg is SolidColorBrush sb2) sb2.Freeze();
@@ -114,8 +114,16 @@ namespace Vibra_DesktopApp.ViewModels.Components
                 var brush = new SolidColorBrush(color);
                 brush.Freeze();
 
+                var darkBrush = new SolidColorBrush(Darken(color, 0.5));
+                darkBrush.Freeze();
+
+                var brightBrush = new SolidColorBrush(Brighten(color, 0.40));
+                brightBrush.Freeze();
+
                 Application.Current.Resources["CurrentColor"] = brush;
                 Application.Current.Resources["CurrentColorString"] = colorString;
+                Application.Current.Resources["DarkCurrentColor"] = darkBrush;
+                Application.Current.Resources["BrightCurrentColor"] = brightBrush;
 
                 OnPropertyChanged(nameof(SelectedColor));
             }
@@ -123,6 +131,26 @@ namespace Vibra_DesktopApp.ViewModels.Components
             {
                 // ignore invalid color strings
             }
+        }
+
+        private static Color Darken(Color color, double factor)
+        {
+            factor = Math.Clamp(factor, 0d, 1d);
+            return Color.FromArgb(
+                color.A,
+                (byte)Math.Clamp((int)Math.Round(color.R * factor), 0, 255),
+                (byte)Math.Clamp((int)Math.Round(color.G * factor), 0, 255),
+                (byte)Math.Clamp((int)Math.Round(color.B * factor), 0, 255));
+        }
+
+        private static Color Brighten(Color color, double amount)
+        {
+            amount = Math.Clamp(amount, 0d, 1d);
+            return Color.FromArgb(
+                color.A,
+                (byte)Math.Clamp((int)Math.Round(color.R + (255 - color.R) * amount), 0, 255),
+                (byte)Math.Clamp((int)Math.Round(color.G + (255 - color.G) * amount), 0, 255),
+                (byte)Math.Clamp((int)Math.Round(color.B + (255 - color.B) * amount), 0, 255));
         }
 
         [RelayCommand]

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using Vibra_DesktopApp.Models;
 using Vibra_DesktopApp.Singleton;
@@ -29,9 +30,14 @@ namespace Vibra_DesktopApp.ViewModels.Components
         public bool ShowAlbums => SelectedFilter is "All" or "Playlist";
         public bool ShowArtists => SelectedFilter is "All" or "Artist";
 
+        public int FavoriteSongCount => FavoriteSongManager.GetInstance().Songs.Count;
+
         public SidebarViewModel(MainViewModel mainVM)
         {
             _mainVM = mainVM ?? throw new ArgumentNullException(nameof(mainVM));
+
+            FavoriteSongManager.GetInstance().Songs.CollectionChanged += (_, __) =>
+                OnPropertyChanged(nameof(FavoriteSongCount));
 
             AlbumsView = CollectionViewSource.GetDefaultView(MyAlbums);
             PlaylistsView = CollectionViewSource.GetDefaultView(MyPlaylists);
@@ -42,6 +48,7 @@ namespace Vibra_DesktopApp.ViewModels.Components
             ArtistsView.Filter = FilterArtist;
 
             _ = LoadAsync();    
+            _ = FavoriteSongManager.GetInstance().LoadAsync();
         }
 
         partial void OnSelectedFilterChanged(string value)
@@ -49,6 +56,12 @@ namespace Vibra_DesktopApp.ViewModels.Components
             OnPropertyChanged(nameof(ShowPlaylists));
             OnPropertyChanged(nameof(ShowAlbums));
             OnPropertyChanged(nameof(ShowArtists));
+        }
+
+        [RelayCommand]
+        private void OpenFavoriteSongs()
+        {
+            _mainVM.NavigateTo(new FavoriteSongsViewModel(_mainVM), NavigationItem.Album);
         }
 
         partial void OnSearchTextChanged(string value)

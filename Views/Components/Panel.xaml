@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:Vibra_DesktopApp.Views.Components"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
              mc:Ignorable="d" 
-             d:DesignHeight="750" d:DesignWidth="300">
+             d:DesignHeight="750" d:DesignWidth="200">
     <Grid>
-        <Border CornerRadius="20"
+        <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
                 Margin="0 0 5 5">
             <Grid Margin="16">
@@ -74,16 +74,19 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Bài hát tiếp theo"
-                                   FontSize="20"
+                                   FontSize="18"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource AppTextBrush}"/>
 
                         <Button Grid.Column="1"
-                                Content="Xóa tất cả"
                                 Background="Transparent"
                                 BorderThickness="0"
+                                FontSize="10"
+                                VerticalContentAlignment="Center"
                                 Foreground="{DynamicResource AppTextMutedBrush}"
-                                Command="{Binding ClearWaitlistCommand}"/>
+                                Command="{Binding ClearWaitlistCommand}">
+                            <TextBlock Text="Xóa tất cả" Margin="0 6 0 0"/>
+                        </Button>
                     </Grid>
 
                     <ListBox Grid.Row="1"
