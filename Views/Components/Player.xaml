@@ -71,11 +71,84 @@
                         </fa:IconBlock>
                     </Button>
 
-                    <Button Background="Transparent"
-                            BorderThickness="0"
-                            Padding="6">
-                        <fa:IconBlock Icon="PlusCircle" FontSize="16" Foreground="{DynamicResource BrightCurrentColor}" />
-                    </Button>
+                    <!-- Add to playlist Button -->
+                    <Grid>
+                        <Button x:Name="AddToPlaylistToggle"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="6"
+                                Command="{Binding ToggleAddToPlaylistMenuCommand}">
+                            <fa:IconBlock Icon="PlusCircle" FontSize="16" Foreground="{DynamicResource BrightCurrentColor}" />
+                        </Button>
+
+                        <Popup PlacementTarget="{Binding ElementName=AddToPlaylistToggle}"
+                               Placement="Top"
+                               StaysOpen="False"
+                               IsOpen="{Binding IsAddToPlaylistMenuOpen, Mode=TwoWay}"
+                               AllowsTransparency="True"
+                               PopupAnimation="Fade">
+                            <Border Background="#111"
+                                    CornerRadius="8"
+                                    Padding="8"
+                                    BorderBrush="#333"
+                                    BorderThickness="1">
+                                <StackPanel MinWidth="260">
+                                    <TextBlock Text="Thêm vào playlist"
+                                               Foreground="{DynamicResource AppTextBrush}"
+                                               FontWeight="SemiBold"
+                                               Margin="6,2,6,6" />
+
+                                    <TextBlock Text="Chưa có playlist"
+                                               Foreground="#AAAAAA"
+                                               Margin="6,4"
+                                               Visibility="{Binding AvailablePlaylistsForCurrentTrack.Count, Converter={StaticResource ZeroToVisibilityConverter}}" />
+
+                                    <ItemsControl ItemsSource="{Binding AvailablePlaylistsForCurrentTrack}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Background="Transparent"
+                                                        BorderThickness="0"
+                                                        HorizontalContentAlignment="Stretch"
+                                                        Padding="0"
+                                                        Command="{Binding DataContext.AddCurrentTrackToPlaylistCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}">
+                                                    <Border CornerRadius="6" Padding="4">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Background" Value="Transparent" />
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#222" />
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <TextBlock Text="{Binding name}"
+                                                                       Foreground="{DynamicResource AppTextBrush}"
+                                                                       FontSize="12"
+                                                                       Margin="8,6" />
+                                                            <TextBlock Grid.Column="1"
+                                                                       Text="Thêm vào danh sách phát"
+                                                                       Foreground="#AAAAAA"
+                                                                       FontSize="10"
+                                                                       Margin="8,6" />
+                                                        </Grid>
+                                                    </Border>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                    </Grid>
 
                     <Button Background="Transparent"
                             BorderThickness="0"
@@ -92,43 +165,6 @@
                     HorizontalAlignment="Center">
 
             <!-- Control buttons -->
-            <!--
-                                <button v-if="isShuffle" class="mx-2" @click="isShuffle = false">
-                        <Icon icon="mdi:shuffle" :class="isFullscreen
-                            ? 'text-white'
-                            : 'text-zinc-700 dark:text-[#FFE5D6]'" class="size-5" />
-                    </button>
-                    <button v-else class="mx-2" @click="isShuffle = true">
-                        <Icon icon="mdi:shuffle-disabled" :class="isFullscreen
-                            ? 'text-white'
-                            : 'text-zinc-700 dark:text-[#FFE5D6]'" class="size-5" />
-                    </button>
-
-                    <button class="mx-2" @click="useSong.prevSongs">
-                        <Icon icon="fa6-solid:backward-step" :class="isFullscreen
-                            ? 'text-white'
-                            : 'text-zinc-700 dark:text-[#FFE5D6]'" class="size-7" />
-                    </button>
-
-                    <button class="mx-3 rounded-full p-1" @click="useSong.playOrPauseThisSong(currentTrack)">
-                        <Icon icon="material-symbols:play-circle-rounded" v-if="!isPlaying" :class="isFullscreen
-                            ? 'text-white'
-                            : 'text-zinc-900 dark:text-white'" class="size-12" />
-                        <Icon icon="material-symbols:pause-circle" v-else :class="isFullscreen
-                            ? 'text-white'
-                            : 'text-zinc-900 dark:text-white'" class="size-12" />
-                    </button>
-
-                    <button class="mx-2" @click="useSong.nextSongs()">
-                        <Icon icon="fa6-solid:forward-step" :class="isFullscreen
-                            ? 'text-white'
-                            : 'text-zinc-700 dark:text-[#FFE5D6]'" class="size-7" />
-                    </button>
-
-                    <img :src="MyLogo" alt="" :class="isFullscreen
-                        ? 'invert'
-                        : 'invert-0 dark:invert'" class="mx-[-18px] h-[80px] w-[80px] select-none transition" />
-            -->
             
             
             <StackPanel Orientation="Horizontal"

@@ -6,6 +6,7 @@ namespace Vibra_DesktopApp.Models
 {
     public class Song
     {
+        public int? song_id { get; set; }
         public int? id { get; set; }
         public string? name { get; set; }
         public string? description { get; set; }

@@ -1,8 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using Vibra_DesktopApp.Singleton;
 using Vibra_DesktopApp.Models;
 
@@ -28,6 +32,11 @@ namespace Vibra_DesktopApp.ViewModels.Components
         // Volume (0.0 - 1.0) bound to the UI
         [ObservableProperty] private double _volume;
 
+        [ObservableProperty] private bool _isAddToPlaylistMenuOpen;
+
+        [ObservableProperty]
+        private ObservableCollection<Album> _availablePlaylistsForCurrentTrack = new();
+
         public PlayerViewModel(MainViewModel mainVM)
         {
             _mainVM = mainVM;
@@ -41,6 +50,8 @@ namespace Vibra_DesktopApp.ViewModels.Components
 
             _favoriteSongManager.Songs.CollectionChanged += (_, __) =>
                 OnPropertyChanged(nameof(IsCurrentTrackLoved));
+
+            _ = RefreshAvailablePlaylistsForCurrentTrackAsync();
         }
 
         public bool IsCurrentTrackLoved => _favoriteSongManager.IsFavorite(SongManager.CurrentTrack);
@@ -83,6 +94,92 @@ namespace Vibra_DesktopApp.ViewModels.Components
             if (e.PropertyName == nameof(SongManager.CurrentTrack))
             {
                 OnPropertyChanged(nameof(IsCurrentTrackLoved));
+                _ = RefreshAvailablePlaylistsForCurrentTrackAsync();
+                IsAddToPlaylistMenuOpen = false;
+            }
+        }
+
+        private async Task RefreshAvailablePlaylistsForCurrentTrackAsync()
+        {
+            try
+            {
+                var track = SongManager.CurrentTrack;
+                if (track?.id is null)
+                {
+                    App.Current?.Dispatcher.Invoke(() => AvailablePlaylistsForCurrentTrack.Clear());
+                    return;
+                }
+
+                var playlists = await ApiManager.GetInstance()
+                    .HttpGetAsync<List<Album>>("library/list-playlist?type=2")
+                    .ConfigureAwait(false);
+
+                var candidatePlaylists = playlists ?? [];
+                var eligible = new List<Album>();
+
+                foreach (var p in candidatePlaylists)
+                {
+                    if (p.id is null) continue;
+
+                    List<Song>? songsInPlaylist = null;
+                    try
+                    {
+                        songsInPlaylist = await ApiManager.GetInstance()
+                            .HttpGetAsync<List<Song>>($"library/list-playlist-song/{p.id}")
+                            .ConfigureAwait(false);
+                    }
+                    catch
+                    {
+                        // ignore per-playlist failures; will just not show it
+                    }
+
+                    var alreadyHas = songsInPlaylist?.Any(s => s?.song_id == track.id) == true;
+                    if (!alreadyHas)
+                        eligible.Add(p);
+                }
+
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    AvailablePlaylistsForCurrentTrack.Clear();
+                    foreach (var p in eligible) AvailablePlaylistsForCurrentTrack.Add(p);
+                });
+            }
+            catch
+            {
+                // ApiManager already shows errors; keep UI responsive
+                App.Current?.Dispatcher.Invoke(() => AvailablePlaylistsForCurrentTrack.Clear());
+            }
+        }
+
+        [RelayCommand]
+        private async Task ToggleAddToPlaylistMenuAsync()
+        {
+            IsAddToPlaylistMenuOpen = !IsAddToPlaylistMenuOpen;
+            if (IsAddToPlaylistMenuOpen)
+            {
+                await RefreshAvailablePlaylistsForCurrentTrackAsync().ConfigureAwait(false);
+            }
+        }
+
+        [RelayCommand]
+        private async Task AddCurrentTrackToPlaylistAsync(Album playlist)
+        {
+            var track = SongManager.CurrentTrack;
+            if (track?.id is null || playlist?.id is null) return;
+
+            try
+            {
+                await ApiManager.GetInstance()
+                    .HttpGetNoDataAsync($"song/add-song-to-playlist?song_id={track.id}&playlist_id={playlist.id}")
+                    .ConfigureAwait(false);
+
+                IsAddToPlaylistMenuOpen = false;
+                await RefreshAvailablePlaylistsForCurrentTrackAsync().ConfigureAwait(false);
+            }
+            catch
+            {
+                // ApiManager already shows errors
+                IsAddToPlaylistMenuOpen = false;
             }
         }
 

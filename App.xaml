@@ -39,6 +39,7 @@
         <converters:BoolToShuffleOpacityConverter x:Key="BoolToShuffleOpacityConverter" />
         <converters:TrackRowLeadingIconConverter x:Key="TrackRowLeadingIconConverter" />
         <converters:TimeConverter x:Key="TimeConverter" />
+        <converters:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter" />
         <converters:NavigationItemToBoolConverter x:Key="NavItemToBool"/>
         <converters:NavigationItemToTagConverter x:Key="NavItemToTag"/>
 
