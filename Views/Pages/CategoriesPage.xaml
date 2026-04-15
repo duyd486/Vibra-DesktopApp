@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1250">
     <Grid>
-        <Border CornerRadius="0" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 0 5 5">
+        <Border CornerRadius="0" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 5 5 5">
             <TextBlock Text="Categories Page" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"/>
         </Border>
     </Grid>

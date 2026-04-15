@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Vibra_DesktopApp.Models;
@@ -18,9 +19,72 @@ namespace Vibra_DesktopApp.ViewModels.Components
         [ObservableProperty] private string _selectedFilter = "All";
         [ObservableProperty] private string _searchText = string.Empty;
 
-        [ObservableProperty] private ObservableCollection<Album> _myAlbums = new();
-        [ObservableProperty] private ObservableCollection<Album> _myPlaylists = new();
-        [ObservableProperty] private ObservableCollection<User> _myArtists = new();
+        [ObservableProperty] private ObservableCollection<SelectableAlbumViewModel> _myAlbums = new();
+        [ObservableProperty] private ObservableCollection<SelectableAlbumViewModel> _myPlaylists = new();
+        [ObservableProperty] private ObservableCollection<SelectableArtistViewModel> _myArtists = new();
+
+        private Album? _selectedAlbum;
+        public Album? SelectedAlbum
+        {
+            get => _selectedAlbum;
+            set => SetProperty(ref _selectedAlbum, value);
+        }
+
+        private Album? _selectedPlaylist;
+        public Album? SelectedPlaylist
+        {
+            get => _selectedPlaylist;
+            set => SetProperty(ref _selectedPlaylist, value);
+        }
+
+        private User? _selectedArtist;
+        public User? SelectedArtist
+        {
+            get => _selectedArtist;
+            set => SetProperty(ref _selectedArtist, value);
+        }
+
+        private User? _selectedArtistWrapper;
+        public User? SelectedArtistWrapper
+        {
+            get => _selectedArtistWrapper;
+            set => SetProperty(ref _selectedArtistWrapper, value);
+        }
+
+        private bool _isFavoriteSongsSelected;
+        public bool IsFavoriteSongsSelected
+        {
+            get => _isFavoriteSongsSelected;
+            set => SetProperty(ref _isFavoriteSongsSelected, value);
+        }
+
+        private NavigationItem _selectedNavigationItem = NavigationItem.None;
+        public NavigationItem SelectedNavigationItem
+        {
+            get => _selectedNavigationItem;
+            set => SetProperty(ref _selectedNavigationItem, value);
+        }
+
+        private int? _selectedAlbumId;
+        public int? SelectedAlbumId
+        {
+            get => _selectedAlbumId;
+            set => SetProperty(ref _selectedAlbumId, value);
+        }
+
+        private int? _selectedPlaylistId;
+        public int? SelectedPlaylistId
+        {
+            get => _selectedPlaylistId;
+            set => SetProperty(ref _selectedPlaylistId, value);
+        }
+
+        private int? _selectedArtistId;
+        public int? SelectedArtistId
+        {
+            get => _selectedArtistId;
+            set => SetProperty(ref _selectedArtistId, value);
+        }
 
         public ICollectionView AlbumsView { get; }
         public ICollectionView PlaylistsView { get; }
@@ -35,6 +99,9 @@ namespace Vibra_DesktopApp.ViewModels.Components
         public SidebarViewModel(MainViewModel mainVM)
         {
             _mainVM = mainVM ?? throw new ArgumentNullException(nameof(mainVM));
+
+            SidebarSelectionBus.GetInstance().SelectionChanged += (_, e) =>
+                App.Current.Dispatcher.Invoke(() => ApplySelection(e.NavigationItem, e.Id));
 
             FavoriteSongManager.GetInstance().Songs.CollectionChanged += (_, __) =>
                 OnPropertyChanged(nameof(FavoriteSongCount));
@@ -61,6 +128,19 @@ namespace Vibra_DesktopApp.ViewModels.Components
         [RelayCommand]
         private void OpenFavoriteSongs()
         {
+            foreach (var a in MyAlbums) a.IsSelected = false;
+            foreach (var p in MyPlaylists) p.IsSelected = false;
+            foreach (var ar in MyArtists) ar.IsSelected = false;
+
+            IsFavoriteSongsSelected = true;
+            SelectedNavigationItem = NavigationItem.Album;
+            SelectedAlbumId = null;
+            SelectedPlaylistId = null;
+            SelectedArtistId = null;
+            SelectedAlbum = null;
+            SelectedPlaylist = null;
+            SelectedArtist = null;
+            SelectedArtistWrapper = null;
             _mainVM.NavigateTo(new FavoriteSongsViewModel(_mainVM), NavigationItem.Album);
         }
 
@@ -73,24 +153,24 @@ namespace Vibra_DesktopApp.ViewModels.Components
 
         private bool FilterAlbum(object obj)
         {
-            if (obj is not Album album) return false;
+            if (obj is not SelectableAlbumViewModel vm) return false;
+            var album = vm.Album;
             if (string.IsNullOrWhiteSpace(SearchText)) return true;
             return (album.name ?? string.Empty).Contains(SearchText, StringComparison.CurrentCultureIgnoreCase);
         }
 
         private bool FilterPlaylist(object obj)
         {
-            if (obj is not Album playlist) return false;
+            if (obj is not SelectableAlbumViewModel vm) return false;
+            var playlist = vm.Album;
             if (string.IsNullOrWhiteSpace(SearchText)) return true;
             return (playlist.name ?? string.Empty).Contains(SearchText, StringComparison.CurrentCultureIgnoreCase);
         }
 
         private bool FilterArtist(object obj)
         {
-            if (obj is not User wrapper) return false;
-
-            // Your API returns either a plain User or a wrapper with .artist populated.
-            var name = wrapper.artist?.name ?? wrapper.name ?? string.Empty;
+            if (obj is not SelectableArtistViewModel vm) return false;
+            var name = vm.Artist.name ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(SearchText)) return true;
             return name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase);
@@ -116,13 +196,13 @@ namespace Vibra_DesktopApp.ViewModels.Components
                 App.Current.Dispatcher.Invoke(() =>
                 {
                     MyPlaylists.Clear();
-                    foreach (var p in playlists ?? []) MyPlaylists.Add(p);
+                    foreach (var p in playlists ?? []) MyPlaylists.Add(new SelectableAlbumViewModel(p));
 
                     MyAlbums.Clear();
-                    foreach (var a in albums ?? []) MyAlbums.Add(a);
+                    foreach (var a in albums ?? []) MyAlbums.Add(new SelectableAlbumViewModel(a));
 
                     MyArtists.Clear();
-                    foreach (var ar in artists ?? []) MyArtists.Add(ar);
+                    foreach (var ar in artists ?? []) MyArtists.Add(new SelectableArtistViewModel(ar));
 
                     PlaylistsView.Refresh();
                     AlbumsView.Refresh();
@@ -154,19 +234,133 @@ namespace Vibra_DesktopApp.ViewModels.Components
         [RelayCommand]
         public void AlbumClick(Album album)
         {
+            SelectedAlbumId = album?.id;
+            SelectedAlbumId = album?.id;
+            SelectedNavigationItem = NavigationItem.Album;
+            SelectedPlaylist = null;
+            SelectedPlaylistId = null;
+            SelectedArtist = null;
+            SelectedArtistId = null;
+            SelectedArtistWrapper = null;
+            IsFavoriteSongsSelected = false;
             _mainVM.NavigateTo(new AlbumViewModel(_mainVM, album), NavigationItem.Album);
         }
 
         [RelayCommand]
         public void PlaylistClick(Album playlist)
         {
+            SelectedPlaylistId = playlist?.id;
+            SelectedNavigationItem = NavigationItem.Album;
+            SelectedAlbum = null;
+            SelectedAlbumId = null;
+            SelectedArtist = null;
+            SelectedArtistId = null;
+            SelectedArtistWrapper = null;
+            IsFavoriteSongsSelected = false;
             _mainVM.NavigateTo(new AlbumViewModel(_mainVM, playlist), NavigationItem.Album);
         }
 
         [RelayCommand]
         public void ArtistClick(User artist)
         {
+            SelectedArtist = artist;
+            SelectedArtistWrapper = artist;
+            SelectedArtistId = artist?.id;
+            SelectedNavigationItem = NavigationItem.Artist;
+            SelectedAlbum = null;
+            SelectedAlbumId = null;
+            SelectedPlaylist = null;
+            SelectedPlaylistId = null;
+            IsFavoriteSongsSelected = false;
             _mainVM.NavigateTo(new ArtistViewModel(_mainVM, artist), NavigationItem.Artist);
+        }
+
+        public void SelectAlbumIfExists(Album? album)
+        {
+            if (album?.id is null) return;
+
+            foreach (var a in MyAlbums)
+            {
+                if (a.Album?.id == album.id)
+                {
+                    SelectedAlbumId = a.Album.id;
+                    SelectedNavigationItem = NavigationItem.Album;
+                    SelectedPlaylist = null;
+                    SelectedPlaylistId = null;
+                    SelectedArtist = null;
+                    SelectedArtistId = null;
+                    SelectedArtistWrapper = null;
+                    IsFavoriteSongsSelected = false;
+                    return;
+                }
+            }
+
+            foreach (var p in MyPlaylists)
+            {
+                if (p.Album?.id == album.id)
+                {
+                    SelectedPlaylistId = p.Album.id;
+                    SelectedNavigationItem = NavigationItem.Album;
+                    SelectedAlbum = null;
+                    SelectedAlbumId = null;
+                    SelectedArtist = null;
+                    SelectedArtistId = null;
+                    SelectedArtistWrapper = null;
+                    IsFavoriteSongsSelected = false;
+                    return;
+                }
+            }
+        }
+
+        public void SelectArtistIfExists(User? artist)
+        {
+            var targetId = artist?.id ?? artist?.artist?.id;
+            if (targetId is null) return;
+
+            foreach (var a in MyArtists)
+            {
+                var id = a.Artist.id;
+                if (id == targetId)
+                {
+                    SelectedArtist = a.Artist;
+                    SelectedArtistWrapper = a.Wrapper;
+                    SelectedArtistId = targetId;
+                    SelectedNavigationItem = NavigationItem.Artist;
+                    SelectedAlbum = null;
+                    SelectedAlbumId = null;
+                    SelectedPlaylist = null;
+                    SelectedPlaylistId = null;
+                    IsFavoriteSongsSelected = false;
+                    return;
+                }
+            }
+        }
+
+        private void ApplySelection(NavigationItem navigationItem, int? id)
+        {
+            SelectedNavigationItem = navigationItem;
+
+            foreach (var a in MyAlbums) a.IsSelected = false;
+            foreach (var p in MyPlaylists) p.IsSelected = false;
+            foreach (var ar in MyArtists) ar.IsSelected = false;
+
+            if (navigationItem == NavigationItem.Album && id is not null)
+            {
+                var album = MyAlbums.FirstOrDefault(x => x.Album.id == id);
+                if (album is not null) album.IsSelected = true;
+
+                var playlist = MyPlaylists.FirstOrDefault(x => x.Album.id == id);
+                if (playlist is not null) playlist.IsSelected = true;
+            }
+            else if (navigationItem == NavigationItem.Artist && id is not null)
+            {
+                var artist = MyArtists.FirstOrDefault(x => x.Artist.id == id);
+                if (artist is not null) artist.IsSelected = true;
+            }
+            else
+            {
+                IsFavoriteSongsSelected = false;
+            }
         }
 
         [RelayCommand]

@@ -23,6 +23,8 @@ namespace Vibra_DesktopApp.ViewModels.Pages
             _mainVM = mainVM;
             Album = album;
 
+            SidebarSelectionBus.GetInstance().Publish(NavigationItem.Album, album?.id);
+
             _ = LoadTracksAsync();
         }
 

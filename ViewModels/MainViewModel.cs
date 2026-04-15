@@ -2,7 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 using Vibra_DesktopApp.Models;
+using Vibra_DesktopApp.Singleton;
 using Vibra_DesktopApp.ViewModels.Components;
+using Vibra_DesktopApp.ViewModels.Pages;
 
 namespace Vibra_DesktopApp.ViewModels
 {
@@ -41,6 +43,40 @@ namespace Vibra_DesktopApp.ViewModels
         {
             CurrentPageViewModel = vm;
             CurrentNavigationItem = navItem;
+
+            SidebarVM.SelectedNavigationItem = navItem;
+
+            switch (vm)
+            {
+                case AlbumViewModel albumVm:
+                    SidebarVM.SelectAlbumIfExists(albumVm.Album);
+                    break;
+                case ArtistViewModel artistVm:
+                    SidebarVM.SelectArtistIfExists(artistVm.Artist);
+                    break;
+                case FavoriteSongsViewModel:
+                    SidebarVM.IsFavoriteSongsSelected = true;
+                    SidebarVM.SelectedNavigationItem = NavigationItem.Album;
+                    SidebarVM.SelectedAlbum = null;
+                    SidebarVM.SelectedPlaylist = null;
+                    SidebarVM.SelectedArtist = null;
+                    SidebarVM.SelectedArtistWrapper = null;
+                    SidebarVM.SelectedAlbumId = null;
+                    SidebarVM.SelectedPlaylistId = null;
+                    SidebarVM.SelectedArtistId = null;
+                    break;
+                default:
+                    SidebarSelectionBus.GetInstance().Publish(navItem, null);
+                    SidebarVM.SelectedAlbum = null;
+                    SidebarVM.SelectedPlaylist = null;
+                    SidebarVM.SelectedArtist = null;
+                    SidebarVM.SelectedArtistWrapper = null;
+                    SidebarVM.IsFavoriteSongsSelected = false;
+                    SidebarVM.SelectedAlbumId = null;
+                    SidebarVM.SelectedPlaylistId = null;
+                    SidebarVM.SelectedArtistId = null;
+                    break;
+            }
         }
 
         [RelayCommand]

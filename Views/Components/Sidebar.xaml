@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:Vibra_DesktopApp.Converters"
              mc:Ignorable="d"
              d:DesignHeight="750" d:DesignWidth="350">  
 
@@ -13,7 +14,8 @@
         <Style x:Key="SidebarListItemButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0 0 0 4"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -26,6 +28,9 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.6"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="#26FFFFFF"/>
@@ -88,7 +93,7 @@
     <Grid Background="Transparent">
         <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
-                Margin="5 0 5 5">
+                Margin="5 5 5 5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/> <!-- Header -->
@@ -189,23 +194,31 @@
                     <StackPanel>
 
                         <!-- Fixed favorite songs playlist -->
-                        <Button Style="{StaticResource SidebarListItemButtonStyle}"
-                                Visibility="{Binding ShowPlaylists, Converter={StaticResource BoolToVisibility}}"
+                        <Button Visibility="{Binding ShowPlaylists, Converter={StaticResource BoolToVisibility}}"
                                 Command="{Binding OpenFavoriteSongsCommand}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource SidebarListItemButtonStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFavoriteSongsSelected}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="44"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="56"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <Border Width="40" Height="40" CornerRadius="6" Background="#47342D">
-                                    <TextBlock Text="❤" FontSize="16" Foreground="#FFE5D6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
+                                    <Border Width="52" Height="52" CornerRadius="6" Padding="0 5 0 5" Margin="2 0 0 0" Background="#47342D">
+                                        <TextBlock Text="❤" FontSize="16" Foreground="#FFE5D6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
 
-                                <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
-                                    <TextBlock Text="Bài hát yêu thích" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
-                                    <TextBlock Text="{Binding FavoriteSongCount, StringFormat={}{0} bài hát}" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
-                                </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="6 0 0 0" VerticalAlignment="Center">
+                                        <TextBlock Text="Bài hát yêu thích"  FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
+                                        <TextBlock Text="{Binding FavoriteSongCount, StringFormat={}{0} bài hát}" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
+                                    </StackPanel>
                             </Grid>
                         </Button>
 
@@ -214,34 +227,42 @@
                                       Visibility="{Binding ShowPlaylists, Converter={StaticResource BoolToVisibility}}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource SidebarListItemButtonStyle}"
-                                            Command="{Binding DataContext.PlaylistClickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}">
+                                    <Button Command="{Binding DataContext.PlaylistClickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding Album}">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource SidebarListItemButtonStyle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="44"/>
+                                                <ColumnDefinition Width="56"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Border Width="40" Height="40" CornerRadius="6">
-                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
-                                            </Border>
+                                        <Border Width="40" Height="52" CornerRadius="6" Padding="0 5 0 5" Margin="2 0 0 0">
+                                            <Image Source="{Binding Album.thumbnail_path}" Stretch="UniformToFill"/>
+                                        </Border>
 
-                                            <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding name}" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
-                                                <TextBlock Text="{Binding total_song, StringFormat={}{0} bài hát}" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
-                                            </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="4 0 0 0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Album.name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
+                                            <TextBlock Text="{Binding Album.total_song, StringFormat={}{0} bài hát}" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
+                                        </StackPanel>
 
-                                            <Button Grid.Column="2"
-                                                    Content="🗑"
-                                                    Width="32"
-                                                    Height="32"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    Foreground="{DynamicResource AppTextMutedBrush}"
-                                                    Command="{Binding DataContext.DeletePlaylistCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                    CommandParameter="{Binding}" />
+                                        <Button Grid.Column="2"
+                                                Content="🗑"
+                                                Width="32"
+                                                Height="32"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Foreground="{DynamicResource AppTextMutedBrush}"
+                                                Command="{Binding DataContext.DeletePlaylistCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding Album}" />
                                         </Grid>
                                     </Button>
                                 </DataTemplate>
@@ -253,23 +274,31 @@
                                       Visibility="{Binding ShowAlbums, Converter={StaticResource BoolToVisibility}}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource SidebarListItemButtonStyle}"
-                                            Command="{Binding DataContext.AlbumClickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}">
+                                    <Button Command="{Binding DataContext.AlbumClickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding Album}">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource SidebarListItemButtonStyle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
                                         <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="44"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="56"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
 
-                                            <Border Width="40" Height="40" CornerRadius="6">
-                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
-                                            </Border>
+                                        <Border Width="40" Height="52" CornerRadius="6" Padding="0 5 0 5" Margin="2 0 0 0">
+                                            <Image Source="{Binding Album.thumbnail_path}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+                                        </Border>
 
-                                            <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding name}" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
-                                                <TextBlock Text="{Binding total_song, StringFormat={}{0} bài hát}" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
-                                            </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="4 0 0 0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Album.name}"  FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
+                                            <TextBlock Text="{Binding Album.total_song, StringFormat={}{0} bài hát}" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
+                                        </StackPanel>
                                         </Grid>
                                     </Button>
                                 </DataTemplate>
@@ -281,23 +310,31 @@
                                       Visibility="{Binding ShowArtists, Converter={StaticResource BoolToVisibility}}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource SidebarListItemButtonStyle}"
-                                            Command="{Binding DataContext.ArtistClickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding artist}">
+                                    <Button Command="{Binding DataContext.ArtistClickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding Artist}">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource SidebarListItemButtonStyle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
                                         <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="44"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="56"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
 
-                                            <Border Width="40" Height="40" CornerRadius="20">
-                                                <Image Source="{Binding artist.avatar_path}" Stretch="UniformToFill"/>
-                                            </Border>
+                                        <Border Width="40" Height="52" CornerRadius="6" Padding="0 5 0 5" Margin="2 0 0 0">
+                                            <Image Source="{Binding Artist.avatar_path}" Stretch="UniformToFill"/>
+                                        </Border>
 
-                                            <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding artist.name}" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
-                                                <TextBlock Text="Nghệ sĩ" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
-                                            </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="4 0 0 0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Artist.name}"  FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
+                                            <TextBlock Text="Nghệ sĩ" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
+                                        </StackPanel>
                                         </Grid>
                                     </Button>
                                 </DataTemplate>

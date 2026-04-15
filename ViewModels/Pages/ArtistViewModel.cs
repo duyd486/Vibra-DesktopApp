@@ -27,6 +27,8 @@ namespace Vibra_DesktopApp.ViewModels.Pages
             _mainVM = mainVM ?? throw new ArgumentNullException(nameof(mainVM));
             Artist = artist ?? throw new ArgumentNullException(nameof(artist));
 
+            SidebarSelectionBus.GetInstance().Publish(NavigationItem.Artist, artist?.id);
+
             _ = LoadAsync();
         }
 

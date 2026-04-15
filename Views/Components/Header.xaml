@@ -4,7 +4,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
              xmlns:converters="clr-namespace:Vibra_DesktopApp.Converters"
-             Height="60"
+             VerticalAlignment="Stretch"
              Background="{DynamicResource CurrentColor}">
 
     <UserControl.Resources>
@@ -147,7 +147,7 @@
     </UserControl.Resources>
 
     <!-- Use contained padding on grid for better balance -->
-    <Grid VerticalAlignment="Center" Margin="0 -8 0 0" Background="{DynamicResource WindowBackgroundBrush}">
+    <Grid VerticalAlignment="Stretch" Margin="0 0 0 0" Background="{DynamicResource WindowBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -163,7 +163,7 @@
                     Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Home}"
                     VerticalAlignment="Center"
                     ToolTip="Home"
-                    Width="100" Height="44"
+                    Width="100" Height="auto"
                     Background="Transparent"
                     Margin="0,0,12,0">
                 <TextBlock Text="Vibra" FontWeight="Bold" Foreground="{DynamicResource AppTextBrush}" FontSize="22" Margin="6,0"/>

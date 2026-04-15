@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1250">
     <Grid>
-        <Border CornerRadius="0" Background="#1D1512" Margin="0 0 5 5">
+        <Border CornerRadius="0" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 5 5 5">
             <StackPanel>
                 <Grid Margin="44 44 44 10">
                     <Grid.ColumnDefinitions>
@@ -31,12 +31,12 @@
 
                         <TextBlock FontSize="18"
                                    FontWeight="SemiBold"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource AppTextBrush}"
                                    Text="Album"/>
 
                         <TextBlock FontSize="64"
                                    FontWeight="Bold"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource AppTextBrush}"
                                    TextWrapping="Wrap"
                                    Text="{Binding Album.name}"/>
 
@@ -49,7 +49,7 @@
                                     BorderThickness="0">
                                 <fa:IconBlock Icon="PlusCircle"
                                               FontSize="32"
-                                              Foreground="#FFE5D6"/>
+                                              Foreground="{DynamicResource DarkCurrentColor}"/>
                             </Button>
 
                             <!-- ADD TO QUEUE -->
@@ -59,7 +59,7 @@
                                     Margin="12 0 0 0">
                                 <fa:IconBlock Icon="List"
                                               FontSize="28"
-                                              Foreground="#FFE5D6"/>
+                                              Foreground="{DynamicResource DarkCurrentColor}"/>
                             </Button>
 
                             <!-- DOWNLOAD -->
@@ -69,7 +69,7 @@
                                     Margin="12 0 0 4">
                                 <fa:IconBlock Icon="Download"
                                               FontSize="28"
-                                              Foreground="#FFE5D6"/>
+                                              Foreground="{DynamicResource DarkCurrentColor}"/>
                             </Button>
 
                             <TextBlock Margin="16,12,0,0"

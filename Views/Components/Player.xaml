@@ -339,7 +339,7 @@
             <Button Background="Transparent"
                     BorderThickness="0" Margin="10 0">
                 <fa:IconBlock Icon="VolumeUp"
-                              Foreground="{DynamicResource AppTextBrush}"
+                              Foreground="{DynamicResource CurrentColor}"
                               FontSize="16"
                               Margin="4 0"/>
             </Button>

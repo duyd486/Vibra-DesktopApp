@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1000">
     <Grid Background="Transparent">
-        <Border CornerRadius="0" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 0 5 5">
+        <Border CornerRadius="0" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 5 5 5">
             <Grid VerticalAlignment="Top">
                 <!-- Main vertical ScrollViewer -->
                 <ScrollViewer x:Name="MainScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -29,7 +29,7 @@
                                    HorizontalAlignment="Left" 
                                    Margin="20,20,0,10"/>
                         
-                        <ScrollViewer Width="1250" 
+                        <ScrollViewer Width="auto" 
                                       CanContentScroll="True" 
                                       HorizontalContentAlignment="Left" 
                                       HorizontalScrollBarVisibility="Auto" 
@@ -125,7 +125,7 @@
                                    HorizontalAlignment="Left" 
                                    Margin="20,20,0,10"/>
                         
-                        <ScrollViewer Width="1250" 
+                        <ScrollViewer Width="auto" 
                                       PanningMode="HorizontalOnly" 
                                       CanContentScroll="True" 
                                       HorizontalContentAlignment="Left" 
@@ -217,7 +217,7 @@
                                    HorizontalAlignment="Left" 
                                    Margin="20,20,0,10"/>
                         
-                        <ScrollViewer Width="1250" 
+                        <ScrollViewer Width="auto" 
                                       PanningMode="HorizontalOnly" 
                                       CanContentScroll="True" 
                                       HorizontalContentAlignment="Left" 
@@ -302,7 +302,7 @@
                                    HorizontalAlignment="Left" 
                                    Margin="20,20,0,10"/>
                         
-                        <ScrollViewer Width="1250" 
+                        <ScrollViewer Width="auto" 
                                       PanningMode="HorizontalOnly" 
                                       CanContentScroll="True" 
                                       HorizontalContentAlignment="Left" 

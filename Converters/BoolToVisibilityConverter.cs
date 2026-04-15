@@ -26,4 +26,34 @@ namespace Vibra_DesktopApp.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => Binding.DoNothing;
     }
+
+    public sealed class NullableIntEqualsConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values is null || values.Length < 2)
+                return false;
+
+            var a = TryGetNullableInt(values[0]);
+            var b = TryGetNullableInt(values[1]);
+            return a.HasValue && b.HasValue && a.Value == b.Value;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
+            throw new NotSupportedException();
+
+        private static int? TryGetNullableInt(object value)
+        {
+            if (value is null || value == System.Windows.DependencyProperty.UnsetValue)
+                return null;
+
+            if (value is int i)
+                return i;
+
+            if (int.TryParse(value.ToString(), out var parsed))
+                return parsed;
+
+            return null;
+        }
+    }
 }

@@ -89,9 +89,9 @@ namespace Vibra_DesktopApp.ViewModels.Components
             {
                 Application.Current.Resources["IsDarkMode"] = isDark;
 
-                var windowBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(20, 20, 24)) : new SolidColorBrush(Color.FromRgb(238, 236, 236));
+                var windowBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(20, 20, 24)) : new SolidColorBrush(Color.FromRgb(236, 234, 234));
                 var controlBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(31, 31, 31)) : new SolidColorBrush(Color.FromRgb(250, 250, 250));
-                var textBrush = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(247, 244, 239)) : new SolidColorBrush(Color.FromRgb(28, 28, 30));
+                var textBrush = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(247, 244, 239)) : new SolidColorBrush(Color.FromRgb(32, 32, 34));
 
                 if (windowBg is SolidColorBrush sb1) sb1.Freeze();
                 if (controlBg is SolidColorBrush sb2) sb2.Freeze();

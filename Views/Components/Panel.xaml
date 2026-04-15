@@ -10,7 +10,7 @@
     <Grid>
         <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
-                Margin="0 0 5 5">
+                Margin="0 5 5 5">
             <Grid Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

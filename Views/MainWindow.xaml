@@ -11,6 +11,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
+        ResizeMode="CanResize"
         Background="{DynamicResource CurrentColor}"
         Title="MainWindow" Height="900" Width="1600">
     <Window.DataContext>

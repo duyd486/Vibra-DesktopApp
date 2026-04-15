@@ -10,7 +10,7 @@
     <Grid Background="Transparent">
         <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
-                Margin="0 0 5 5">
+                Margin="0 5 5 5">
 
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
