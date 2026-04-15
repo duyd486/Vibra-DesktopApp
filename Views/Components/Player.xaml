@@ -244,7 +244,7 @@
                                     <Track.DecreaseRepeatButton>
                                         <RepeatButton IsHitTestVisible="False"
                                                       Height="4"
-                                                      Background="{DynamicResource CurrentColor}"
+                                                      Background="{DynamicResource BrightCurrentColor}"
                                                       BorderThickness="0">
                                             <RepeatButton.Template>
                                                 <ControlTemplate TargetType="RepeatButton">
@@ -257,7 +257,7 @@
                                     <Track.IncreaseRepeatButton>
                                         <RepeatButton IsHitTestVisible="False"
                                                       Height="4"
-                                                      Background="{DynamicResource AppTextBrush}"
+                                                      Background="{DynamicResource DarkCurrentColor}"
                                                       BorderThickness="0">
                                             <RepeatButton.Template>
                                                 <ControlTemplate TargetType="RepeatButton">

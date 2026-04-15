@@ -89,8 +89,8 @@ namespace Vibra_DesktopApp.ViewModels.Components
             {
                 Application.Current.Resources["IsDarkMode"] = isDark;
 
-                var windowBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(20, 20, 24)) : new SolidColorBrush(Color.FromRgb(246, 244, 244));
-                var controlBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(31, 31, 31)) : new SolidColorBrush(Color.FromRgb(225, 222, 222));
+                var windowBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(20, 20, 24)) : new SolidColorBrush(Color.FromRgb(238, 236, 236));
+                var controlBg = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(31, 31, 31)) : new SolidColorBrush(Color.FromRgb(250, 250, 250));
                 var textBrush = isDark ? (Brush)new SolidColorBrush(Color.FromRgb(247, 244, 239)) : new SolidColorBrush(Color.FromRgb(28, 28, 30));
 
                 if (windowBg is SolidColorBrush sb1) sb1.Freeze();
@@ -202,7 +202,7 @@ namespace Vibra_DesktopApp.ViewModels.Components
         [RelayCommand]
         public void OpenCategories()
         {
-            _mainVM.NavigateTo(new HomeViewModel(_mainVM), NavigationItem.Categories);
+            _mainVM.NavigateTo(new CategoriesViewModel(_mainVM), NavigationItem.Categories);
         }
 
         [RelayCommand]

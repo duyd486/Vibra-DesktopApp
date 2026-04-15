@@ -8,12 +8,15 @@
              d:DesignHeight="750" d:DesignWidth="1250">
 
     <Grid Background="Transparent">
-        <Border CornerRadius="20"
+        <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
                 Margin="0 0 5 5">
 
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer.Resources>
+                    <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+                </ScrollViewer.Resources>
                 <StackPanel>
 
                     <!-- HERO -->

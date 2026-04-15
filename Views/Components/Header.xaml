@@ -342,13 +342,50 @@
                         </i:Interaction.Triggers>
                     </TextBox>
 
+                    <!-- Categories Page button -->
                     <Button Grid.Column="2"
                             Command="{Binding OpenCategoriesCommand}"
                             Background="Transparent"
+                            BorderBrush="Transparent"
                             BorderThickness="0"
+                            Width="32" Height="20"
+                            Padding="0"
                             Margin="6,0,8,0"
-                            Tag="{Binding CurrentNavigationItem, Converter={StaticResource NavItemToTag}, ConverterParameter=Categories}">
-                        <fa:IconBlock Icon="BoxesStacked" Foreground="#B3B3B3" FontSize="18"/>
+                            FocusVisualStyle="{x:Null}"
+                            KeyboardNavigation.IsTabStop="False">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"
+                                                              RecognizesAccessKey="True" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                        <fa:IconBlock Icon="BoxesStacked" FontSize="18">
+                            <fa:IconBlock.Style>
+                                <Style TargetType="{x:Type fa:IconBlock}">
+                                    <Setter Property="Foreground" Value="#B3B3B3"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentNavigationItem}" Value="Categories">
+                                            <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </fa:IconBlock.Style>
+                        </fa:IconBlock>
                     </Button>
                 </Grid>
             </Border>

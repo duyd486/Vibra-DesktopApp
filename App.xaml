@@ -49,6 +49,7 @@
         <DataTemplate DataType="{x:Type vm2:AlbumViewModel}"><pages:AlbumPage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm2:ArtistViewModel}"><pages:ArtistPage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm2:SearchViewModel}"><pages:SearchPage /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm2:CategoriesViewModel}"><pages:CategoriesPage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm2:UserViewModel}"><pages:UserPage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm2:FavoriteSongsViewModel}"><pages:FavoriteSongsPage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm3:HeaderViewModel}"><components:Header /></DataTemplate>
