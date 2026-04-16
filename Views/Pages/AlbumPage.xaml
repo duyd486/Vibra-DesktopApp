@@ -22,8 +22,10 @@
                             Height="192"
                             CornerRadius="16"
                             Background="#666">
-                        <Image Stretch="UniformToFill"
-                             Source="{Binding Album.thumbnail_path}" />
+                        <Grid Width="192" Height="192">
+                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="192" Height="192"/>
+                            <Image Source="{Binding Album.thumbnail_path}" Stretch="UniformToFill" Width="192" Height="192"/>
+                        </Grid>
                     </Border>
 
                     <!-- INFO -->

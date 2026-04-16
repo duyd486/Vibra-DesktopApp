@@ -10,11 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\default.jpg" />
     <None Remove="Assets\Images\LogoText.png" />
     <None Remove="Assets\Images\MyLogo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controls\" />
     <Folder Include="Languages\" />
     <Folder Include="Views\Modals\" />
   </ItemGroup>
@@ -30,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\default.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\LogoText.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

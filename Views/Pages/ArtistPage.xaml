@@ -21,7 +21,10 @@
 
                     <!-- HERO -->
                     <Grid Height="320">
-                        <Image Source="{Binding Artist.avatar_path}" Stretch="UniformToFill"/>
+                        <Grid Height="320">
+                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Height="320"/>
+                            <Image Source="{Binding Artist.avatar_path}" Stretch="UniformToFill" Height="320"/>
+                        </Grid>
                         <Border Background="#80000000"/>
 
                         <StackPanel VerticalAlignment="Bottom" Margin="44 0 44 28">
@@ -197,7 +200,10 @@
                                    Margin="0 0 0 10"/>
 
                         <Grid Height="320">
-                            <Image Source="{Binding Artist.avatar_path}" Stretch="UniformToFill"/>
+                            <Grid Height="320">
+                                <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Height="320"/>
+                                <Image Source="{Binding Artist.avatar_path}" Stretch="UniformToFill" Height="320"/>
+                            </Grid>
                             <Border Background="#80000000" CornerRadius="18"/>
                             <Border CornerRadius="18" Background="Transparent" Padding="22">
                                 <StackPanel VerticalAlignment="Bottom">
@@ -236,7 +242,10 @@
                                     <DataTemplate>
                                         <StackPanel Width="180" Margin="0 0 14 0">
                                             <Border Width="180" Height="180" CornerRadius="14" Background="#333" ClipToBounds="True">
-                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                <Grid Width="180" Height="180">
+                                                    <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="180" Height="180"/>
+                                                    <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="180" Height="180"/>
+                                                </Grid>
                                             </Border>
                                             <TextBlock Text="{Binding name}"
                                                        Foreground="{DynamicResource AppTextBrush}"

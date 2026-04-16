@@ -59,9 +59,16 @@
                                                             </Border.RenderTransform>
 
                                                             <Grid>
-                                                                <Ellipse Width="136" Height="136">
+                                                                <Ellipse Width="136" Height="136" StrokeThickness="0">
                                                                     <Ellipse.Fill>
-                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                                        <VisualBrush Stretch="UniformToFill">
+                                                                            <VisualBrush.Visual>
+                                                                                <Grid Width="136" Height="136">
+                                                                                    <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="136" Height="136"/>
+                                                                                    <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="136" Height="136"/>
+                                                                                </Grid>
+                                                                            </VisualBrush.Visual>
+                                                                        </VisualBrush>
                                                                     </Ellipse.Fill>
                                                                 </Ellipse>
 
@@ -161,7 +168,14 @@
                                                             <Grid>
                                                                 <Border CornerRadius="12" ClipToBounds="True">
                                                                     <Border.Background>
-                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                                        <VisualBrush Stretch="UniformToFill">
+                                                                            <VisualBrush.Visual>
+                                                                                <Grid Width="172" Height="172">
+                                                                                    <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="172" Height="172"/>
+                                                                                    <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="172" Height="172"/>
+                                                                                </Grid>
+                                                                            </VisualBrush.Visual>
+                                                                        </VisualBrush>
                                                                     </Border.Background>
                                                                 </Border>
 

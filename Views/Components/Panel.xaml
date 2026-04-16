@@ -36,10 +36,11 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Width="48" Height="48" CornerRadius="24">
-                            <Border.Background>
-                                <ImageBrush ImageSource="{Binding SongManager.CurrentTrack.thumbnail_path}" Stretch="UniformToFill"/>
-                            </Border.Background>
+                        <Border Width="48" Height="48" CornerRadius="24" ClipToBounds="True">
+                            <Grid Width="48" Height="48">
+                                <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="48" Height="48"/>
+                                <Image Source="{Binding SongManager.CurrentTrack.thumbnail_path}" Stretch="UniformToFill" Width="48" Height="48"/>
+                            </Grid>
                         </Border>
 
                         <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">

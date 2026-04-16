@@ -24,10 +24,12 @@
             <!-- Thumbnail -->
             <Border Width="52"
                     Height="52"
-                    CornerRadius="26">
-                <Border.Background>
-                    <ImageBrush ImageSource="{Binding SongManager.CurrentTrack.thumbnail_path}" Stretch="UniformToFill"/>
-                </Border.Background>
+                    CornerRadius="26"
+                    ClipToBounds="True">
+                <Grid Width="52" Height="52">
+                    <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="52" Height="52"/>
+                    <Image Source="{Binding SongManager.CurrentTrack.thumbnail_path}" Stretch="UniformToFill" Width="52" Height="52"/>
+                </Grid>
             </Border>
 
             <!-- Song title + artist (left) + actions (right), vertically centered with thumbnail -->

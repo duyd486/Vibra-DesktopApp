@@ -31,7 +31,10 @@
                                 CornerRadius="80"
                                 Background="#333"
                                 ClipToBounds="True">
-                            <Image Source="{Binding CurrentUser.avatar_path}" Stretch="UniformToFill"/>
+                            <Grid Width="160" Height="160">
+                                <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="160" Height="160"/>
+                                <Image Source="{Binding CurrentUser.avatar_path}" Stretch="UniformToFill" Width="160" Height="160"/>
+                            </Grid>
                         </Border>
 
                         <StackPanel Margin="20 0 0 0" VerticalAlignment="Center">
@@ -130,7 +133,10 @@
                                                     CommandParameter="{Binding}">
                                                 <StackPanel>
                                                     <Border Width="180" Height="180" CornerRadius="14" Background="#333" ClipToBounds="True">
-                                                        <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                        <Grid Width="180" Height="180">
+                                                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="180" Height="180"/>
+                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="180" Height="180"/>
+                                                        </Grid>
                                                     </Border>
                                                     <TextBlock Text="{Binding name}"
                                                                Foreground="{DynamicResource AppTextBrush}"
@@ -171,7 +177,10 @@
                                                     CommandParameter="{Binding}">
                                                 <StackPanel>
                                                     <Border Width="128" Height="128" CornerRadius="64" Background="#333" ClipToBounds="True">
-                                                        <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                        <Grid Width="128" Height="128">
+                                                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="128" Height="128"/>
+                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="128" Height="128"/>
+                                                        </Grid>
                                                     </Border>
                                                     <TextBlock Text="{Binding name}"
                                                                Foreground="{DynamicResource AppTextBrush}"
@@ -211,7 +220,10 @@
                                                     CommandParameter="{Binding}">
                                                 <StackPanel>
                                                     <Border Width="140" Height="140" CornerRadius="14" Background="#333" ClipToBounds="True">
-                                                        <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                        <Grid Width="140" Height="140">
+                                                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="140" Height="140"/>
+                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="140" Height="140"/>
+                                                        </Grid>
                                                     </Border>
                                                     <TextBlock Text="{Binding name}"
                                                                Foreground="{DynamicResource AppTextBrush}"
@@ -251,7 +263,10 @@
                                                     CommandParameter="{Binding}">
                                                 <StackPanel>
                                                     <Border Width="128" Height="128" CornerRadius="64" Background="#333" ClipToBounds="True">
-                                                        <Image Source="{Binding avatar_path}" Stretch="UniformToFill"/>
+                                                        <Grid Width="128" Height="128">
+                                                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="128" Height="128"/>
+                                                            <Image Source="{Binding avatar_path}" Stretch="UniformToFill" Width="128" Height="128"/>
+                                                        </Grid>
                                                     </Border>
                                                     <TextBlock Text="{Binding name}"
                                                                Foreground="#888"
