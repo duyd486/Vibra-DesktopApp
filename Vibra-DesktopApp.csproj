@@ -45,4 +45,14 @@
     <Resource Include="Assets\Images\MyLogo.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Views\Pages\CategorySongsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Update="Views\Pages\CategorySongsPage.xaml.cs">
+      <DependentUpon>CategorySongsPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>
