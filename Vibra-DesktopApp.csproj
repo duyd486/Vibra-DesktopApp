@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="Assets\Images\default.jpg" />
+    <None Remove="Assets\Images\defaultUser.png" />
     <None Remove="Assets\Images\LogoText.png" />
     <None Remove="Assets\Images\MyLogo.png" />
   </ItemGroup>
@@ -33,6 +34,9 @@
 
   <ItemGroup>
     <Resource Include="Assets\Images\default.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\defaultUser.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\LogoText.png">

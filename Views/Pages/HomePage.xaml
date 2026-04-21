@@ -171,7 +171,7 @@
                                                                         <VisualBrush Stretch="UniformToFill">
                                                                             <VisualBrush.Visual>
                                                                                 <Grid Width="172" Height="172">
-                                                                                    <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="172" Height="172"/>
+                                                                                    <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="172" Height="172"/>
                                                                                     <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="172" Height="172"/>
                                                                                 </Grid>
                                                                             </VisualBrush.Visual>
@@ -262,9 +262,16 @@
                                                             </Border.RenderTransform>
 
                                                             <Grid>
-                                                                <Ellipse Width="172" Height="172">
+                                                                <Ellipse Width="172" Height="172" StrokeThickness="0">
                                                                     <Ellipse.Fill>
-                                                                        <ImageBrush ImageSource="{Binding avatar_path}" Stretch="UniformToFill"/>
+                                                                        <VisualBrush Stretch="UniformToFill">
+                                                                            <VisualBrush.Visual>
+                                                                                <Grid Width="172" Height="172">
+                                                                                    <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" Width="172" Height="172"/>
+                                                                                    <Image Source="{Binding avatar_path}" Stretch="UniformToFill" Width="172" Height="172"/>
+                                                                                </Grid>
+                                                                            </VisualBrush.Visual>
+                                                                        </VisualBrush>
                                                                     </Ellipse.Fill>
                                                                 </Ellipse>
 

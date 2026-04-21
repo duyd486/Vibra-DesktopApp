@@ -201,7 +201,7 @@
 
                         <Grid Height="320">
                             <Grid Height="320">
-                                <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Height="320"/>
+                                <Image Source="Assets/Images/defaultUser.png" Stretch="UniformToFill" Height="320"/>
                                 <Image Source="{Binding Artist.avatar_path}" Stretch="UniformToFill" Height="320"/>
                             </Grid>
                             <Border Background="#80000000" CornerRadius="18"/>

@@ -4,13 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+             xmlns:behaviors="clr-namespace:Vibra_DesktopApp.Behaviors"
              mc:Ignorable="d"
              d:DesignHeight="750" d:DesignWidth="1250">
 
     <Grid Background="Transparent">
-        <Border CornerRadius="20"
+        <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
-                Margin="0 0 5 5">
+                Margin="5 5 5 5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="220"/>
@@ -18,7 +19,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Header -->
-                <Border Grid.Row="0" CornerRadius="20,20,0,0">
+                <Border Grid.Row="0" CornerRadius="0,0,0,0">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Color="#33FFFFFF" Offset="0"/>
@@ -60,6 +61,9 @@
                               PanningMode="VerticalOnly"
                               PanningDeceleration="0.001"
                               CanContentScroll="False">
+                    <ScrollViewer.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+                    </ScrollViewer.Resources>
                     <StackPanel Margin="36 16 36 24">
 
                         <!-- Menu button -->
@@ -115,7 +119,13 @@
                                        FontWeight="SemiBold"
                                        Foreground="{DynamicResource AppTextBrush}"
                                        Margin="0 0 0 10"/>
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Disabled"
+                                          PanningMode="HorizontalOnly"
+                                          behaviors:ScrollBehavior.HorizontalScrollOnly="True">
+                                <ScrollViewer.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                                </ScrollViewer.Resources>
                                 <ItemsControl ItemsSource="{Binding MyAlbums}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -160,7 +170,13 @@
                                        FontWeight="SemiBold"
                                        Foreground="{DynamicResource AppTextBrush}"
                                        Margin="0 0 0 10"/>
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Disabled"
+                                          PanningMode="HorizontalOnly"
+                                          behaviors:ScrollBehavior.HorizontalScrollOnly="True">
+                                <ScrollViewer.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                                </ScrollViewer.Resources>
                                 <ItemsControl ItemsSource="{Binding MySongs}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -203,7 +219,13 @@
                                        FontWeight="SemiBold"
                                        Foreground="{DynamicResource AppTextBrush}"
                                        Margin="0 0 0 10"/>
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Disabled"
+                                          PanningMode="HorizontalOnly"
+                                          behaviors:ScrollBehavior.HorizontalScrollOnly="True">
+                                <ScrollViewer.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                                </ScrollViewer.Resources>
                                 <ItemsControl ItemsSource="{Binding MyPlaylists}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -246,7 +268,13 @@
                                        FontWeight="SemiBold"
                                        Foreground="{DynamicResource AppTextBrush}"
                                        Margin="0 0 0 10"/>
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" PanningMode="HorizontalOnly">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                          VerticalScrollBarVisibility="Disabled"
+                                          PanningMode="HorizontalOnly"
+                                          behaviors:ScrollBehavior.HorizontalScrollOnly="True">
+                                <ScrollViewer.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                                </ScrollViewer.Resources>
                                 <ItemsControl ItemsSource="{Binding FollowArtists}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -296,7 +324,8 @@
                                       HeadersVisibility="Column"
                                       GridLinesVisibility="None"
                                       Background="Transparent"
-                                      Foreground="{DynamicResource AppTextBrush}">
+                                      Foreground="{DynamicResource AppTextBrush}"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Mã giao dịch" Binding="{Binding id}"/>
                                     <DataGridTextColumn Header="Ngày thanh toán" Binding="{Binding created_at, StringFormat={}{0:dd/MM/yyyy}}"/>
