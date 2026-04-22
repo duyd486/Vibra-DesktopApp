@@ -18,28 +18,54 @@ namespace Vibra_DesktopApp.ViewModels
         [ObservableProperty] private List<Song>? listSong;
         [ObservableProperty] private List<Album>? listAlbum;
         [ObservableProperty] private List<User>? listArtist;
+        [ObservableProperty] private List<Song>? listRecentRotation;
+
+        [ObservableProperty] private bool isLoading = true;
 
         public HomeViewModel(MainViewModel mainVM)
         {
             _mainVM = mainVM;
-            RefreshListSong();
-            RefreshListAlbum();
-            RefreshListArtist();
+            _ = RefreshAllAsync();
+        }
+
+        private async Task RefreshAllAsync()
+        {
+            try
+            {
+                isLoading = true;
+                OnPropertyChanged(nameof(IsLoading));
+                await Task.WhenAll(
+                    RefreshListSongAsync(),
+                    RefreshListAlbumAsync(),
+                    RefreshListArtistAsync(),
+                    RefreshListRecentRotationAsync());
+            }
+            finally
+            {
+                isLoading = false;
+                OnPropertyChanged(nameof(IsLoading));
+            }
         }
 
 
-
-        public async void RefreshListSong()
+        private async Task RefreshListSongAsync()
         {
             ListSong = await ApiManager.GetInstance().HttpGetAsync<List<Song>>("home/list-song");
         }
-        public async void RefreshListAlbum()
+
+        private async Task RefreshListAlbumAsync()
         {
             ListAlbum = await ApiManager.GetInstance().HttpGetAsync<List<Album>>("home/list-album");
         }
-        public async void RefreshListArtist()
+
+        private async Task RefreshListArtistAsync()
         {
             ListArtist = await ApiManager.GetInstance().HttpGetAsync<List<User>>("home/list-artist");
+        }
+
+        private async Task RefreshListRecentRotationAsync()
+        {
+            ListRecentRotation = await ApiManager.GetInstance().HttpGetAsync<List<Song>>("home/recent-rotation?limit=5");
         }
         
 

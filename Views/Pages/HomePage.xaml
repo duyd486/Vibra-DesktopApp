@@ -7,8 +7,38 @@
              xmlns:vm="clr-namespace:Vibra_DesktopApp.ViewModels"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
              xmlns:behaviors="clr-namespace:Vibra_DesktopApp.Behaviors"
+             xmlns:converters="clr-namespace:Vibra_DesktopApp.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1000">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" Inverse="True"/>
+        <LinearGradientBrush x:Key="ShimmerBrush" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#14000000" Offset="0"/>
+            <GradientStop Color="#26000000" Offset="0.5"/>
+            <GradientStop Color="#14000000" Offset="1"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="ShimmerBlockStyle" TargetType="Rectangle">
+            <Setter Property="RadiusX" Value="8"/>
+            <Setter Property="RadiusY" Value="8"/>
+            <Setter Property="Fill" Value="{DynamicResource ControlBackgroundBrush}"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
+        </Style>
+
+        <Style x:Key="ShimmerAnimationStyle" TargetType="Rectangle" BasedOn="{StaticResource ShimmerBlockStyle}">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.55" To="0.95" Duration="0:0:0.9" AutoReverse="True"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid Background="Transparent">
         <Border CornerRadius="0" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 5 5 5" Padding="24">
             <ScrollViewer x:Name="MainScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -18,14 +48,34 @@
 
                 <StackPanel>
 
-                    <!-- Section: Bài hát phù hợp với bạn (list) -->
-                    <TextBlock Text="Bài hát phù hợp với bạn"
-                               FontWeight="SemiBold"
-                               FontSize="24"
-                               Foreground="{DynamicResource AppTextBrush}"
-                               Margin="0,0,0,12"/>
+                    <!-- Skeleton loading -->
+                    <StackPanel Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="28" Width="260" HorizontalAlignment="Left" Margin="0,0,0,12"/>
+                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
+                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
+                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
 
-                    <ItemsControl ItemsSource="{Binding ListSong}">
+                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" HorizontalAlignment="Left" Height="28" Width="200" Margin="0,24,0,12"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="192" Width="192" Margin="0,0,16,0"/>
+                            <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="192" Width="192" Margin="0,0,16,0"/>
+                            <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="192" Width="192"/>
+                        </StackPanel>
+
+                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" HorizontalAlignment="Left" Height="28" Width="220" Margin="0,24,0,12"/>
+                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
+                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
+                    </StackPanel>
+
+                    <StackPanel Visibility="{Binding IsLoading, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                        <!-- Section: Bài hát phù hợp với bạn (list) -->
+                        <TextBlock Text="Bài hát phù hợp với bạn"
+                                   FontWeight="SemiBold"
+                                   FontSize="24"
+                                   Foreground="{DynamicResource AppTextBrush}"
+                                   Margin="0,0,0,12"/>
+
+                        <ItemsControl ItemsSource="{Binding ListSong}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel />
@@ -51,9 +101,12 @@
                                                     </Grid.ColumnDefinitions>
 
                                                     <Border Width="56" Height="56" CornerRadius="8" Grid.Column="0" ClipToBounds="True">
+                                                        <Border.Clip>
+                                                            <RectangleGeometry Rect="0,0,56,56" RadiusX="8" RadiusY="8"/>
+                                                        </Border.Clip>
                                                         <Grid>
-                                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill"/>
-                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                                                         </Grid>
                                                     </Border>
 
@@ -74,7 +127,7 @@
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Root" Property="Background" Value="#0DFFFFFF"/>
+                                                    <Setter TargetName="Root" Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -82,10 +135,10 @@
                                 </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        </ItemsControl>
 
-                    <!-- Section: Album phổ biến (carousel) -->
-                    <TextBlock Text="Album phổ biến"
+                        <!-- Section: Album phổ biến (carousel) -->
+                        <TextBlock Text="Album phổ biến"
                                FontWeight="SemiBold"
                                FontSize="24"
                                Foreground="{DynamicResource AppTextBrush}"
@@ -174,10 +227,79 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                    </ScrollViewer>
+                        </ScrollViewer>
 
-                    <!-- Section: Nghệ sĩ với nhiều người theo dõi (top grid + carousel) -->
-                    <TextBlock Text="Nghệ sĩ với nhiều người theo dõi"
+                        <!-- Section: Lắng nghe gần đây (list) -->
+                        <TextBlock Text="Lắng nghe gần đây"
+                               FontWeight="SemiBold"
+                               FontSize="24"
+                               Foreground="{DynamicResource AppTextBrush}"
+                               Margin="0,28,0,12"/>
+
+                        <ItemsControl ItemsSource="{Binding ListRecentRotation}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button CommandParameter="{Binding}"
+                                        Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Cursor="Hand"
+                                        Padding="0"
+                                        HorizontalContentAlignment="Stretch">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="Root" CornerRadius="10" Padding="12">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Border Width="56" Height="56" CornerRadius="8" Grid.Column="0" ClipToBounds="True">
+                                                        <Border.Clip>
+                                                            <RectangleGeometry Rect="0,0,56,56" RadiusX="8" RadiusY="8"/>
+                                                        </Border.Clip>
+                                                        <Grid>
+                                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                        </Grid>
+                                                    </Border>
+
+                                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
+                                                        <TextBlock Text="{Binding total_played, StringFormat={}{0} lượt nghe}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource AppTextBrush}"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="00:00" FontSize="12" Opacity="0.65" Foreground="{DynamicResource AppTextBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                                        <Button Width="32" Height="32" BorderThickness="0" Background="Transparent" Cursor="Hand"
+                                                                Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                CommandParameter="{Binding}">
+                                                            <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Root" Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Section: Nghệ sĩ với nhiều người theo dõi (top grid + carousel) -->
+                        <TextBlock Text="Nghệ sĩ với nhiều người theo dõi"
                                FontWeight="SemiBold"
                                FontSize="24"
                                Foreground="{DynamicResource AppTextBrush}"
@@ -199,7 +321,7 @@
                                 <DataTemplate>
                                     <Button CommandParameter="{Binding}"
                                             Command="{Binding DataContext.OpenArtistDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                            Width="200" Height="360"
+                                            Width="200" Height="320"
                                             Margin="10,10,10,10"
                                             Cursor="Hand"
                                             Background="Transparent"
@@ -207,20 +329,20 @@
                                             Padding="0">
                                         <Button.Template>
                                             <ControlTemplate TargetType="Button">
-                                                <Grid x:Name="ArtistCardRoot" Width="200" Height="360" RenderTransformOrigin="0.5,0.5">
+                                                    <Grid x:Name="ArtistCardRoot" Width="200" Height="320" RenderTransformOrigin="0.5,0.5">
                                                     <Grid.RenderTransform>
                                                         <ScaleTransform x:Name="ArtistCardScale" ScaleX="1" ScaleY="1"/>
                                                     </Grid.RenderTransform>
                                                     <Border x:Name="ArtistImageRoot" CornerRadius="18" ClipToBounds="True">
                                                         <Border.Clip>
-                                                            <RectangleGeometry Rect="0,0,200,360" RadiusX="18" RadiusY="18"/>
+                                                                <RectangleGeometry Rect="0,0,200,320" RadiusX="18" RadiusY="18"/>
                                                         </Border.Clip>
-                                                        <Grid x:Name="ArtistImageContent" RenderTransformOrigin="0.5,0.5">
+                                                        <Grid x:Name="ArtistImageContent" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                             <Grid.RenderTransform>
                                                                 <ScaleTransform ScaleX="1" ScaleY="1"/>
                                                             </Grid.RenderTransform>
-                                                            <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                                            <Image Source="{Binding avatar_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            <Image Source="{Binding avatar_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                         </Grid>
                                                     </Border>
 
@@ -269,10 +391,10 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                    </ScrollViewer>
+                        </ScrollViewer>
 
-                    <!-- Section: Bài hát có nhiều lượt nghe (carousel + list) -->
-                    <TextBlock Text="Bài hát có nhiều lượt nghe"
+                        <!-- Section: Bài hát có nhiều lượt nghe (carousel + list) -->
+                        <TextBlock Text="Bài hát có nhiều lượt nghe"
                                FontWeight="SemiBold"
                                FontSize="24"
                                Foreground="{DynamicResource AppTextBrush}"
@@ -292,61 +414,74 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Width="200" Margin="0,0,16,0">
-                                        <Button Width="180" Height="180"
-                                                Cursor="Hand"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                CommandParameter="{Binding}">
-                                            <Button.Template>
-                                                <ControlTemplate TargetType="Button">
+                                    <Button Cursor="Hand"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Padding="0"
+                                            Margin="0,10,16,10"
+                                            Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <StackPanel x:Name="TopSongCardRoot" Width="200" Margin="0" RenderTransformOrigin="0.5,0.5">
+                                                    <StackPanel.RenderTransform>
+                                                        <ScaleTransform x:Name="TopSongCardScale" ScaleX="1" ScaleY="1"/>
+                                                    </StackPanel.RenderTransform>
+
                                                     <Grid Width="180" Height="180">
                                                         <Ellipse>
                                                             <Ellipse.Fill>
                                                                 <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
                                                             </Ellipse.Fill>
                                                         </Ellipse>
-                                                        <Border x:Name="SongPlayBadge"
-                                                                Width="56" Height="56"
-                                                                CornerRadius="28"
-                                                                Background="{DynamicResource CurrentColor}"
-                                                                Opacity="0"
-                                                                HorizontalAlignment="Right"
-                                                                VerticalAlignment="Bottom"
-                                                                Margin="0,0,10,10">
-                                                            <TextBlock Text="▶" FontSize="26" Foreground="#1D1512" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                        </Border>
                                                     </Grid>
-                                                    <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter TargetName="SongPlayBadge" Property="Opacity" Value="1"/>
-                                                        </Trigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </Button.Template>
-                                        </Button>
 
-                                        <Grid Margin="4,8,4,0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}" TextTrimming="CharacterEllipsis"/>
-                                                <TextBlock Text="{Binding total_played, StringFormat={}{0} lượt nghe}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource AppTextBrush}"/>
-                                            </StackPanel>
-                                            <Button Width="32" Height="32" Grid.Column="1" BorderThickness="0" Background="Transparent" Cursor="Hand"
-                                                    Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding}">
-                                                <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Button>
-                                        </Grid>
-                                    </StackPanel>
+                                                    <Grid Margin="4,8,4,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}" TextTrimming="CharacterEllipsis"/>
+                                                            <TextBlock Text="{Binding total_played, StringFormat={}{0} lượt nghe}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource AppTextBrush}"/>
+                                                        </StackPanel>
+                                                        <Button Width="32" Height="32" Grid.Column="1" BorderThickness="0" Background="Transparent" Cursor="Hand"
+                                                                Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                CommandParameter="{Binding}">
+                                                            <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Button>
+                                                    </Grid>
+                                                </StackPanel>
+
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetName="TopSongCardScale" Storyboard.TargetProperty="ScaleX" To="1.05" Duration="0:0:0.14"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="TopSongCardScale" Storyboard.TargetProperty="ScaleY" To="1.05" Duration="0:0:0.14"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetName="TopSongCardScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.16"/>
+                                                                    <DoubleAnimation Storyboard.TargetName="TopSongCardScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.16"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                    </ScrollViewer>
+                        </ScrollViewer>
+
+                    </StackPanel>
 
                 </StackPanel>
             </ScrollViewer>
