@@ -10,409 +10,298 @@
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="1000">
     <Grid Background="Transparent">
-        <Border CornerRadius="0" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 5 5 5">
-            <Grid VerticalAlignment="Top">
-                <!-- Main vertical ScrollViewer -->
-                <ScrollViewer x:Name="MainScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <ScrollViewer.Resources>
-                        <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
-                    </ScrollViewer.Resources>
+        <Border CornerRadius="24" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 5 5 5" Padding="24">
+            <ScrollViewer x:Name="MainScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ScrollViewer.Resources>
+                    <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+                </ScrollViewer.Resources>
 
-                    <StackPanel HorizontalAlignment="Left" Margin="0 10 0 0">
-                        
-                        <!-- Section 1: Bài hát phù hợp với bạn -->
-                        <TextBlock Text="Bài hát phù hợp với bạn" 
-                                   Width="auto" 
-                                   FontWeight="Bold" 
-                                   FontSize="26" 
-                                   Foreground="{DynamicResource AppTextBrush}" 
-                                   HorizontalAlignment="Left" 
-                                   Margin="20,20,0,10"/>
-                        
-                        <ScrollViewer Width="auto" 
-                                      CanContentScroll="True" 
-                                      HorizontalContentAlignment="Left" 
-                                      HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Disabled"
-                                      behaviors:ScrollBehavior.HorizontalScrollOnly="True">
-                            <ScrollViewer.Resources>
-                                <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
-                            </ScrollViewer.Resources>
-                            <ItemsControl ItemsSource="{Binding ListSong}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
+                <StackPanel>
 
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Width="200" Height="220" HorizontalAlignment="Left">
-                                            <Button CommandParameter="{Binding}" 
-                                                    Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                                                    Width="160" Height="160" Cursor="Hand" Background="Transparent" BorderThickness="0">
-                                                <Button.Template>
-                                                    <ControlTemplate TargetType="Button">
-                                                        <Border x:Name="Root" RenderTransformOrigin="0.5,0.5">
-                                                            <Border.RenderTransform>
-                                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                                                            </Border.RenderTransform>
+                    <!-- Section: Bài hát phù hợp với bạn (list) -->
+                    <TextBlock Text="Bài hát phù hợp với bạn"
+                               FontWeight="SemiBold"
+                               FontSize="24"
+                               Foreground="{DynamicResource AppTextBrush}"
+                               Margin="0,0,0,12"/>
 
+                    <ItemsControl ItemsSource="{Binding ListSong}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button CommandParameter="{Binding}"
+                                        Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Cursor="Hand"
+                                        Padding="0"
+                                        HorizontalContentAlignment="Stretch">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="Root" CornerRadius="10" Padding="12">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Border Width="56" Height="56" CornerRadius="8" Grid.Column="0" ClipToBounds="True">
+                                                        <Grid>
+                                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill"/>
+                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                        </Grid>
+                                                    </Border>
+
+                                                    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
+                                                        <TextBlock Text="{Binding total_played, StringFormat={}{0} lượt nghe}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource AppTextBrush}"/>
+                                                    </StackPanel>
+
+                                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="00:00" FontSize="12" Opacity="0.65" Foreground="{DynamicResource AppTextBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                                        <Button Width="32" Height="32" BorderThickness="0" Background="Transparent" Cursor="Hand"
+                                                                Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                CommandParameter="{Binding}">
+                                                            <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Root" Property="Background" Value="#0DFFFFFF"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Section: Album phổ biến (carousel) -->
+                    <TextBlock Text="Album phổ biến"
+                               FontWeight="SemiBold"
+                               FontSize="24"
+                               Foreground="{DynamicResource AppTextBrush}"
+                               Margin="0,28,0,12"/>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  behaviors:ScrollBehavior.HorizontalScrollOnly="True">
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                        </ScrollViewer.Resources>
+                        <ItemsControl ItemsSource="{Binding ListAlbum}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="192" Margin="0,0,16,0">
+                                        <Button Height="192"
+                                                Cursor="Hand"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Command="{Binding DataContext.OpenAlbumDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Grid Width="192" Height="192">
+                                                        <Border x:Name="ImageRoot" CornerRadius="16" ClipToBounds="True">
+                                                            <Border.Clip>
+                                                                <RectangleGeometry Rect="0,0,192,192" RadiusX="16" RadiusY="16"/>
+                                                            </Border.Clip>
                                                             <Grid>
-                                                                <Ellipse Width="136" Height="136" StrokeThickness="0">
-                                                                    <Ellipse.Fill>
-                                                                        <VisualBrush Stretch="UniformToFill">
-                                                                            <VisualBrush.Visual>
-                                                                                <Grid Width="136" Height="136">
-                                                                                    <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="136" Height="136"/>
-                                                                                    <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="136" Height="136"/>
-                                                                                </Grid>
-                                                                            </VisualBrush.Visual>
-                                                                        </VisualBrush>
-                                                                    </Ellipse.Fill>
-                                                                </Ellipse>
-
-                                                                <Border x:Name="PlayIcon"
-                                                                        Width="50" Height="50"
-                                                                        CornerRadius="60"
-                                                                        Background="{DynamicResource CurrentColor}"
-                                                                        Opacity="0"
-                                                                        HorizontalAlignment="Right"
-                                                                        Margin="0 0 0 10"
-                                                                        VerticalAlignment="Bottom">
-                                                                    <TextBlock Text="▶" FontSize="18" Foreground="#1D1512" 
-                                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                </Border>
+                                                                <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                                                             </Grid>
                                                         </Border>
 
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter TargetName="PlayIcon" Property="Opacity" Value="1"/>
-                                                                <Setter TargetName="Root" Property="RenderTransform">
-                                                                    <Setter.Value>
-                                                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Button.Template>
-                                            </Button>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" 
-                                                           FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" 
-                                                           Margin="32 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
-                                                           Margin="32 20 0 10" Grid.Column="0"/>
-                                                <Button Width="20" Height="20" FontSize="16" Grid.Column="1" 
-                                                        Margin="0 0 32 10" BorderThickness="0" Background="Transparent"
-                                                        Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                        CommandParameter="{Binding}">
-                                                    <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" 
-                                                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Button>
-                                            </Grid>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                                                        <Border x:Name="HoverOverlay" Background="#66000000" CornerRadius="16" Opacity="0"/>
 
-                        <!-- Section 2: Album phổ biến -->
-                        <TextBlock Text="Album phổ biến" 
-                                   Width="auto" 
-                                   FontWeight="Bold" 
-                                   FontSize="26" 
-                                   Foreground="{DynamicResource AppTextBrush}" 
-                                   HorizontalAlignment="Left" 
-                                   Margin="20,20,0,10"/>
-                        
-                        <ScrollViewer Width="auto" 
-                                      PanningMode="HorizontalOnly" 
-                                      CanContentScroll="True" 
-                                      HorizontalContentAlignment="Left" 
-                                      HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Disabled"
-                                      behaviors:ScrollBehavior.HorizontalScrollOnly="True">
-                            <ScrollViewer.Resources>
-                                <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
-                            </ScrollViewer.Resources>
-                            <ItemsControl ItemsSource="{Binding ListAlbum}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
+                                                        <Border x:Name="PlayBadge"
+                                                                Width="56" Height="56"
+                                                                CornerRadius="28"
+                                                                Background="{DynamicResource CurrentColor}"
+                                                                Opacity="0"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Bottom"
+                                                                Margin="0,0,10,10">
+                                                            <TextBlock Text="▶" FontSize="26" Foreground="#1D1512" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="HoverOverlay" Property="Opacity" Value="1"/>
+                                                            <Setter TargetName="PlayBadge" Property="Opacity" Value="1"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
 
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Width="180" Height="240" Margin="20 0 0 0" HorizontalAlignment="Left">
-                                            <Button Width="180" Height="180"
-                                                    Cursor="Hand"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    Command="{Binding DataContext.OpenAlbumDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        <TextBlock Text="{Binding name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}" Margin="4,8,4,0" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding total_song, StringFormat={}{0} bài hát}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource AppTextBrush}" Margin="4,2,4,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Section: Nghệ sĩ với nhiều người theo dõi (top grid + carousel) -->
+                    <TextBlock Text="Nghệ sĩ với nhiều người theo dõi"
+                               FontWeight="SemiBold"
+                               FontSize="24"
+                               Foreground="{DynamicResource AppTextBrush}"
+                               Margin="0,28,0,12"/>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  behaviors:ScrollBehavior.HorizontalScrollOnly="True">
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                        </ScrollViewer.Resources>
+                        <ItemsControl ItemsSource="{Binding ListArtist}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.OpenArtistDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            Width="180" Height="300"
+                                            Margin="0,0,16,0"
+                                            Cursor="Hand"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Padding="0">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Grid Width="180" Height="300">
+                                                    <Border CornerRadius="18" ClipToBounds="True">
+                                                        <Border.Clip>
+                                                            <RectangleGeometry Rect="0,0,180,300" RadiusX="18" RadiusY="18"/>
+                                                        </Border.Clip>
+                                                        <Grid>
+                                                            <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <Image Source="{Binding avatar_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                        </Grid>
+                                                    </Border>
+
+                                                    <Border Background="#B0000000" Height="90" VerticalAlignment="Bottom" CornerRadius="0,0,18,18"/>
+
+                                                    <StackPanel VerticalAlignment="Bottom" Margin="14,0,14,14">
+                                                        <TextBlock Text="{Binding name}" Foreground="White" FontSize="16" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text="{Binding followers, StringFormat={}{0} người theo dõi}" Foreground="#CCFFFFFF" FontSize="12"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <ScaleTransform ScaleX="1.03" ScaleY="1.03"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Section: Bài hát có nhiều lượt nghe (carousel + list) -->
+                    <TextBlock Text="Bài hát có nhiều lượt nghe"
+                               FontWeight="SemiBold"
+                               FontSize="24"
+                               Foreground="{DynamicResource AppTextBrush}"
+                               Margin="0,12,0,12"/>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  behaviors:ScrollBehavior.HorizontalScrollOnly="True">
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
+                        </ScrollViewer.Resources>
+                        <ItemsControl ItemsSource="{Binding ListSong}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="200" Margin="0,0,16,0">
+                                        <Button Width="180" Height="180"
+                                                Cursor="Hand"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Grid Width="180" Height="180">
+                                                        <Ellipse>
+                                                            <Ellipse.Fill>
+                                                                <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+                                                        <Border x:Name="SongPlayBadge"
+                                                                Width="56" Height="56"
+                                                                CornerRadius="28"
+                                                                Background="{DynamicResource CurrentColor}"
+                                                                Opacity="0"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Bottom"
+                                                                Margin="0,0,10,10">
+                                                            <TextBlock Text="▶" FontSize="26" Foreground="#1D1512" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="SongPlayBadge" Property="Opacity" Value="1"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+
+                                        <Grid Margin="4,8,4,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding total_played, StringFormat={}{0} lượt nghe}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource AppTextBrush}"/>
+                                            </StackPanel>
+                                            <Button Width="32" Height="32" Grid.Column="1" BorderThickness="0" Background="Transparent" Cursor="Hand"
+                                                    Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                     CommandParameter="{Binding}">
-                                                <Button.Template>
-                                                    <ControlTemplate TargetType="Button">
-                                                        <Border x:Name="Root" Width="172" Height="172" CornerRadius="12" RenderTransformOrigin="0.5,0.5">
-                                                            <Border.RenderTransform>
-                                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                                                            </Border.RenderTransform>
-
-                                                            <Grid>
-                                                                <Border CornerRadius="12" ClipToBounds="True">
-                                                                    <Border.Background>
-                                                                        <VisualBrush Stretch="UniformToFill">
-                                                                            <VisualBrush.Visual>
-                                                                                <Grid Width="172" Height="172">
-                                                                                    <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="172" Height="172"/>
-                                                                                    <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="172" Height="172"/>
-                                                                                </Grid>
-                                                                            </VisualBrush.Visual>
-                                                                        </VisualBrush>
-                                                                    </Border.Background>
-                                                                </Border>
-
-                                                                <Border x:Name="Overlay" Background="#66000000" CornerRadius="12" Opacity="0"/>
-
-                                                                <Border x:Name="CenterIcon"
-                                                                        Width="48" Height="48"
-                                                                        CornerRadius="32"
-                                                                        Background="{DynamicResource CurrentColor}"
-                                                                        Opacity="0"
-                                                                        Margin="0 0 10 10"
-                                                                        HorizontalAlignment="Right"
-                                                                        VerticalAlignment="Bottom">
-                                                                    <TextBlock Text="▶" FontSize="20" Foreground="#1D1512" 
-                                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                </Border>
-                                                            </Grid>
-                                                        </Border>
-
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter TargetName="Overlay" Property="Opacity" Value="1"/>
-                                                                <Setter TargetName="CenterIcon" Property="Opacity" Value="1"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Button.Template>
+                                                <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Button>
+                                        </Grid>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
 
-                                            <Grid HorizontalAlignment="Left">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Width="160" HorizontalAlignment="Left" Text="{Binding name}" 
-                                                           FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" 
-                                                           Margin="4 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="{Binding total_song}" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
-                                                           Margin="4 20 0 10" Grid.Column="0"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-
-                        <!-- Section 3: Nghệ sĩ với nhiều người theo dõi -->
-                        <TextBlock Text="Nghệ sĩ với nhiều người theo dõi" 
-                                   Width="auto" 
-                                   FontWeight="Bold" 
-                                   FontSize="26" 
-                                   Foreground="{DynamicResource AppTextBrush}" 
-                                   HorizontalAlignment="Left" 
-                                   Margin="20,20,0,10"/>
-                        
-                        <ScrollViewer Width="auto" 
-                                      PanningMode="HorizontalOnly" 
-                                      CanContentScroll="True" 
-                                      HorizontalContentAlignment="Left" 
-                                      HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Disabled"
-                                      behaviors:ScrollBehavior.HorizontalScrollOnly="True">
-                            <ScrollViewer.Resources>
-                                <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
-                            </ScrollViewer.Resources>
-                            <ItemsControl ItemsSource="{Binding ListArtist}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Width="180" Height="240" Margin="20 0 0 0" HorizontalAlignment="Left">
-                                            <Button CommandParameter="{Binding}"  
-                                                    Command="{Binding DataContext.OpenArtistDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"  
-                                                    Width="180" Height="180" Cursor="Hand" Background="Transparent" BorderThickness="0">
-                                                <Button.Template>
-                                                    <ControlTemplate TargetType="Button">
-                                                        <Border x:Name="Root" RenderTransformOrigin="0.5,0.5">
-                                                            <Border.RenderTransform>
-                                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                                                            </Border.RenderTransform>
-
-                                                            <Grid>
-                                                                <Ellipse Width="172" Height="172" StrokeThickness="0">
-                                                                    <Ellipse.Fill>
-                                                                        <VisualBrush Stretch="UniformToFill">
-                                                                            <VisualBrush.Visual>
-                                                                                <Grid Width="172" Height="172">
-                                                                                    <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" Width="172" Height="172"/>
-                                                                                    <Image Source="{Binding avatar_path}" Stretch="UniformToFill" Width="172" Height="172"/>
-                                                                                </Grid>
-                                                                            </VisualBrush.Visual>
-                                                                        </VisualBrush>
-                                                                    </Ellipse.Fill>
-                                                                </Ellipse>
-
-                                                                <Border x:Name="PlayIcon"
-                                                                        Width="50" Height="50"
-                                                                        CornerRadius="60"
-                                                                        Background="{DynamicResource CurrentColor}"
-                                                                        Opacity="0"
-                                                                        HorizontalAlignment="Right"
-                                                                        Margin="0 0 0 10"
-                                                                        VerticalAlignment="Bottom">
-                                                                    <TextBlock Text="▶" FontSize="18" Foreground="#1D1512" 
-                                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                </Border>
-                                                            </Grid>
-                                                        </Border>
-
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter TargetName="PlayIcon" Property="Opacity" Value="1"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Button.Template>
-                                            </Button>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" 
-                                                           FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" 
-                                                           Margin="4 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="Người theo dõi" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
-                                                           Margin="4 20 0 10" Grid.Column="0"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-
-                        <!-- Section 4: Bài hát có nhiều lượt nghe -->
-                        <TextBlock Text="Bài hát có nhiều lượt nghe" 
-                                   Width="auto" 
-                                   FontWeight="Bold" 
-                                   FontSize="26" 
-                                   Foreground="{DynamicResource AppTextBrush}" 
-                                   HorizontalAlignment="Left" 
-                                   Margin="20,20,0,10"/>
-                        
-                        <ScrollViewer Width="auto" 
-                                      PanningMode="HorizontalOnly" 
-                                      CanContentScroll="True" 
-                                      HorizontalContentAlignment="Left" 
-                                      HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Disabled"
-                                      behaviors:ScrollBehavior.HorizontalScrollOnly="True">
-                            <ScrollViewer.Resources>
-                                <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
-                            </ScrollViewer.Resources>
-                            <ItemsControl ItemsSource="{Binding ListSong}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Width="200" Height="220" HorizontalAlignment="Left">
-                                            <Button Width="160" Height="160"
-                                                    Cursor="Hand"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    Command="{Binding DataContext.PlayOrPauseThisSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding}">
-                                                <Button.Template>
-                                                    <ControlTemplate TargetType="Button">
-                                                        <Border x:Name="Root" RenderTransformOrigin="0.5,0.5">
-                                                            <Border.RenderTransform>
-                                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
-                                                            </Border.RenderTransform>
-
-                                                            <Grid>
-                                                                <Ellipse Width="136" Height="136">
-                                                                    <Ellipse.Fill>
-                                                                        <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
-                                                                    </Ellipse.Fill>
-                                                                </Ellipse>
-
-                                                                <Border x:Name="PlayIcon"
-                                                                        Width="50" Height="50"
-                                                                        CornerRadius="60"
-                                                                        Background="{DynamicResource CurrentColor}"
-                                                                        Opacity="0"
-                                                                        HorizontalAlignment="Right"
-                                                                        Margin="0 0 0 10"
-                                                                        VerticalAlignment="Bottom">
-                                                                    <TextBlock Text="▶" FontSize="18" Foreground="{DynamicResource AppTextBrush}" 
-                                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                </Border>
-                                                            </Grid>
-                                                        </Border>
-
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter TargetName="PlayIcon" Property="Opacity" Value="1"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Button.Template>
-                                            </Button>
-
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Width="112" HorizontalAlignment="Left" Text="{Binding name}" 
-                                                           FontSize="16" FontWeight="DemiBold" Foreground="{DynamicResource AppTextBrush}" 
-                                                           Margin="32 0 0 10" Grid.Column="0"/>
-                                                <TextBlock Text="View" FontSize="14" Foreground="{DynamicResource AppTextBrush}" 
-                                                           Margin="32 20 0 10" Grid.Column="0"/>
-                                                <Button Width="20" Height="20" FontSize="16" Grid.Column="1" 
-                                                        Margin="0 0 32 10" BorderThickness="0" Background="Transparent"
-                                                        Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                        CommandParameter="{Binding}">
-                                                    <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" 
-                                                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Button>
-                                            </Grid>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
+                </StackPanel>
+            </ScrollViewer>
         </Border>
     </Grid>
 </UserControl>
