@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +17,7 @@ namespace Vibra_DesktopApp.ViewModels
     {
         private readonly MainViewModel _mainVM;
         [ObservableProperty] private List<Song>? listSong;
+        [ObservableProperty] private List<Song>? listSongForYou;
         [ObservableProperty] private List<Album>? listAlbum;
         [ObservableProperty] private List<User>? listArtist;
         [ObservableProperty] private List<Song>? listRecentRotation;
@@ -51,6 +53,7 @@ namespace Vibra_DesktopApp.ViewModels
         private async Task RefreshListSongAsync()
         {
             ListSong = await ApiManager.GetInstance().HttpGetAsync<List<Song>>("home/list-song");
+            ListSongForYou = ListSong?.Take(8).ToList();
         }
 
         private async Task RefreshListAlbumAsync()
@@ -65,7 +68,11 @@ namespace Vibra_DesktopApp.ViewModels
 
         private async Task RefreshListRecentRotationAsync()
         {
-            ListRecentRotation = await ApiManager.GetInstance().HttpGetAsync<List<Song>>("home/recent-rotation?limit=5");
+            var recent = await ApiManager.GetInstance()
+                .HttpGetAsync<List<Song>>("home/recent-rotation?limit=5")
+                .ConfigureAwait(false);
+
+            ListRecentRotation = recent?.Take(5).ToList();
         }
         
 

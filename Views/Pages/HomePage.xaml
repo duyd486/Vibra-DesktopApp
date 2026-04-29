@@ -75,7 +75,7 @@
                                    Foreground="{DynamicResource AppTextBrush}"
                                    Margin="0,0,0,12"/>
 
-                        <ItemsControl ItemsSource="{Binding ListSong}">
+                        <ItemsControl ItemsSource="{Binding ListSongForYou}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel />
@@ -429,11 +429,11 @@
                                                     </StackPanel.RenderTransform>
 
                                                     <Grid Width="180" Height="180">
-                                                        <Ellipse>
-                                                            <Ellipse.Fill>
-                                                                <ImageBrush ImageSource="{Binding thumbnail_path}" Stretch="UniformToFill"/>
-                                                            </Ellipse.Fill>
-                                                        </Ellipse>
+                                                        <Grid.Clip>
+                                                            <EllipseGeometry Center="90,90" RadiusX="90" RadiusY="90" />
+                                                        </Grid.Clip>
+                                                        <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                        <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                                                     </Grid>
 
                                                     <Grid Margin="4,8,4,0">
