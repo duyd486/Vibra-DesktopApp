@@ -8,9 +8,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="200">
     <Grid>
+        <!-- ================= QUEUE (WAITLIST) - kept intact ================= -->
         <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
-                Margin="0 5 5 5">
+                Margin="0 5 5 5"
+                Visibility="{Binding IsQueueContent, Converter={StaticResource BoolToVisibility}}">
             <Grid Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -150,6 +152,133 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- ================= DETAILS (Vue-like) ================= -->
+        <Border CornerRadius="0"
+                Background="#D1D5DB"
+                Margin="0 5 5 5"
+                Visibility="{Binding IsDetailsContent, Converter={StaticResource BoolToVisibility}}">
+            <Grid>
+                <Image Source="{Binding SongManager.CurrentTrack.thumbnail_path}"
+                       Stretch="UniformToFill" />
+
+                <!-- brightness-75 effect -->
+                <Rectangle Fill="#40000000" />
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Click on the dark background to close (doesn't change the Vue look) -->
+                    <Button Grid.Row="0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding ClosePanelCommand}" />
+
+                    <!-- Bottom card (Vue: absolute bottom-5, w-11/12, rounded-2xl, bg-white, p-4) -->
+                    <Border Grid.Row="1"
+                            Margin="16"
+                            CornerRadius="12"
+                            Background="{DynamicResource ControlBackgroundBrush}"
+                            Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Giới thiệu về nghệ sĩ"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       Margin="0,0,0,12"/>
+
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Width="64" Height="64" CornerRadius="32" ClipToBounds="True" Background="#9CA3AF">
+                                    <Image Source="{Binding SongManager.CurrentTrack.author.avatar_path}"
+                                           Stretch="UniformToFill" />
+                                </Border>
+
+                                <Button Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Padding="16,8"
+                                        Background="Transparent"
+                                        BorderThickness="1"
+                                        BorderBrush="{DynamicResource CurrentColor}"
+                                        Foreground="{DynamicResource CurrentColor}"
+                                        FontSize="12"
+                                        FontWeight="SemiBold"
+                                        Command="{Binding FollowOrUnfollowCurrentArtistCommand}"
+                                        Visibility="{Binding IsMe, Converter={StaticResource InverseBoolToVisibility}}">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    CornerRadius="999"
+                                                    Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                            <Setter Property="Content" Value="Theo dõi" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsFollowed}" Value="True">
+                                                    <Setter Property="Content" Value="Hủy theo dõi" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+
+                            <TextBlock Text="{Binding SongManager.CurrentTrack.name}"
+                                       FontSize="22"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       TextTrimming="CharacterEllipsis"
+                                       Margin="0,0,0,4"/>
+
+                            <TextBlock Text="{Binding SongManager.CurrentTrack.author.followers, StringFormat={}{0} người theo dõi}"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       Margin="0,0,0,12"/>
+
+                            <TextBlock Text="{Binding SongManager.CurrentTrack.playlist.name, StringFormat=Album {0}}"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       Margin="0,0,0,4"/>
+
+                            <ScrollViewer MaxHeight="96" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                                <TextBlock Text="{Binding SongManager.CurrentTrack.playlist.description}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource AppTextBrush}"
+                                           TextWrapping="Wrap"/>
+                            </ScrollViewer>
+
+                            <TextBlock Text="Về bài hát bạn đang nghe"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppTextBrush}"
+                                       Margin="0,16,0,4"/>
+
+                            <ScrollViewer MaxHeight="96" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                                <TextBlock Text="{Binding SongManager.CurrentTrack.description}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource AppTextBrush}"
+                                           TextWrapping="Wrap"/>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </Grid>
         </Border>

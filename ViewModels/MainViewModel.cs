@@ -8,6 +8,12 @@ using Vibra_DesktopApp.ViewModels.Pages;
 
 namespace Vibra_DesktopApp.ViewModels
 {
+    public enum PanelContent
+    {
+        Queue = 0,
+        Details = 1,
+    }
+
     public partial class MainViewModel : ObservableObject
     {
         public SidebarViewModel SidebarVM { get; }
@@ -17,6 +23,7 @@ namespace Vibra_DesktopApp.ViewModels
 
         [ObservableProperty] private ObservableObject _currentPageViewModel;
         [ObservableProperty] private bool _isPanelOpen = false;
+        [ObservableProperty] private PanelContent _panelContent = PanelContent.Queue;
         
         // Current active navigation item
         [ObservableProperty] private NavigationItem _currentNavigationItem = NavigationItem.Home;
@@ -37,6 +44,17 @@ namespace Vibra_DesktopApp.ViewModels
         partial void OnIsPanelOpenChanged(bool value)
         {
             OnPropertyChanged(nameof(PanelWidth));
+        }
+
+        public void OpenPanel(PanelContent content)
+        {
+            PanelContent = content;
+            IsPanelOpen = true;
+        }
+
+        public void ClosePanel()
+        {
+            IsPanelOpen = false;
         }
 
         public void NavigateTo(ObservableObject vm, NavigationItem navItem = NavigationItem.None)
@@ -82,7 +100,14 @@ namespace Vibra_DesktopApp.ViewModels
         [RelayCommand]
         public void TogglePanel()
         {
-            IsPanelOpen = !IsPanelOpen;
+            if (!IsPanelOpen)
+            {
+                PanelContent = PanelContent.Queue;
+                IsPanelOpen = true;
+                return;
+            }
+
+            IsPanelOpen = false;
         }
     }
 }

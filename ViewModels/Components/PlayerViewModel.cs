@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Vibra_DesktopApp.Singleton;
 using Vibra_DesktopApp.Models;
+using Vibra_DesktopApp.ViewModels;
 
 namespace Vibra_DesktopApp.ViewModels.Components
 {
@@ -201,6 +202,30 @@ namespace Vibra_DesktopApp.ViewModels.Components
         public void TogglePanel()
         {
             _mainVM.TogglePanel();
+        }
+
+        [RelayCommand]
+        public void ToggleQueuePanel()
+        {
+            if (_mainVM.IsPanelOpen && _mainVM.PanelContent == PanelContent.Queue)
+            {
+                _mainVM.ClosePanel();
+                return;
+            }
+
+            _mainVM.OpenPanel(PanelContent.Queue);
+        }
+
+        [RelayCommand]
+        public void ToggleSongDetailsPanel()
+        {
+            if (_mainVM.IsPanelOpen && _mainVM.PanelContent == PanelContent.Details)
+            {
+                _mainVM.ClosePanel();
+                return;
+            }
+
+            _mainVM.OpenPanel(PanelContent.Details);
         }
 
         public bool IsShuffle

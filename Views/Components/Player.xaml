@@ -410,16 +410,16 @@
 
             <Button Background="Transparent"
                     BorderThickness="0" Margin="10 0"
-                    Command="{Binding TogglePanelCommand}">
+                    Command="{Binding ToggleQueuePanelCommand}">
                 <fa:IconBlock Icon="List"
                               Foreground="{DynamicResource AppTextBrush}"
                               FontSize="16"
                               Margin="4 0"/>
             </Button>
-
+            <!--Song Detail Panel Btn-->
             <Button Background="Transparent"
                     BorderThickness="0" Margin="10 0"
-                    Command="{Binding TogglePanelCommand}">
+                    Command="{Binding ToggleSongDetailsPanelCommand}">
                 <fa:IconBlock Icon="TabletScreenButton"
                               Foreground="{DynamicResource AppTextBrush}"
                               FontSize="16"
