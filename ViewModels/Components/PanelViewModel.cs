@@ -116,6 +116,8 @@ namespace Vibra_DesktopApp.ViewModels.Components
 
                     Application.Current?.Dispatcher.Invoke(() => IsFollowed = false);
                 }
+
+                await _mainVM.SidebarVM.RefreshAsync().ConfigureAwait(false);
             }
             catch (Exception ex)
             {

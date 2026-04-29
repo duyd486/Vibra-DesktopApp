@@ -176,6 +176,8 @@ namespace Vibra_DesktopApp.ViewModels.Components
 
                 IsAddToPlaylistMenuOpen = false;
                 await RefreshAvailablePlaylistsForCurrentTrackAsync().ConfigureAwait(false);
+
+                await _mainVM.SidebarVM.RefreshAsync().ConfigureAwait(false);
             }
             catch
             {

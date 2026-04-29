@@ -118,6 +118,11 @@ namespace Vibra_DesktopApp.ViewModels.Components
             _ = FavoriteSongManager.GetInstance().LoadAsync();
         }
 
+        public async Task RefreshAsync()
+        {
+            await LoadAsync().ConfigureAwait(false);
+        }
+
         partial void OnSelectedFilterChanged(string value)
         {
             OnPropertyChanged(nameof(ShowPlaylists));

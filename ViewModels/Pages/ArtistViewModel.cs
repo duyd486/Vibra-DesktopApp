@@ -115,8 +115,7 @@ namespace Vibra_DesktopApp.ViewModels.Pages
                     IsFollowed = false;
                 }
 
-                // refresh sidebar lists if you want (your sidebar doesn't auto-refresh now)
-                // For now, just keep local state.
+                await _mainVM.SidebarVM.RefreshAsync().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -146,6 +145,8 @@ namespace Vibra_DesktopApp.ViewModels.Pages
 
                     IsFollowed = false;
                 }
+
+                await _mainVM.SidebarVM.RefreshAsync().ConfigureAwait(false);
 
                 // Navigate back home and set nav item
                 Application.Current.Dispatcher.Invoke(() =>
