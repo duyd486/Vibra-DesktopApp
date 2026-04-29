@@ -245,12 +245,15 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                        <Border Width="40" Height="52" CornerRadius="6" Padding="0 5 0 5" Margin="2 0 0 0" ClipToBounds="True">
-                                            <Grid>
-                                                <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill"/>
-                                                <Image Source="{Binding Album.thumbnail_path}" Stretch="UniformToFill"/>
-                                            </Grid>
-                                        </Border>
+                                  <Border Width="56" Height="56" CornerRadius="4" Margin="2 0 0 0" ClipToBounds="True">
+                                        <Border.Clip>
+                                            <RectangleGeometry Rect="5,6,44,44" RadiusX="4" RadiusY="4" />
+                                        </Border.Clip>
+                                        <Grid>
+                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <Image Source="{Binding Album.thumbnail_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        </Grid>
+                                    </Border>
 
                                         <StackPanel Grid.Column="1" Margin="4 0 0 0" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding Album.name}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
@@ -294,9 +297,15 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Border Width="40" Height="52" CornerRadius="6" Padding="0 5 0 5" Margin="2 0 0 0">
-                                            <Image Source="{Binding Album.thumbnail_path}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
-                                        </Border>
+                                 <Border Width="56" Height="56" CornerRadius="8" Margin="2 0 0 0" ClipToBounds="True">
+                                        <Border.Clip>
+                                            <RectangleGeometry Rect="0,0,56,56" RadiusX="8" RadiusY="8"/>
+                                        </Border.Clip>
+                                        <Grid>
+                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <Image Source="{Binding Album.thumbnail_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        </Grid>
+                                    </Border>
 
                                         <StackPanel Grid.Column="1" Margin="4 0 0 0" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding Album.name}"  FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
@@ -330,12 +339,13 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Border Width="40" Height="52" CornerRadius="6" Padding="0 5 0 5" Margin="2 0 0 0" ClipToBounds="True">
-                                            <Grid>
-                                                <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill"/>
-                                                <Image Source="{Binding Artist.avatar_path}" Stretch="UniformToFill"/>
-                                            </Grid>
-                                        </Border>
+                                 <Grid Width="56" Height="56" Margin="2 0 0 0">
+                                        <Grid.Clip>
+                                            <EllipseGeometry Center="28,28" RadiusX="24" RadiusY="24" />
+                                        </Grid.Clip>
+                                        <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <Image Source="{Binding Artist.avatar_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Grid>
 
                                         <StackPanel Grid.Column="1" Margin="4 0 0 0" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding Artist.name}"  FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource AppTextBrush}"/>
