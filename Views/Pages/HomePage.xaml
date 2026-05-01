@@ -13,11 +13,11 @@
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converters:BoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" Inverse="True"/>
-        <LinearGradientBrush x:Key="ShimmerBrush" StartPoint="0,0" EndPoint="1,0">
-            <GradientStop Color="#14000000" Offset="0"/>
-            <GradientStop Color="#26000000" Offset="0.5"/>
-            <GradientStop Color="#14000000" Offset="1"/>
-        </LinearGradientBrush>
+        <Storyboard x:Key="SkeletonShimmerStoryboard" RepeatBehavior="Forever" Timeline.DesiredFrameRate="20">
+            <DoubleAnimation Storyboard.TargetName="SkeletonShimmerOverlay"
+                             Storyboard.TargetProperty="Fill.(LinearGradientBrush.RelativeTransform).(TranslateTransform.X)"
+                             From="-1" To="1" Duration="0:0:1.2" />
+        </Storyboard>
 
         <Style x:Key="ShimmerBlockStyle" TargetType="Rectangle">
             <Setter Property="RadiusX" Value="8"/>
@@ -25,18 +25,6 @@
             <Setter Property="Fill" Value="{DynamicResource ControlBackgroundBrush}"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
             <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
-        </Style>
-
-        <Style x:Key="ShimmerAnimationStyle" TargetType="Rectangle" BasedOn="{StaticResource ShimmerBlockStyle}">
-            <Style.Triggers>
-                <EventTrigger RoutedEvent="Loaded">
-                    <BeginStoryboard>
-                        <Storyboard RepeatBehavior="Forever">
-                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.55" To="0.95" Duration="0:0:0.9" AutoReverse="True"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Style.Triggers>
         </Style>
 
         <Style x:Key="HoverScaleIconButtonStyle" TargetType="Button">
@@ -101,23 +89,51 @@
                 <StackPanel>
 
                     <!-- Skeleton loading -->
-                    <StackPanel Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="28" Width="260" HorizontalAlignment="Left" Margin="0,0,0,12"/>
-                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
-                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
-                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
+                    <Grid Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
+                          CacheMode="BitmapCache"
+                          UseLayoutRounding="True">
+                        <Grid.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard Storyboard="{StaticResource SkeletonShimmerStoryboard}" />
+                            </EventTrigger>
+                        </Grid.Triggers>
 
-                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" HorizontalAlignment="Left" Height="28" Width="200" Margin="0,24,0,12"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="192" Width="192" Margin="0,0,16,0"/>
-                            <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="192" Width="192" Margin="0,0,16,0"/>
-                            <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="192" Width="192"/>
+                        <StackPanel x:Name="SkeletonShapes">
+                            <Rectangle Style="{StaticResource ShimmerBlockStyle}" Height="28" Width="260" HorizontalAlignment="Left" Margin="0,0,0,12"/>
+                            <Rectangle Style="{StaticResource ShimmerBlockStyle}" Height="72" Margin="0,0,0,8"/>
+                            <Rectangle Style="{StaticResource ShimmerBlockStyle}" Height="72" Margin="0,0,0,8"/>
+                            <Rectangle Style="{StaticResource ShimmerBlockStyle}" Height="72" Margin="0,0,0,8"/>
+
+                            <Rectangle Style="{StaticResource ShimmerBlockStyle}" HorizontalAlignment="Left" Height="28" Width="200" Margin="0,24,0,12"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <Rectangle Style="{StaticResource ShimmerBlockStyle}" Height="192" Width="192" Margin="0,0,16,0"/>
+                                <Rectangle Style="{StaticResource ShimmerBlockStyle}" Height="192" Width="192" Margin="0,0,16,0"/>
+                                <Rectangle Style="{StaticResource ShimmerBlockStyle}" Height="192" Width="192"/>
+                            </StackPanel>
+
+                            <Rectangle Style="{StaticResource ShimmerBlockStyle}" HorizontalAlignment="Left" Height="28" Width="220" Margin="0,24,0,12"/>
+                            <Rectangle Style="{StaticResource ShimmerBlockStyle}" Height="72" Margin="0,0,0,8"/>
+                            <Rectangle Style="{StaticResource ShimmerBlockStyle}" Height="72" Margin="0,0,0,8"/>
                         </StackPanel>
 
-                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" HorizontalAlignment="Left" Height="28" Width="220" Margin="0,24,0,12"/>
-                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
-                        <Rectangle Style="{StaticResource ShimmerAnimationStyle}" Height="72" Margin="0,0,0,8"/>
-                    </StackPanel>
+                        <Rectangle x:Name="SkeletonShimmerOverlay" IsHitTestVisible="False" Opacity="0.9">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#00000000" Offset="0"/>
+                                    <GradientStop Color="#22000000" Offset="0.40"/>
+                                    <GradientStop Color="#33000000" Offset="0.50"/>
+                                    <GradientStop Color="#22000000" Offset="0.60"/>
+                                    <GradientStop Color="#00000000" Offset="1"/>
+                                    <LinearGradientBrush.RelativeTransform>
+                                        <TranslateTransform X="-1" />
+                                    </LinearGradientBrush.RelativeTransform>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{Binding ElementName=SkeletonShapes}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Grid>
 
                     <StackPanel Visibility="{Binding IsLoading, Converter={StaticResource InverseBoolToVisibilityConverter}}">
                         <!-- Section: Bài hát phù hợp với bạn (list) -->
@@ -157,8 +173,11 @@
                                                             <RectangleGeometry Rect="0,0,56,56" RadiusX="8" RadiusY="8"/>
                                                         </Border.Clip>
                                                         <Grid>
-                                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="LowQuality"/>
+                                                            <Image behaviors:LazyImage.Source="{Binding thumbnail_path}"
+                                                                   behaviors:LazyImage.DecodePixelWidth="56"
+                                                                   Stretch="UniformToFill"
+                                                                   RenderOptions.BitmapScalingMode="LowQuality"/>
                                                         </Grid>
                                                     </Border>
 
@@ -231,8 +250,11 @@
                                                                 <RectangleGeometry Rect="0,0,192,192" RadiusX="16" RadiusY="16"/>
                                                             </Border.Clip>
                                                             <Grid>
-                                                                <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                                                <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                                <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="LowQuality"/>
+                                                                <Image behaviors:LazyImage.Source="{Binding thumbnail_path}"
+                                                                       behaviors:LazyImage.DecodePixelWidth="192"
+                                                                       Stretch="UniformToFill"
+                                                                       RenderOptions.BitmapScalingMode="LowQuality"/>
                                                             </Grid>
                                                         </Border>
 
@@ -395,8 +417,13 @@
                                                             <Grid.RenderTransform>
                                                                 <ScaleTransform ScaleX="1" ScaleY="1"/>
                                                             </Grid.RenderTransform>
-                                                            <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                            <Image Source="{Binding avatar_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="LowQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            <Image behaviors:LazyImage.Source="{Binding avatar_path}"
+                                                                   behaviors:LazyImage.DecodePixelWidth="200"
+                                                                   Stretch="UniformToFill"
+                                                                   RenderOptions.BitmapScalingMode="LowQuality"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
                                                         </Grid>
                                                     </Border>
 
@@ -486,8 +513,11 @@
                                                         <Grid.Clip>
                                                             <EllipseGeometry Center="90,90" RadiusX="90" RadiusY="90" />
                                                         </Grid.Clip>
-                                                        <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                                        <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                        <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="LowQuality"/>
+                                                        <Image behaviors:LazyImage.Source="{Binding thumbnail_path}"
+                                                               behaviors:LazyImage.DecodePixelWidth="180"
+                                                               Stretch="UniformToFill"
+                                                               RenderOptions.BitmapScalingMode="LowQuality"/>
                                                     </Grid>
 
                                                     <Grid Margin="4,8,4,0">

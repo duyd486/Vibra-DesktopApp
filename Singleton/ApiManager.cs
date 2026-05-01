@@ -110,11 +110,11 @@ namespace Vibra_DesktopApp.Singleton
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync(baseUrl + url);
+                HttpResponseMessage response = await client.GetAsync(baseUrl + url).ConfigureAwait(false);
 
                 response.EnsureSuccessStatusCode();
 
-                string result = await response.Content.ReadAsStringAsync();
+                string result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 ResponseBase<T>? res = JsonSerializer.Deserialize<ResponseBase<T>>(result);
 
@@ -122,7 +122,14 @@ namespace Vibra_DesktopApp.Singleton
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                if (Application.Current?.Dispatcher?.CheckAccess() == true)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                else
+                {
+                    Application.Current?.Dispatcher?.Invoke(() => MessageBox.Show(ex.Message));
+                }
                 return default!;
             }
         }

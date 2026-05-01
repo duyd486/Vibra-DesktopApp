@@ -65,7 +65,7 @@ namespace Vibra_DesktopApp.Behaviors
                 // Vertical scroll: bubble up to parent ScrollViewer
                 // Mark as handled = false so parent can handle it
                 e.Handled = false;
-                
+
                 // Find parent ScrollViewer and scroll it
                 var parentScrollViewer = FindParentScrollViewer(scrollViewer);
                 if (parentScrollViewer != null)

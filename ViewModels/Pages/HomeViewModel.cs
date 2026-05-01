@@ -34,8 +34,7 @@ namespace Vibra_DesktopApp.ViewModels
         {
             try
             {
-                isLoading = true;
-                OnPropertyChanged(nameof(IsLoading));
+                IsLoading = true;
                 await Task.WhenAll(
                     RefreshListSongAsync(),
                     RefreshListAlbumAsync(),
@@ -44,8 +43,7 @@ namespace Vibra_DesktopApp.ViewModels
             }
             finally
             {
-                isLoading = false;
-                OnPropertyChanged(nameof(IsLoading));
+                IsLoading = false;
             }
         }
 
