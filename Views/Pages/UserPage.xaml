@@ -14,6 +14,51 @@
         <converters:PaymentStatusToBrushConverter x:Key="PaymentStatusToBrush" />
         <converters:PaymentStatusToDotBrushConverter x:Key="PaymentStatusToDotBrush" />
         <converters:PaymentStatusToTextBrushConverter x:Key="PaymentStatusToTextBrush" />
+
+        <Style x:Key="HoverScaleButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.14"/>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.14"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.16"/>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.16"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <Grid Background="Transparent">
@@ -148,19 +193,22 @@
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                           VerticalScrollBarVisibility="Disabled"
                                           PanningMode="HorizontalOnly"
+                                           ClipToBounds="False"
+                                           Height="280"
                                           behaviors:ScrollBehavior.HorizontalScrollOnly="True">
                                 <ScrollViewer.Resources>
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
                                 </ScrollViewer.Resources>
-                                <ItemsControl ItemsSource="{Binding MyAlbums}">
+                                <ItemsControl ItemsSource="{Binding MyAlbums}" ClipToBounds="False">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
+                                            <StackPanel Orientation="Horizontal" ClipToBounds="False"/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Button Width="190"
+                                                    Style="{StaticResource HoverScaleButtonStyle}"
                                                     Background="Transparent"
                                                     BorderThickness="0"
                                                     Padding="0"
@@ -222,20 +270,23 @@
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                           VerticalScrollBarVisibility="Disabled"
                                           PanningMode="HorizontalOnly"
+                                           ClipToBounds="False"
+                                           Padding="6,8"
                                           behaviors:ScrollBehavior.HorizontalScrollOnly="True">
                                 <ScrollViewer.Resources>
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
                                 </ScrollViewer.Resources>
-                                <ItemsControl ItemsSource="{Binding MySongs}">
+                                <ItemsControl ItemsSource="{Binding MySongs}" ClipToBounds="False">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
+                                            <StackPanel Orientation="Horizontal" ClipToBounds="False"/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
 
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Button Background="Transparent"
+                                                    Style="{StaticResource HoverScaleButtonStyle}"
                                                     BorderThickness="0"
                                                     Margin="0 0 18 0"
                                                     Command="{Binding DataContext.PlaySongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
@@ -291,22 +342,25 @@
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                           VerticalScrollBarVisibility="Disabled"
                                           PanningMode="HorizontalOnly"
+                                           ClipToBounds="False"
+                                          Height="190"
                                           behaviors:ScrollBehavior.HorizontalScrollOnly="True">
                                 <ScrollViewer.Resources>
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
                                 </ScrollViewer.Resources>
-                                <ItemsControl ItemsSource="{Binding MyPlaylists}">
+                                <ItemsControl ItemsSource="{Binding MyPlaylists}" ClipToBounds="False">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
+                                            <StackPanel Orientation="Horizontal" ClipToBounds="False"/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Button Width="150"
+                                                    Style="{StaticResource HoverScaleButtonStyle}"
                                                     Background="Transparent"
                                                     BorderThickness="0"
-                                                    Margin="0 0 18 0"
+                                                    Margin="8 0 10 0"
                                                     Command="{Binding DataContext.OpenAlbumCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                     CommandParameter="{Binding}">
                                                 <StackPanel>
@@ -344,20 +398,23 @@
                             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                           VerticalScrollBarVisibility="Disabled"
                                           PanningMode="HorizontalOnly"
+                                           ClipToBounds="False"
+                                          Height="190"
                                           behaviors:ScrollBehavior.HorizontalScrollOnly="True">
                                 <ScrollViewer.Resources>
                                     <Style TargetType="ScrollBar" BasedOn="{StaticResource HorizontalScrollBarStyle}"/>
                                 </ScrollViewer.Resources>
-                                <ItemsControl ItemsSource="{Binding FollowArtists}">
+                                <ItemsControl ItemsSource="{Binding FollowArtists}" ClipToBounds="False">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
+                                            <StackPanel Orientation="Horizontal" ClipToBounds="False"/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
 
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Button Background="Transparent"
+                                                    Style="{StaticResource HoverScaleButtonStyle}"
                                                     BorderThickness="0"
                                                     Margin="0 0 18 0"
                                                     Command="{Binding DataContext.OpenArtistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
