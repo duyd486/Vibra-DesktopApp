@@ -59,12 +59,33 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="MenuToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid Background="Transparent">
-        <Border CornerRadius="24"
+        <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
-                Margin="5 5 5 5">
+                Margin="0 5 0 5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="220"/>
@@ -72,7 +93,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Header -->
-                <Border Grid.Row="0" CornerRadius="24,24,0,0">
+                <Border Grid.Row="0" CornerRadius="0,0,0,0">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Color="#33FFFFFF" Offset="0"/>
@@ -124,62 +145,62 @@
 
                         <!-- Menu button -->
                         <Grid>
-                            <Button Width="46" Height="46"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    HorizontalAlignment="Left"
-                                    Command="{Binding ToggleMenuCommand}">
+                            <ToggleButton x:Name="MenuToggle"
+                                          Width="46" Height="46"
+                                          HorizontalAlignment="Left"
+                                          Style="{StaticResource MenuToggleButtonStyle}"
+                                          IsChecked="{Binding IsMenuOpen, Mode=TwoWay}">
                                 <fa:IconBlock Icon="EllipsisH" Foreground="#888" FontSize="22"/>
-                            </Button>
+                            </ToggleButton>
 
-                            <Border Background="#222"
-                                    CornerRadius="10"
-                                    Padding="8"
-                                    HorizontalAlignment="Left"
-                                    Margin="0 54 0 0"
-                                    Width="220">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMenuOpen}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
+                            <Popup PlacementTarget="{Binding ElementName=MenuToggle}"
+                                   Placement="Bottom"
+                                   StaysOpen="False"
+                                   IsOpen="{Binding IsMenuOpen, Mode=TwoWay}"
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Fade">
+                                <Border Background="#111"
+                                        CornerRadius="12"
+                                        Padding="8"
+                                        BorderBrush="#333"
+                                        BorderThickness="1"
+                                        Width="220">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#000000" BlurRadius="18" ShadowDepth="4" Opacity="0.35"/>
+                                    </Border.Effect>
 
-                                <StackPanel>
-                                    <Button Content="Chỉnh sửa hồ sơ"
-                                            HorizontalContentAlignment="Left"
-                                            Background="Transparent"
-                                            Foreground="White"
-                                            BorderThickness="0"
-                                            Padding="10,8"
-                                            Command="{Binding EditProfileCommand}"/>
-                                    <Button Content="Đăng tải bài hát"
-                                            HorizontalContentAlignment="Left"
-                                            Background="Transparent"
-                                            Foreground="White"
-                                            BorderThickness="0"
-                                            Padding="10,8"
-                                            Command="{Binding UploadSongCommand}"/>
-                                    <Button Content="Tạo một album"
-                                            HorizontalContentAlignment="Left"
-                                            Background="Transparent"
-                                            Foreground="White"
-                                            BorderThickness="0"
-                                            Padding="10,8"
-                                            Command="{Binding CreateAlbumCommand}"/>
-                                    <Button Content="Làm mới"
-                                            HorizontalContentAlignment="Left"
-                                            Background="Transparent"
-                                            Foreground="White"
-                                            BorderThickness="0"
-                                            Padding="10,8"
-                                            Command="{Binding RefreshCommand}"/>
-                                </StackPanel>
-                            </Border>
+                                    <StackPanel>
+                                        <Button Content="Chỉnh sửa hồ sơ"
+                                                HorizontalContentAlignment="Left"
+                                                Background="Transparent"
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                Padding="10,8"
+                                                Command="{Binding EditProfileCommand}"/>
+                                        <Button Content="Đăng tải bài hát"
+                                                HorizontalContentAlignment="Left"
+                                                Background="Transparent"
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                Padding="10,8"
+                                                Command="{Binding UploadSongCommand}"/>
+                                        <Button Content="Tạo một album"
+                                                HorizontalContentAlignment="Left"
+                                                Background="Transparent"
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                Padding="10,8"
+                                                Command="{Binding CreateAlbumCommand}"/>
+                                        <Button Content="Làm mới"
+                                                HorizontalContentAlignment="Left"
+                                                Background="Transparent"
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                Padding="10,8"
+                                                Command="{Binding RefreshCommand}"/>
+                                    </StackPanel>
+                                </Border>
+                            </Popup>
                         </Grid>
 
                         <!-- My Albums -->

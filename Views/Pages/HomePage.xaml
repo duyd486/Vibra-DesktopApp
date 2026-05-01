@@ -38,6 +38,58 @@
                 </EventTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="HoverScaleIconButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1.15" Duration="0:0:0.12"/>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1.15" Duration="0:0:0.12"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.14"/>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.14"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Opacity" Value="0.85"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <Grid Background="Transparent">
         <Border CornerRadius="0" Background="{DynamicResource WindowBackgroundBrush}" Margin="0 5 5 5" Padding="24">
@@ -118,6 +170,7 @@
                                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                                         <TextBlock Text="00:00" FontSize="12" Opacity="0.65" Foreground="{DynamicResource AppTextBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
                                                         <Button Width="32" Height="32" BorderThickness="0" Background="Transparent" Cursor="Hand"
+                                                                Style="{StaticResource HoverScaleIconButtonStyle}"
                                                                 Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                                 CommandParameter="{Binding}">
                                                             <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -279,6 +332,7 @@
                                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                                         <TextBlock Text="00:00" FontSize="12" Opacity="0.65" Foreground="{DynamicResource AppTextBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
                                                         <Button Width="32" Height="32" BorderThickness="0" Background="Transparent" Cursor="Hand"
+                                                                Style="{StaticResource HoverScaleIconButtonStyle}"
                                                                 Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                                 CommandParameter="{Binding}">
                                                             <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -446,6 +500,7 @@
                                                             <TextBlock Text="{Binding total_played, StringFormat={}{0} lượt nghe}" FontSize="12" Opacity="0.75" Foreground="{DynamicResource AppTextBrush}"/>
                                                         </StackPanel>
                                                         <Button Width="32" Height="32" Grid.Column="1" BorderThickness="0" Background="Transparent" Cursor="Hand"
+                                                                Style="{StaticResource HoverScaleIconButtonStyle}"
                                                                 Command="{Binding DataContext.AddToWaitlistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                                 CommandParameter="{Binding}">
                                                             <fa:IconBlock Icon="List" Foreground="{DynamicResource AppTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
