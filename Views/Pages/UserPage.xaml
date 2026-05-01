@@ -5,11 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
              xmlns:behaviors="clr-namespace:Vibra_DesktopApp.Behaviors"
+             xmlns:converters="clr-namespace:Vibra_DesktopApp.Converters"
              mc:Ignorable="d"
              d:DesignHeight="750" d:DesignWidth="1250">
 
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+        <converters:PaymentStatusToBrushConverter x:Key="PaymentStatusToBrush" />
+        <converters:PaymentStatusToDotBrushConverter x:Key="PaymentStatusToDotBrush" />
+        <converters:PaymentStatusToTextBrushConverter x:Key="PaymentStatusToTextBrush" />
+    </UserControl.Resources>
+
     <Grid Background="Transparent">
-        <Border CornerRadius="0"
+        <Border CornerRadius="24"
                 Background="{DynamicResource WindowBackgroundBrush}"
                 Margin="5 5 5 5">
             <Grid>
@@ -19,7 +27,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Header -->
-                <Border Grid.Row="0" CornerRadius="0,0,0,0">
+                <Border Grid.Row="0" CornerRadius="24,24,0,0">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Color="#33FFFFFF" Offset="0"/>
@@ -33,8 +41,11 @@
                                 Background="#333"
                                 ClipToBounds="True">
                             <Grid Width="160" Height="160">
-                                <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="160" Height="160"/>
-                                <Image Source="{Binding CurrentUser.avatar_path}" Stretch="UniformToFill" Width="160" Height="160"/>
+                                <Grid.Clip>
+                                    <EllipseGeometry Center="80,80" RadiusX="80" RadiusY="80" />
+                                </Grid.Clip>
+                                <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" Width="160" Height="160" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <Image Source="{Binding CurrentUser.display_avatar_path}" Stretch="UniformToFill" Width="160" Height="160" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </Grid>
                         </Border>
 
@@ -94,6 +105,20 @@
                                 </Border.Style>
 
                                 <StackPanel>
+                                    <Button Content="Chỉnh sửa hồ sơ"
+                                            HorizontalContentAlignment="Left"
+                                            Background="Transparent"
+                                            Foreground="White"
+                                            BorderThickness="0"
+                                            Padding="10,8"
+                                            Command="{Binding EditProfileCommand}"/>
+                                    <Button Content="Đăng tải bài hát"
+                                            HorizontalContentAlignment="Left"
+                                            Background="Transparent"
+                                            Foreground="White"
+                                            BorderThickness="0"
+                                            Padding="10,8"
+                                            Command="{Binding UploadSongCommand}"/>
                                     <Button Content="Tạo một album"
                                             HorizontalContentAlignment="Left"
                                             Background="Transparent"
@@ -113,7 +138,8 @@
                         </Grid>
 
                         <!-- My Albums -->
-                        <StackPanel Margin="0 18 0 0">
+                        <StackPanel Margin="0 18 0 0"
+                                    Visibility="{Binding HasMyAlbums, Converter={StaticResource BoolToVisibility}}">
                             <TextBlock Text="Album của tôi"
                                        FontSize="18"
                                        FontWeight="SemiBold"
@@ -143,18 +169,40 @@
                                                     CommandParameter="{Binding}">
                                                 <StackPanel>
                                                     <Border Width="180" Height="180" CornerRadius="14" Background="#333" ClipToBounds="True">
+                                                        <Border.Clip>
+                                                            <RectangleGeometry Rect="0,0,180,180" RadiusX="14" RadiusY="14"/>
+                                                        </Border.Clip>
                                                         <Grid Width="180" Height="180">
-                                                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="180" Height="180"/>
-                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="180" Height="180"/>
+                                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="180" Height="180" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <Image Source="{Binding display_thumbnail_path}" Stretch="UniformToFill" Width="180" Height="180" RenderOptions.BitmapScalingMode="HighQuality"/>
                                                         </Grid>
                                                     </Border>
-                                                    <TextBlock Text="{Binding name}"
-                                                               Foreground="{DynamicResource AppTextBrush}"
-                                                               FontWeight="SemiBold"
-                                                               Margin="0 8 0 0"/>
-                                                    <TextBlock Text="{Binding created_at, StringFormat= Năm {0:yyyy}}"
-                                                               Foreground="#888"
-                                                               FontSize="12"/>
+                                                    <Grid Margin="0 8 0 0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Text="{Binding name}"
+                                                                       Foreground="{DynamicResource AppTextBrush}"
+                                                                       FontWeight="SemiBold"
+                                                                       TextTrimming="CharacterEllipsis"/>
+                                                            <TextBlock Text="{Binding created_at, StringFormat= Năm {0:yyyy}}"
+                                                                       Foreground="#888"
+                                                                       FontSize="12"/>
+                                                        </StackPanel>
+
+                                                        <Button Grid.Column="1"
+                                                                Width="34" Height="34"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Padding="0"
+                                                                Command="{Binding DataContext.EditAlbumCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                CommandParameter="{Binding}">
+                                                            <fa:IconBlock Icon="Edit" Foreground="#888" FontSize="16"/>
+                                                        </Button>
+                                                    </Grid>
                                                 </StackPanel>
                                             </Button>
                                         </DataTemplate>
@@ -164,7 +212,8 @@
                         </StackPanel>
 
                         <!-- My Songs -->
-                        <StackPanel Margin="0 18 0 0">
+                        <StackPanel Margin="0 18 0 0"
+                                    Visibility="{Binding HasMySongs, Converter={StaticResource BoolToVisibility}}">
                             <TextBlock Text="Danh sách bài hát của tôi"
                                        FontSize="18"
                                        FontWeight="SemiBold"
@@ -194,16 +243,35 @@
                                                 <StackPanel>
                                                     <Border Width="128" Height="128" CornerRadius="64" Background="#333" ClipToBounds="True">
                                                         <Grid Width="128" Height="128">
-                                                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="128" Height="128"/>
-                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="128" Height="128"/>
+                                                            <Grid.Clip>
+                                                                <EllipseGeometry Center="64,64" RadiusX="64" RadiusY="64" />
+                                                            </Grid.Clip>
+                                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="128" Height="128" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <Image Source="{Binding display_thumbnail_path}" Stretch="UniformToFill" Width="128" Height="128" RenderOptions.BitmapScalingMode="HighQuality"/>
                                                         </Grid>
                                                     </Border>
-                                                    <TextBlock Text="{Binding name}"
-                                                               Foreground="{DynamicResource AppTextBrush}"
-                                                               FontWeight="SemiBold"
-                                                               Margin="0 8 0 0"
-                                                               Width="128"
-                                                               TextTrimming="CharacterEllipsis"/>
+                                                     <Grid Margin="0 8 0 0" Width="128">
+                                                         <Grid.ColumnDefinitions>
+                                                             <ColumnDefinition Width="*"/>
+                                                             <ColumnDefinition Width="Auto"/>
+                                                         </Grid.ColumnDefinitions>
+
+                                                         <TextBlock Grid.Column="0"
+                                                                    Text="{Binding name}"
+                                                                    Foreground="{DynamicResource AppTextBrush}"
+                                                                    FontWeight="SemiBold"
+                                                                    TextTrimming="CharacterEllipsis"/>
+
+                                                         <Button Grid.Column="1"
+                                                                 Width="28" Height="28"
+                                                                 Background="Transparent"
+                                                                 BorderThickness="0"
+                                                                 Padding="0"
+                                                                 Command="{Binding DataContext.EnqueueSongCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                 CommandParameter="{Binding}">
+                                                             <fa:IconBlock Icon="FolderOpen" Foreground="#888" FontSize="18"/>
+                                                         </Button>
+                                                     </Grid>
                                                 </StackPanel>
                                             </Button>
                                         </DataTemplate>
@@ -213,7 +281,8 @@
                         </StackPanel>
 
                         <!-- My Playlists -->
-                        <StackPanel Margin="0 18 0 0">
+                        <StackPanel Margin="0 18 0 0"
+                                    Visibility="{Binding HasMyPlaylists, Converter={StaticResource BoolToVisibility}}">
                             <TextBlock Text="Playlist của tôi"
                                        FontSize="18"
                                        FontWeight="SemiBold"
@@ -242,9 +311,12 @@
                                                     CommandParameter="{Binding}">
                                                 <StackPanel>
                                                     <Border Width="140" Height="140" CornerRadius="14" Background="#333" ClipToBounds="True">
+                                                        <Border.Clip>
+                                                            <RectangleGeometry Rect="0,0,140,140" RadiusX="14" RadiusY="14"/>
+                                                        </Border.Clip>
                                                         <Grid Width="140" Height="140">
-                                                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="140" Height="140"/>
-                                                            <Image Source="{Binding thumbnail_path}" Stretch="UniformToFill" Width="140" Height="140"/>
+                                                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="140" Height="140" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <Image Source="{Binding display_thumbnail_path}" Stretch="UniformToFill" Width="140" Height="140" RenderOptions.BitmapScalingMode="HighQuality"/>
                                                         </Grid>
                                                     </Border>
                                                     <TextBlock Text="{Binding name}"
@@ -262,7 +334,8 @@
                         </StackPanel>
 
                         <!-- Followed Artists -->
-                        <StackPanel Margin="0 18 0 0">
+                        <StackPanel Margin="0 18 0 0"
+                                    Visibility="{Binding HasFollowArtists, Converter={StaticResource BoolToVisibility}}">
                             <TextBlock Text="Đang theo dõi"
                                        FontSize="18"
                                        FontWeight="SemiBold"
@@ -288,15 +361,18 @@
                                                     BorderThickness="0"
                                                     Margin="0 0 18 0"
                                                     Command="{Binding DataContext.OpenArtistCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding}">
+                                                    CommandParameter="{Binding display_artist}">
                                                 <StackPanel>
                                                     <Border Width="128" Height="128" CornerRadius="64" Background="#333" ClipToBounds="True">
                                                         <Grid Width="128" Height="128">
-                                                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="128" Height="128"/>
-                                                            <Image Source="{Binding avatar_path}" Stretch="UniformToFill" Width="128" Height="128"/>
+                                                            <Grid.Clip>
+                                                                <EllipseGeometry Center="64,64" RadiusX="64" RadiusY="64" />
+                                                            </Grid.Clip>
+                                                            <Image Source="/Assets/Images/defaultUser.png" Stretch="UniformToFill" Width="128" Height="128" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                            <Image Source="{Binding display_artist.display_avatar_path}" Stretch="UniformToFill" Width="128" Height="128" RenderOptions.BitmapScalingMode="HighQuality"/>
                                                         </Grid>
                                                     </Border>
-                                                    <TextBlock Text="{Binding name}"
+                                                    <TextBlock Text="{Binding display_name}"
                                                                Foreground="#888"
                                                                Margin="0 8 0 0"
                                                                Width="128"
@@ -311,31 +387,88 @@
                         </StackPanel>
 
                         <!-- Bills -->
-                        <StackPanel Margin="0 22 0 0">
+                        <StackPanel Margin="0 22 0 0"
+                                    Visibility="{Binding HasBills, Converter={StaticResource BoolToVisibility}}">
                             <TextBlock Text="Lịch sử thanh toán"
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        Foreground="{DynamicResource AppTextBrush}"
                                        Margin="0 0 0 10"/>
 
-                            <DataGrid ItemsSource="{Binding Bills}"
-                                      AutoGenerateColumns="False"
-                                      CanUserAddRows="False"
-                                      HeadersVisibility="Column"
-                                      GridLinesVisibility="None"
-                                      Background="Transparent"
-                                      Foreground="{DynamicResource AppTextBrush}"
-                                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã giao dịch" Binding="{Binding id}"/>
-                                    <DataGridTextColumn Header="Ngày thanh toán" Binding="{Binding created_at, StringFormat={}{0:dd/MM/yyyy}}"/>
-                                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding status}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                            <Border CornerRadius="10"
+                                    BorderBrush="#2A2A2A"
+                                    BorderThickness="1"
+                                    Background="#141414">
+                                <DataGrid ItemsSource="{Binding Bills}"
+                                          AutoGenerateColumns="False"
+                                          CanUserAddRows="False"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="None"
+                                          Background="Transparent"
+                                          Foreground="{DynamicResource AppTextBrush}"
+                                          BorderThickness="0"
+                                          RowBackground="Transparent"
+                                          AlternatingRowBackground="Transparent"
+                                          ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="#1F1F1F"/>
+                                            <Setter Property="Foreground" Value="#FFE5D6"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <Setter Property="Padding" Value="12,10"/>
+                                        </Style>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="MinHeight" Value="44"/>
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#1A1A1A"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <Setter Property="Padding" Value="12,10"/>
+                                            <Setter Property="Foreground" Value="#B0B0B0"/>
+                                        </Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Mã giao dịch" Binding="{Binding id}"/>
+                                        <DataGridTextColumn Header="Ngày thanh toán" Binding="{Binding created_at, StringFormat={}{0:dd/MM/yyyy}}"/>
+                                        <DataGridTextColumn Header="Số tiền" Binding="{Binding amount_text}"/>
+                                        <DataGridTextColumn Header="Tên" Binding="{Binding item_name}"/>
+                                        <DataGridTextColumn Header="Gói dịch vụ" Binding="{Binding package_name}"/>
+
+                                        <DataGridTemplateColumn Header="Trạng thái">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border CornerRadius="999"
+                                                            Padding="10,4"
+                                                            Background="{Binding status, Converter={StaticResource PaymentStatusToBrush}}">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <Ellipse Width="8" Height="8"
+                                                                     Fill="{Binding status, Converter={StaticResource PaymentStatusToDotBrush}}"
+                                                                     VerticalAlignment="Center"/>
+                                                            <TextBlock Margin="8,0,0,0"
+                                                                       FontSize="12"
+                                                                       FontWeight="SemiBold"
+                                                                       Foreground="{Binding status, Converter={StaticResource PaymentStatusToTextBrush}}"
+                                                                       Text="{Binding status_text}"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
                         </StackPanel>
 
                     </StackPanel>
                 </ScrollViewer>
+
             </Grid>
         </Border>
     </Grid>

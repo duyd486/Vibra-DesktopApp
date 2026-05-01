@@ -1,0 +1,283 @@
+<Window x:Class="Vibra_DesktopApp.Views.Modals.UploadSongWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+        mc:Ignorable="d"
+        Title="Đăng tải bài hát"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        ShowInTaskbar="False"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Border Width="900"
+            Padding="24"
+            CornerRadius="12"
+            Background="#1D1512">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <TextBlock Text="Đăng tải bài hát"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource CurrentColor}"/>
+                <Button Width="32" Height="32"
+                        HorizontalAlignment="Right"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding CloseWindowCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <TextBlock Text="✕" FontSize="16" Foreground="White"/>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="0 18 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Width="320" Height="320"
+                        BorderThickness="0"
+                        Padding="0"
+                        Background="#3A3533"
+                        Command="{Binding ChooseSongThumbnailCommand}">
+                    <Border CornerRadius="12" ClipToBounds="True">
+                        <Grid>
+                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill"/>
+                            <Image Source="{Binding SongThumbnailPreviewPath}" Stretch="UniformToFill"/>
+                            <Border Background="#66000000" Opacity="0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Opacity" Value="0"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Opacity" Value="1"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <fa:IconBlock Icon="Edit" Foreground="White" FontSize="28"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Button>
+
+                <StackPanel Grid.Column="2">
+                    <Button Command="{Binding ChooseSongFileCommand}"
+                            Background="#25211F"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Padding="14,10"
+                            Margin="0 0 0 10"
+                            Content="{Binding SelectedSongFileName, FallbackValue=Chọn file Nhạc}"/>
+
+                    <TextBox Text="{Binding SongDescription, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             Height="140"
+                             Margin="0 0 0 10"
+                             Background="#25211F"
+                             Foreground="White"
+                             BorderThickness="0"
+                             Padding="14,10"
+                             FontSize="14" />
+
+                    <TextBox Text="{Binding SongPrice, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0 0 0 10"
+                             Background="#25211F"
+                             Foreground="White"
+                             BorderThickness="0"
+                             Padding="14,10"
+                             FontSize="14" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Category dropdown (Vue-like, Popup) -->
+                        <Grid Grid.Column="0">
+                            <Button x:Name="CategoryDropdownButton"
+                                    Background="#25211F"
+                                    Foreground="White"
+                                    BorderThickness="0"
+                                    Padding="14,10"
+                                    HorizontalContentAlignment="Left"
+                                    Command="{Binding ToggleCategoryDropdownCommand}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding SelectedCategoryName, FallbackValue=Chọn thể loại}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <fa:IconBlock Grid.Column="1" Icon="ChevronDown" Foreground="#B0B0B0" FontSize="14"/>
+                                </Grid>
+                            </Button>
+
+                            <Popup IsOpen="{Binding IsCategoryDropdownOpen, Mode=TwoWay}"
+                                   PlacementTarget="{Binding ElementName=CategoryDropdownButton}"
+                                   Placement="Bottom"
+                                   VerticalOffset="6"
+                                   StaysOpen="False"
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Fade">
+                                <Border Width="{Binding ActualWidth, ElementName=CategoryDropdownButton}"
+                                        Background="#25211F"
+                                        BorderBrush="#3A3533"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="6">
+                                    <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <ItemsControl ItemsSource="{Binding AllCategories}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Button Background="Transparent"
+                                                            BorderThickness="0"
+                                                            Padding="12,10"
+                                                            HorizontalContentAlignment="Left"
+                                                            Foreground="White"
+                                                            Command="{Binding DataContext.SelectCategoryCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}">
+                                                        <Button.Style>
+                                                            <Style TargetType="Button">
+                                                                <Setter Property="Background" Value="Transparent"/>
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#3A3533"/>
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Button.Style>
+                                                        <TextBlock Text="{Binding name}"/>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <!-- Album dropdown (Vue-like, Popup) -->
+                        <Grid Grid.Column="2">
+                            <Button x:Name="AlbumDropdownButton"
+                                    Background="#25211F"
+                                    Foreground="White"
+                                    BorderThickness="0"
+                                    Padding="14,10"
+                                    HorizontalContentAlignment="Left"
+                                    Command="{Binding ToggleAlbumDropdownCommand}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding SelectedAlbumName, FallbackValue=Chọn album}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <fa:IconBlock Grid.Column="1" Icon="ChevronDown" Foreground="#B0B0B0" FontSize="14"/>
+                                </Grid>
+                            </Button>
+
+                            <Popup IsOpen="{Binding IsAlbumDropdownOpen, Mode=TwoWay}"
+                                   PlacementTarget="{Binding ElementName=AlbumDropdownButton}"
+                                   Placement="Bottom"
+                                   VerticalOffset="6"
+                                   StaysOpen="False"
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Fade">
+                                <Border Width="{Binding ActualWidth, ElementName=AlbumDropdownButton}"
+                                        Background="#25211F"
+                                        BorderBrush="#3A3533"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="6">
+                                    <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <ItemsControl ItemsSource="{Binding MyAlbums}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Button Background="Transparent"
+                                                            BorderThickness="0"
+                                                            Padding="12,10"
+                                                            HorizontalContentAlignment="Left"
+                                                            Foreground="White"
+                                                            Command="{Binding DataContext.SelectAlbumCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}">
+                                                        <Button.Style>
+                                                            <Style TargetType="Button">
+                                                                <Setter Property="Background" Value="Transparent"/>
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="#3A3533"/>
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Button.Style>
+                                                        <TextBlock Text="{Binding name}"/>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <Button Grid.Column="4"
+                                Command="{Binding ChooseLyricFileCommand}"
+                                Background="#25211F"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Padding="14,10"
+                                Content="{Binding SelectedLyricFileName, FallbackValue=Chọn file Lyric}"/>
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 18 0 0">
+                        <Button Content="Hủy"
+                                Margin="0 0 12 0"
+                                Padding="26,10"
+                                Background="#4B5563"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Command="{Binding CloseWindowCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        <Button Content="Lưu"
+                                Padding="26,10"
+                                Background="{DynamicResource CurrentColor}"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Command="{Binding UploadSongConfirmCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Grid.Row="3"
+                       Margin="0 16 0 0"
+                       FontSize="11"
+                       Foreground="#9CA3AF"
+                       TextWrapping="Wrap"
+                       Text="Bằng cách tiếp tục, bạn đồng ý cho phép TÔI truy cập vào hình ảnh bạn đã chọn để tải lên. Vui lòng đảm bảo bạn có quyền tải lên hình ảnh."/>
+        </Grid>
+    </Border>
+</Window>

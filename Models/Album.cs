@@ -18,5 +18,13 @@ namespace Vibra_DesktopApp.Models
         public DateTime? updated_at { get; set; }
         public string? thumbnail_path { get; set; }
         public User? author { get; set; }
+
+        public string? display_thumbnail_path
+        {
+            get
+            {
+                return Singleton.ApiManager.GetInstance().ToAbsoluteUrl(thumbnail_path);
+            }
+        }
     }
 }

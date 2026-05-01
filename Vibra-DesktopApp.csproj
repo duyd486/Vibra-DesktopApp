@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Controls\" />
     <Folder Include="Languages\" />
-    <Folder Include="Views\Modals\" />
   </ItemGroup>
 
   <ItemGroup>

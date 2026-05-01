@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Text;
 using System.Text.Json;
@@ -24,7 +25,31 @@ namespace Vibra_DesktopApp.Singleton
             {
                 Instance = new ApiManager();
             }
+
             return Instance;
+        }
+
+        public string GetOrigin()
+        {
+            return new Uri(baseUrl, UriKind.Absolute).GetLeftPart(UriPartial.Authority);
+        }
+
+        public string? ToAbsoluteUrl(string? urlOrPath)
+        {
+            if (string.IsNullOrWhiteSpace(urlOrPath))
+                return null;
+
+            urlOrPath = urlOrPath.Trim();
+
+            if (Uri.TryCreate(urlOrPath, UriKind.Absolute, out _))
+                return urlOrPath;
+
+            var origin = GetOrigin();
+
+            if (urlOrPath.StartsWith("/", StringComparison.Ordinal))
+                return origin + urlOrPath;
+
+            return origin + "/" + urlOrPath;
         }
 
         #region Login & SignUp
@@ -115,6 +140,36 @@ namespace Vibra_DesktopApp.Singleton
 
             var response = await client.PostAsync(baseUrl + url, content);
             response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<T> HttpPostFormAsync<T>(string url, MultipartFormDataContent form)
+        {
+            try
+            {
+                var response = await client.PostAsync(baseUrl + url, form).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var res = JsonSerializer.Deserialize<ResponseBase<T>>(result);
+                return res!.data;
+            }
+            catch (Exception ex)
+            {
+                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(ex.Message));
+                return default!;
+            }
+        }
+
+        public void SetCurrentUser(User? user)
+        {
+            if (user is null)
+                return;
+
+            var token = currentUser?.token;
+            currentUser = user;
+
+            if (string.IsNullOrWhiteSpace(currentUser.token) && !string.IsNullOrWhiteSpace(token))
+                currentUser.token = token;
         }
 
         public User? GetCurrentUser()

@@ -20,5 +20,31 @@ namespace Vibra_DesktopApp.Models
         public string? token { get; set; }
         public string? avatar_path { get; set; }
         public User? artist { get; set; }
+
+        public string? display_avatar_path
+        {
+            get
+            {
+                return Singleton.ApiManager.GetInstance().ToAbsoluteUrl(avatar_path);
+            }
+        }
+
+        public string? display_name
+        {
+            get
+            {
+                // Some endpoints return an artist wrapper object with the real artist under `artist`.
+                // Prefer that name when present.
+                return artist?.name ?? name;
+            }
+        }
+
+        public User display_artist
+        {
+            get
+            {
+                return artist ?? this;
+            }
+        }
     }
 }

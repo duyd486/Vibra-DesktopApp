@@ -24,5 +24,13 @@ namespace Vibra_DesktopApp.Models
         public User? author { get; set; }
         public Album? playlist { get; set; }
         public Category? category { get; set; }
+
+        public string? display_thumbnail_path
+        {
+            get
+            {
+                return Singleton.ApiManager.GetInstance().ToAbsoluteUrl(thumbnail_path);
+            }
+        }
     }
 }

@@ -245,7 +245,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-                                  <Border Width="56" Height="56" CornerRadius="4" Margin="2 0 0 0" ClipToBounds="True">
+                                  <Border Width="56" Height="56" CornerRadius="4" Margin="0 0 0 0" ClipToBounds="True">
                                         <Border.Clip>
                                             <RectangleGeometry Rect="5,6,44,44" RadiusX="4" RadiusY="4" />
                                         </Border.Clip>
@@ -297,9 +297,9 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                 <Border Width="56" Height="56" CornerRadius="8" Margin="2 0 0 0" ClipToBounds="True">
+                                 <Border Width="56" Height="56" CornerRadius="8" Margin="0 0 0 0" ClipToBounds="True">
                                         <Border.Clip>
-                                            <RectangleGeometry Rect="0,0,56,56" RadiusX="8" RadiusY="8"/>
+                                            <RectangleGeometry Rect="1,1,54,54" RadiusX="8" RadiusY="8"/>
                                         </Border.Clip>
                                         <Grid>
                                             <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
