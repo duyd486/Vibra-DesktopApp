@@ -30,8 +30,8 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Width="320"
-                                        Height="192"
+                                <Button Width="260"
+                                        Height="180"
                                         Margin="0 0 14 14"
                                         Cursor="Hand"
                                         Background="Transparent"
@@ -82,7 +82,7 @@
                                                             <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
                                                         </Setter.Value>
                                                     </Setter>
-                                                    <Setter TargetName="Card" Property="Background" Value="{StaticResource NavActiveBackgroundBrush}"/>
+                                                    <Setter TargetName="Card" Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>

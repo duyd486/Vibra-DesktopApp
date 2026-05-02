@@ -268,7 +268,7 @@ namespace Vibra_DesktopApp.Singleton
                 return;
             }
 
-            _ = ApiManager.GetInstance().HttpGetAsync<Song>("song/update/" + song.id);
+            _ = ApiManager.GetInstance().HttpGetNoDataAsync("song/update/" + song.id);
 
             if (CurrentTrack == null || CurrentTrack.id != song.id)
             {

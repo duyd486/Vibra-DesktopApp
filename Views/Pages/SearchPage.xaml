@@ -78,7 +78,7 @@
 
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Card" Property="Background" Value="{StaticResource NavActiveBackgroundBrush}"/>
+                                                <Setter TargetName="Card" Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
                                                 <Setter TargetName="PlayBtn" Property="Opacity" Value="1"/>
                                             </Trigger>
                                             <DataTrigger Binding="{Binding TopSong}" Value="{x:Null}">

@@ -85,7 +85,7 @@
     <Grid Background="Transparent">
         <Border CornerRadius="0"
                 Background="{DynamicResource WindowBackgroundBrush}"
-                Margin="0 5 0 5">
+                Margin="0 5 5 5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="220"/>
@@ -159,7 +159,7 @@
                                    IsOpen="{Binding IsMenuOpen, Mode=TwoWay}"
                                    AllowsTransparency="True"
                                    PopupAnimation="Fade">
-                                <Border Background="#111"
+                                <Border Background="{DynamicResource ControlBackgroundBrush}"
                                         CornerRadius="12"
                                         Padding="8"
                                         BorderBrush="#333"
@@ -173,28 +173,28 @@
                                         <Button Content="Chỉnh sửa hồ sơ"
                                                 HorizontalContentAlignment="Left"
                                                 Background="Transparent"
-                                                Foreground="White"
+                                                Foreground="{DynamicResource AppTextBrush}"
                                                 BorderThickness="0"
                                                 Padding="10,8"
                                                 Command="{Binding EditProfileCommand}"/>
                                         <Button Content="Đăng tải bài hát"
                                                 HorizontalContentAlignment="Left"
                                                 Background="Transparent"
-                                                Foreground="White"
+                                                Foreground="{DynamicResource AppTextBrush}"
                                                 BorderThickness="0"
                                                 Padding="10,8"
                                                 Command="{Binding UploadSongCommand}"/>
                                         <Button Content="Tạo một album"
                                                 HorizontalContentAlignment="Left"
                                                 Background="Transparent"
-                                                Foreground="White"
+                                                Foreground="{DynamicResource AppTextBrush}"
                                                 BorderThickness="0"
                                                 Padding="10,8"
                                                 Command="{Binding CreateAlbumCommand}"/>
                                         <Button Content="Làm mới"
                                                 HorizontalContentAlignment="Left"
                                                 Background="Transparent"
-                                                Foreground="White"
+                                                Foreground="{DynamicResource AppTextBrush}"
                                                 BorderThickness="0"
                                                 Padding="10,8"
                                                 Command="{Binding RefreshCommand}"/>

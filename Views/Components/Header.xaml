@@ -440,7 +440,6 @@
                                         <Trigger Property="Tag" Value="Active">
                                             <Setter Property="Foreground" Value="{DynamicResource AppTextBrush}"/>
                                             <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
-                                            <Setter TargetName="ActiveIndicator" Property="Opacity" Value="1"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
