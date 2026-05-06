@@ -23,7 +23,7 @@
                             CornerRadius="16"
                             Background="#666">
                         <Grid Width="192" Height="192">
-                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill" Width="192" Height="192"/>
+                            <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="LowQuality"/>
                             <Image Source="{Binding Album.thumbnail_path}" Stretch="UniformToFill" Width="192" Height="192"/>
                         </Grid>
                     </Border>
@@ -34,7 +34,7 @@
                         <TextBlock FontSize="18"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource AppTextBrush}"
-                                   Text="Album"/>
+                                   Text="{Binding HeaderTypeText}"/>
 
                         <TextBlock FontSize="64"
                                    FontWeight="Bold"
@@ -48,10 +48,21 @@
                             <!-- FOLLOW / UNFOLLOW -->
                             <Button Command="{Binding ToggleFollowCommand}"
                                     Background="Transparent"
-                                    BorderThickness="0">
-                                <fa:IconBlock Icon="PlusCircle"
-                                              FontSize="32"
-                                              Foreground="{DynamicResource DarkCurrentColor}"/>
+                                    BorderThickness="0"
+                                    Visibility="{Binding ShowFollowButton, Converter={StaticResource BoolToVisibility}}">
+                                <fa:IconBlock FontSize="32"
+                                               Foreground="{DynamicResource DarkCurrentColor}">
+                                    <fa:IconBlock.Style>
+                                        <Style TargetType="fa:IconBlock">
+                                            <Setter Property="Icon" Value="PlusCircle" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsFollowed}" Value="True">
+                                                    <Setter Property="Icon" Value="CheckCircle" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </fa:IconBlock.Style>
+                                </fa:IconBlock>
                             </Button>
 
                             <!-- ADD TO QUEUE -->
@@ -68,7 +79,8 @@
                             <Button Command="{Binding DownloadPlaylistCommand}"
                                     Background="Transparent"
                                     BorderThickness="0"
-                                    Margin="12 0 0 4">
+                                    Margin="12 0 0 4"
+                                    Visibility="{Binding ShowDownloadButton, Converter={StaticResource BoolToVisibility}}">
                                 <fa:IconBlock Icon="Download"
                                               FontSize="28"
                                               Foreground="{DynamicResource DarkCurrentColor}"/>
@@ -92,6 +104,7 @@
                             <TextBlock Margin="12,12,0,0"
                                        Foreground="#AAA"
                                        FontSize="13"
+                                       Visibility="{Binding ShowPrice, Converter={StaticResource BoolToVisibility}}"
                                        Text="{Binding Album.price, StringFormat={}{0} vnd}"/>
                         </StackPanel>
                     </StackPanel>

@@ -9,14 +9,39 @@
 
     <Border x:Name="Root"
             CornerRadius="10"
-            Background="Transparent"
             Padding="10"
-            Margin="0 0 0 6">
+            Margin="0 0 0 10">
         <Border.Style>
             <Style TargetType="Border">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <TranslateTransform Y="0"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="#000000" BlurRadius="0" Opacity="0" ShadowDepth="0"/>
+                    </Setter.Value>
+                </Setter>
+
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#141414"/>
+                        <Setter Property="Panel.ZIndex" Value="10"/>
+                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource ControlBackgroundBrush}"/>
+                        <Setter Property="RenderTransform">
+                            <Setter.Value>
+                                <TranslateTransform Y="-2"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect Color="#000000" BlurRadius="12" Opacity="0.22" ShadowDepth="2"/>
+                            </Setter.Value>
+                        </Setter>
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -25,58 +50,35 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="48"/>
+                <ColumnDefinition Width="48"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Leading area: index or play/pause on hover -->
+            <!-- Leading area: index (keep visible; no hover swap) -->
             <Grid Width="48" Height="40" VerticalAlignment="Center">
                 <TextBlock x:Name="IndexText"
                            Text="{Binding Index}"
                            Foreground="{DynamicResource AppTextMutedBrush}"
                            FontWeight="SemiBold"
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Center">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=Root}" Value="True">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-
-                <fa:IconBlock x:Name="HoverIcon"
-                              FontSize="18"
-                              Foreground="{DynamicResource AppTextBrush}"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"
-                              Visibility="Collapsed">
-                    <fa:IconBlock.Style>
-                        <Style TargetType="fa:IconBlock">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=Root}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </fa:IconBlock.Style>
-                    <fa:IconBlock.Icon>
-                        <MultiBinding Converter="{StaticResource TrackRowLeadingIconConverter}">
-                            <Binding ElementName="Root" Path="IsMouseOver" />
-                            <Binding Path="IsCurrentTrack" />
-                            <Binding Path="IsPlaying" />
-                        </MultiBinding>
-                    </fa:IconBlock.Icon>
-                </fa:IconBlock>
+                           VerticalAlignment="Center" />
             </Grid>
 
+            <!-- Thumbnail -->
+            <Border Grid.Column="1"
+                    Width="40"
+                    Height="40"
+                    CornerRadius="8"
+                    Background="#666"
+                    VerticalAlignment="Center">
+                <Image Source="{Binding Track.display_thumbnail_path}" Stretch="UniformToFill" />
+            </Border>
+
             <!-- Track info -->
-            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <StackPanel Grid.Column="2" VerticalAlignment="Center">
                 <TextBlock Text="{Binding Track.name}"
                            FontWeight="SemiBold"
                            Foreground="{DynamicResource AppTextBrush}"
@@ -87,8 +89,25 @@
                            TextTrimming="CharacterEllipsis"/>
             </StackPanel>
 
+            <!-- Plays (aligned column, slightly shifted toward center) -->
+            <TextBlock Grid.Column="3"
+                       Text="{Binding TotalPlayedText}"
+                       Foreground="{DynamicResource AppTextMutedBrush}"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Left"
+                       Margin="18,0,0,0"
+                       VerticalAlignment="Center" />
+
+            <!-- Duration -->
+            <TextBlock Grid.Column="4"
+                       Text="{Binding DurationText}"
+                       Foreground="{DynamicResource AppTextMutedBrush}"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"
+                       Margin="0,0,10,0" />
+
             <!-- Actions -->
-            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+            <StackPanel Grid.Column="5" Orientation="Horizontal" VerticalAlignment="Center">
                 <Button Background="Transparent"
                         BorderThickness="0"
                         Padding="6"
@@ -99,7 +118,7 @@
             </StackPanel>
 
             <!-- Make row clickable (exclude actions column so buttons remain clickable) -->
-            <Border Background="Transparent" Grid.ColumnSpan="2">
+            <Border Background="Transparent" Grid.ColumnSpan="5">
                 <Border.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                  Command="{Binding PlayOrPauseCommand}"/>

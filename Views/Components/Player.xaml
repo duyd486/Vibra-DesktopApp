@@ -241,6 +241,7 @@
                 <Slider Grid.Column="1"
                         Minimum="0"
                         Maximum="{Binding SongManager.Duration}"
+                        IsMoveToPointEnabled="True"
                         Value="{Binding SliderValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Margin="8,0"
                         Height="20"
@@ -280,7 +281,7 @@
                             <Grid VerticalAlignment="Center">
                                 <Track x:Name="PART_Track" Height="10">
                                     <Track.DecreaseRepeatButton>
-                                        <RepeatButton IsHitTestVisible="False"
+                                        <RepeatButton IsHitTestVisible="True"
                                                       Height="4"
                                                       Background="{DynamicResource BrightCurrentColor}"
                                                       BorderThickness="0">
@@ -293,7 +294,7 @@
                                     </Track.DecreaseRepeatButton>
 
                                     <Track.IncreaseRepeatButton>
-                                        <RepeatButton IsHitTestVisible="False"
+                                        <RepeatButton IsHitTestVisible="True"
                                                       Height="4"
                                                       Background="{DynamicResource DarkCurrentColor}"
                                                       BorderThickness="0">
