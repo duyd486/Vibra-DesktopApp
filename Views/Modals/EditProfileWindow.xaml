@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Chi tiết hồ sơ"
         SizeToContent="WidthAndHeight"
@@ -43,13 +44,13 @@
 
             <Grid Grid.Row="1" Margin="0 18 0 0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="360"/>
                     <ColumnDefinition Width="16"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
-                        Width="320" Height="320"
+                        Width="360" Height="368"
                         BorderThickness="0"
                         Padding="0"
                         Background="#3A3533"
@@ -77,41 +78,191 @@
                 </Button>
 
                 <StackPanel Grid.Column="2">
+                    <!-- Tên -->
+                    <TextBlock Text="Tên"
+                               Foreground="#9CA3AF"
+                               FontSize="12"
+                               Margin="0 0 0 6"/>
                     <TextBox Text="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"
-                             Margin="0 0 0 10"
+                             Margin="0 0 0 14"
                              Background="#25211F"
                              Foreground="White"
                              BorderThickness="0"
                              Padding="14,10"
                              FontSize="14" />
 
+                    <!-- Tiểu sử -->
+                    <TextBlock Text="Tiểu sử"
+                               Foreground="#9CA3AF"
+                               FontSize="12"
+                               Margin="0 0 0 6"/>
                     <TextBox Text="{Binding ProfileDescription, UpdateSourceTrigger=PropertyChanged}"
                              AcceptsReturn="True"
                              TextWrapping="Wrap"
                              Height="140"
-                             Margin="0 0 0 10"
+                             Margin="0 0 0 14"
                              Background="#25211F"
                              Foreground="White"
                              BorderThickness="0"
                              Padding="14,10"
                              FontSize="14" />
 
-                    <ComboBox SelectedValue="{Binding ProfileGender, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="0 0 0 10"
-                              Background="#25211F"
-                              Foreground="White"
-                              BorderThickness="0"
-                              Padding="14,10">
-                        <ComboBoxItem Content="Nam"/>
-                        <ComboBoxItem Content="Nữ"/>
-                        <ComboBoxItem Content="Giới tính khác"/>
-                    </ComboBox>
-
-                    <DatePicker SelectedDate="{Binding ProfileBirth, UpdateSourceTrigger=PropertyChanged}"
+                    <!-- Giới tính -->
+                    <TextBlock Text="Giới tính"
+                               Foreground="#9CA3AF"
+                               FontSize="12"
+                               Margin="0 0 0 6"/>
+                    <Grid Margin="0 0 0 14">
+                        <Button x:Name="GenderDropdownButton"
                                 Background="#25211F"
                                 Foreground="White"
                                 BorderThickness="0"
-                                Padding="14,10"/>
+                                Padding="14,10"
+                                HorizontalContentAlignment="Left"
+                                Command="{Binding ToggleGenderDropdownCommand}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding ProfileGender, TargetNullValue=Chọn giới tính}"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <fa:IconBlock Grid.Column="1" Icon="ChevronDown" Foreground="#B0B0B0" FontSize="14"/>
+                            </Grid>
+                        </Button>
+
+                        <Popup IsOpen="{Binding IsGenderDropdownOpen, Mode=TwoWay}"
+                               PlacementTarget="{Binding ElementName=GenderDropdownButton}"
+                               Placement="Bottom"
+                               VerticalOffset="6"
+                               StaysOpen="False"
+                               AllowsTransparency="True"
+                               PopupAnimation="Fade">
+                            <Border Width="{Binding ActualWidth, ElementName=GenderDropdownButton}"
+                                    Background="#25211F"
+                                    BorderBrush="#3A3533"
+                                    BorderThickness="1"
+                                    CornerRadius="10"
+                                    Padding="6">
+                                <StackPanel>
+                                    <Button Background="Transparent"
+                                            BorderThickness="0"
+                                            Padding="12,10"
+                                            HorizontalContentAlignment="Left"
+                                            Foreground="White"
+                                            Command="{Binding SelectGenderCommand}"
+                                            CommandParameter="Nam">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#3A3533"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <TextBlock Text="Nam"/>
+                                    </Button>
+
+                                    <Button Background="Transparent"
+                                            BorderThickness="0"
+                                            Padding="12,10"
+                                            HorizontalContentAlignment="Left"
+                                            Foreground="White"
+                                            Command="{Binding SelectGenderCommand}"
+                                            CommandParameter="Nữ">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#3A3533"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <TextBlock Text="Nữ"/>
+                                    </Button>
+
+                                    <Button Background="Transparent"
+                                            BorderThickness="0"
+                                            Padding="12,10"
+                                            HorizontalContentAlignment="Left"
+                                            Foreground="White"
+                                            Command="{Binding SelectGenderCommand}"
+                                            CommandParameter="Giới tính khác">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#3A3533"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <TextBlock Text="Giới tính khác"/>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                    </Grid>
+
+                    <!-- Ngày sinh -->
+                    <TextBlock Text="Ngày sinh"
+                               Foreground="#9CA3AF"
+                               FontSize="12"
+                               Margin="0 0 0 6"/>
+                    <Grid>
+                        <Button x:Name="BirthDropdownButton"
+                                Background="#25211F"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Padding="14,10"
+                                HorizontalContentAlignment="Left"
+                                Command="{Binding ToggleBirthDropdownCommand}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding ProfileBirth, StringFormat={}{0:dd/MM/yyyy}, TargetNullValue=Chọn ngày sinh}"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <fa:IconBlock Grid.Column="1" Icon="Calendar" Foreground="#B0B0B0" FontSize="14"/>
+                            </Grid>
+                        </Button>
+
+                        <Popup IsOpen="{Binding IsBirthDropdownOpen, Mode=TwoWay}"
+                               PlacementTarget="{Binding ElementName=BirthDropdownButton}"
+                               Placement="Bottom"
+                               VerticalOffset="6"
+                               StaysOpen="False"
+                               AllowsTransparency="True"
+                               PopupAnimation="Fade">
+                            <Border Background="#25211F"
+                                    BorderBrush="#3A3533"
+                                    BorderThickness="1"
+                                    CornerRadius="10"
+                                    Padding="10">
+                                <Grid>
+                                    <Calendar x:Name="BirthCalendar"
+                                              SelectedDate="{Binding ProfileBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Foreground="White"
+                                              Background="#25211F"/>
+
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectedDatesChanged">
+                                            <i:InvokeCommandAction Command="{Binding BirthDatePickedCommand}"
+                                                                   CommandParameter="{Binding SelectedDate, ElementName=BirthCalendar}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Grid>
+                            </Border>
+                        </Popup>
+                    </Grid>
                 </StackPanel>
             </Grid>
 

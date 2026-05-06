@@ -191,13 +191,6 @@
                                                 BorderThickness="0"
                                                 Padding="10,8"
                                                 Command="{Binding CreateAlbumCommand}"/>
-                                        <Button Content="Làm mới"
-                                                HorizontalContentAlignment="Left"
-                                                Background="Transparent"
-                                                Foreground="{DynamicResource AppTextBrush}"
-                                                BorderThickness="0"
-                                                Padding="10,8"
-                                                Command="{Binding RefreshCommand}"/>
                                     </StackPanel>
                                 </Border>
                             </Popup>

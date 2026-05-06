@@ -66,6 +66,20 @@ namespace Vibra_DesktopApp.ViewModels.Pages
         [ObservableProperty] private string? profileAvatarPreviewPath;
         private string? _profileAvatarFilePath;
 
+        private bool isGenderDropdownOpen;
+        public bool IsGenderDropdownOpen
+        {
+            get => isGenderDropdownOpen;
+            set => SetProperty(ref isGenderDropdownOpen, value);
+        }
+
+        private bool isBirthDropdownOpen;
+        public bool IsBirthDropdownOpen
+        {
+            get => isBirthDropdownOpen;
+            set => SetProperty(ref isBirthDropdownOpen, value);
+        }
+
         // Upload song fields
         [ObservableProperty] private List<Category> allCategories = [];
         [ObservableProperty] private bool isCategoryDropdownOpen;
@@ -258,6 +272,45 @@ namespace Vibra_DesktopApp.ViewModels.Pages
             ProfileBirth = u?.birth ?? new DateTime(2000, 10, 10);
             ProfileAvatarPreviewPath = u?.avatar_path;
             _profileAvatarFilePath = null;
+
+            IsGenderDropdownOpen = false;
+            IsBirthDropdownOpen = false;
+        }
+
+        [RelayCommand]
+        private void ToggleGenderDropdown()
+        {
+            IsGenderDropdownOpen = !IsGenderDropdownOpen;
+            if (IsGenderDropdownOpen)
+                IsBirthDropdownOpen = false;
+        }
+
+        [RelayCommand]
+        private void SelectGender(string gender)
+        {
+            if (string.IsNullOrWhiteSpace(gender))
+                return;
+
+            ProfileGender = gender;
+            IsGenderDropdownOpen = false;
+        }
+
+        [RelayCommand]
+        private void ToggleBirthDropdown()
+        {
+            IsBirthDropdownOpen = !IsBirthDropdownOpen;
+            if (IsBirthDropdownOpen)
+                IsGenderDropdownOpen = false;
+        }
+
+        [RelayCommand]
+        private void BirthDatePicked(DateTime? date)
+        {
+            if (date is null)
+                return;
+
+            ProfileBirth = date;
+            IsBirthDropdownOpen = false;
         }
 
         private async Task EnsureUploadSongDataAsync()

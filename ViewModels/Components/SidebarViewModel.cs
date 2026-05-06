@@ -4,11 +4,17 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Globalization;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows;
 using Vibra_DesktopApp.Models;
 using Vibra_DesktopApp.Singleton;
 using Vibra_DesktopApp.ViewModels.Pages;
+using Vibra_DesktopApp.Views.Modals;
 
 namespace Vibra_DesktopApp.ViewModels.Components
 {
@@ -22,6 +28,29 @@ namespace Vibra_DesktopApp.ViewModels.Components
         [ObservableProperty] private ObservableCollection<SelectableAlbumViewModel> _myAlbums = new();
         [ObservableProperty] private ObservableCollection<SelectableAlbumViewModel> _myPlaylists = new();
         [ObservableProperty] private ObservableCollection<SelectableArtistViewModel> _myArtists = new();
+
+        private Album? _playlistEditData;
+        public Album? PlaylistEditData
+        {
+            get => _playlistEditData;
+            set => SetProperty(ref _playlistEditData, value);
+        }
+
+        private string? _playlistName;
+        public string? PlaylistName
+        {
+            get => _playlistName;
+            set => SetProperty(ref _playlistName, value);
+        }
+
+        private string? _playlistThumbnailPreviewPath;
+        public string? PlaylistThumbnailPreviewPath
+        {
+            get => _playlistThumbnailPreviewPath;
+            set => SetProperty(ref _playlistThumbnailPreviewPath, value);
+        }
+
+        private string? _playlistThumbnailFilePath;
 
         private Album? _selectedAlbum;
         public Album? SelectedAlbum
@@ -380,6 +409,85 @@ namespace Vibra_DesktopApp.ViewModels.Components
             await LoadAsync().ConfigureAwait(false);
 
             _mainVM.NavigateTo(new HomeViewModel(_mainVM), NavigationItem.Home);
+        }
+
+        [RelayCommand]
+        private void EditPlaylist(Album playlist)
+        {
+            if (playlist is null) return;
+
+            PlaylistEditData = playlist;
+            PlaylistName = playlist.name;
+            PlaylistThumbnailPreviewPath = playlist.thumbnail_path;
+            _playlistThumbnailFilePath = null;
+
+            var w = new EditPlaylistWindow
+            {
+                DataContext = this,
+                Owner = Application.Current?.MainWindow,
+            };
+
+            w.ShowDialog();
+        }
+
+        [RelayCommand]
+        private void ChoosePlaylistThumbnail()
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Image Files|*.png;*.jpg;*.jpeg;*.webp|All Files|*.*",
+                Multiselect = false
+            };
+
+            if (dlg.ShowDialog() != true)
+                return;
+
+            _playlistThumbnailFilePath = dlg.FileName;
+            PlaylistThumbnailPreviewPath = dlg.FileName;
+        }
+
+        [RelayCommand]
+        private async Task SavePlaylistAsync()
+        {
+            if (PlaylistEditData?.id is null)
+                return;
+
+            if (string.IsNullOrWhiteSpace(PlaylistName))
+            {
+                MessageBox.Show("Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+
+            var form = new MultipartFormDataContent();
+            form.Add(new StringContent(PlaylistName), "name");
+
+            if (!string.IsNullOrWhiteSpace(_playlistThumbnailFilePath) && File.Exists(_playlistThumbnailFilePath))
+            {
+                var fs = File.OpenRead(_playlistThumbnailFilePath);
+                var sc = new StreamContent(fs);
+                sc.Headers.ContentType = new MediaTypeHeaderValue("image/*");
+                form.Add(sc, "thumbnail", Path.GetFileName(_playlistThumbnailFilePath));
+            }
+
+            await ApiManager.GetInstance().HttpPostFormAsync<object>($"library/update-playlist/{PlaylistEditData.id}", form)
+                .ConfigureAwait(false);
+
+            await LoadAsync().ConfigureAwait(false);
+
+            if (Application.Current?.Dispatcher is not null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    foreach (Window w in Application.Current.Windows)
+                    {
+                        if (w is EditPlaylistWindow)
+                        {
+                            w.Close();
+                            break;
+                        }
+                    }
+                });
+            }
         }
     }
 }

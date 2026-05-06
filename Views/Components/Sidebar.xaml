@@ -295,6 +295,7 @@
                                                 <ColumnDefinition Width="56"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
                                   <Border Width="56" Height="56" CornerRadius="4" Margin="0 0 0 0" ClipToBounds="True">
@@ -312,16 +313,27 @@
                                             <TextBlock Text="{Binding Album.total_song, StringFormat={}{0} bài hát}" FontSize="12" Foreground="{DynamicResource AppTextMutedBrush}"/>
                                         </StackPanel>
 
-                                        <Button Grid.Column="2"
-                                                Content="🗑"
-                                                Width="32"
-                                                Height="32"
-                                                Style="{StaticResource HoverScaleIconButtonStyle}"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Foreground="{DynamicResource AppTextMutedBrush}"
-                                                Command="{Binding DataContext.DeletePlaylistCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding Album}" />
+                                         <Button Grid.Column="2"
+                                                 Content="✎"
+                                                 Width="32"
+                                                 Height="32"
+                                                 Style="{StaticResource HoverScaleIconButtonStyle}"
+                                                 Background="Transparent"
+                                                 BorderThickness="0"
+                                                 Foreground="{DynamicResource AppTextMutedBrush}"
+                                                 Command="{Binding DataContext.EditPlaylistCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                 CommandParameter="{Binding Album}" />
+
+                                         <Button Grid.Column="3"
+                                                 Content="🗑"
+                                                 Width="32"
+                                                 Height="32"
+                                                 Style="{StaticResource HoverScaleIconButtonStyle}"
+                                                 Background="Transparent"
+                                                 BorderThickness="0"
+                                                 Foreground="{DynamicResource AppTextMutedBrush}"
+                                                 Command="{Binding DataContext.DeletePlaylistCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                 CommandParameter="{Binding Album}" />
                                         </Grid>
                                     </Button>
                                 </DataTemplate>

@@ -52,6 +52,14 @@
     <Compile Update="Views\Pages\CategorySongsPage.xaml.cs">
       <DependentUpon>CategorySongsPage.xaml</DependentUpon>
     </Compile>
+
+    <Page Update="Views\Modals\EditPlaylistWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Update="Views\Modals\EditPlaylistWindow.xaml.cs">
+      <DependentUpon>EditPlaylistWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

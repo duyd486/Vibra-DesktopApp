@@ -1,0 +1,146 @@
+<Window x:Class="Vibra_DesktopApp.Views.Modals.EditPlaylistWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="clr-namespace:FontAwesome.Sharp;assembly=FontAwesome.Sharp"
+        mc:Ignorable="d"
+        Title="Chỉnh sửa Playlist"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        ShowInTaskbar="False"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Border Width="550"
+            Padding="24"
+            CornerRadius="12"
+            Background="#1D1512">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <TextBlock Text="Chỉnh sửa Playlist"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource CurrentColor}"/>
+                <Button Width="32" Height="32"
+                        HorizontalAlignment="Right"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding CloseWindowCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <TextBlock Text="✕" FontSize="16" Foreground="White"/>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="0 18 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Width="200" Height="180"
+                        BorderThickness="0"
+                        Padding="0"
+                        Background="#3A3533"
+                        Command="{Binding ChoosePlaylistThumbnailCommand}">
+                    <Border CornerRadius="12" ClipToBounds="True">
+                        <Grid>
+                            <Image Source="Assets/Images/default.jpg" Stretch="UniformToFill"/>
+                            <Image Source="{Binding PlaylistThumbnailPreviewPath}" Stretch="UniformToFill"/>
+                            <Border Background="#66000000" Opacity="0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Opacity" Value="0"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Opacity" Value="1"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <fa:IconBlock Icon="Edit" Foreground="White" FontSize="26"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Button>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Tên Playlist"
+                               Foreground="#9CA3AF"
+                               FontSize="12"
+                               Margin="0 0 0 6"/>
+
+                    <Grid>
+                        <TextBox x:Name="PlaylistNameTextBox"
+                                 Text="{Binding PlaylistName, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0 0 0 10"
+                                 Background="#25211F"
+                                 Foreground="White"
+                                 BorderThickness="0"
+                                 Padding="14,10"
+                                 FontSize="14" />
+
+                        <TextBlock Text="Tên Playlist"
+                                   Margin="14,10,14,10"
+                                   Foreground="#9CA3AF"
+                                   Opacity="0.7"
+                                   IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Text, ElementName=PlaylistNameTextBox}" Value="" />
+                                                <Condition Binding="{Binding IsKeyboardFocusWithin, ElementName=PlaylistNameTextBox}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 18 0 0">
+                <Button Content="Hủy"
+                        Margin="0 0 12 0"
+                        Padding="26,10"
+                        Background="#4B5563"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Command="{Binding CloseWindowCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+
+                <Button Content="Lưu"
+                        Padding="26,10"
+                        Background="{DynamicResource CurrentColor}"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Command="{Binding SavePlaylistCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="3"
+                       Margin="0 16 0 0"
+                       FontSize="11"
+                       Foreground="#9CA3AF"
+                       TextWrapping="Wrap"
+                       Text="Bằng cách tiếp tục, bạn đồng ý cho phép TÔI truy cập vào hình ảnh bạn đã chọn để tải lên. Vui lòng đảm bảo bạn có quyền tải lên hình ảnh."/>
+        </Grid>
+    </Border>
+</Window>
