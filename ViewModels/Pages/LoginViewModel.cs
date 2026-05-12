@@ -1,10 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Duende.IdentityModel.OidcClient;
+using Duende.IdentityModel.OidcClient.Browser;
+using Google.Apis.Auth;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Vibra_DesktopApp.Services;
 using Vibra_DesktopApp.Singleton;
 using Vibra_DesktopApp.Views;
 
@@ -53,6 +59,30 @@ namespace Vibra_DesktopApp.ViewModels
                 mainWindow.Show();
                 _indexVM.CloseWindow();
             }
+        }
+
+
+
+
+        [RelayCommand]
+        private async Task LoginWithGoogle()
+        {
+            bool success = await ApiManager.GetInstance().LoginWithGoogleAsync();
+
+            if (success && ApiManager.GetInstance().GetCurrentUser() != null)
+            {
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                _indexVM.CloseWindow();
+            }
+        }
+
+
+
+        [RelayCommand]
+        private void Test()
+        {
+            MessageBox.Show("Test command executed!");
         }
 
 

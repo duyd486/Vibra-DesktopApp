@@ -1,11 +1,16 @@
-﻿using System;
+﻿using Duende.IdentityModel.OidcClient;
+using Google.Apis.Auth;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Util.Store;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using Vibra_DesktopApp.Models;
+using Vibra_DesktopApp.Services;
 
 namespace Vibra_DesktopApp.Singleton
 {
@@ -75,6 +80,102 @@ namespace Vibra_DesktopApp.Singleton
             else
             {
                 MessageBox.Show("Đăng nhập thất bại");
+                return false;
+            }
+        }
+
+        public async Task<bool> LoginWithGoogleAsync()
+        {
+            try
+            {
+                string[] scopes =
+                {
+                    "openid",
+                    "email",
+                    "profile"
+                };
+
+                var secrets = new ClientSecrets
+                {
+                    // Cua tao
+                    ClientId = "231981628500-9iltqh5g94m3hbddt86amourhvlbd3p0.apps.googleusercontent.com",
+                    ClientSecret = "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"
+                };
+
+                var credential =
+                    await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        secrets,
+                        scopes,
+                        "user",
+                        CancellationToken.None,
+                        new FileDataStore("GoogleLogin")
+                    );
+
+                if (credential.Token.IsExpired(credential.Flow.Clock))
+                {
+                    await credential.RefreshTokenAsync(CancellationToken.None);
+                }
+
+                string accessToken = credential.Token.AccessToken;
+
+                using HttpClient googleClient = new();
+
+                googleClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var googleResponse =
+                    await googleClient.GetAsync(
+                        "https://www.googleapis.com/oauth2/v2/userinfo");
+
+                string googleJson =
+                    await googleResponse.Content.ReadAsStringAsync();
+
+                MessageBox.Show(googleJson);
+
+                using JsonDocument doc =
+                    JsonDocument.Parse(googleJson);
+
+                string email =
+                    doc.RootElement.GetProperty("email").GetString()!;
+
+                MessageBox.Show(email);
+
+                string deviceToken = Environment.MachineName;
+
+                HttpResponseMessage response =
+                    await client.GetAsync(
+                        baseUrl +
+                        $"firebase/auth?email={Uri.EscapeDataString(email)}&device_token={Uri.EscapeDataString(deviceToken)}");
+
+                string result =
+                    await response.Content.ReadAsStringAsync();
+
+                MessageBox.Show(result);
+
+                ResponseBase<User>? res =
+                    JsonSerializer.Deserialize<ResponseBase<User>>(result);
+
+                if (res?.code == 200)
+                {
+                    currentUser = res.data;
+
+                    client.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue(
+                            "Bearer",
+                            currentUser?.token);
+
+                    MessageBox.Show("Đăng nhập Google thành công");
+
+                    return true;
+                }
+
+                MessageBox.Show("Đăng nhập thất bại");
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
                 return false;
             }
         }
