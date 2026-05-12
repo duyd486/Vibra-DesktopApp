@@ -2,13 +2,16 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using Vibra_DesktopApp.Models;
 using Vibra_DesktopApp.Singleton;
+using Vibra_DesktopApp.ViewModels.Components;
 using Vibra_DesktopApp.ViewModels.Pages;
 
 namespace Vibra_DesktopApp.ViewModels
@@ -21,6 +24,8 @@ namespace Vibra_DesktopApp.ViewModels
         [ObservableProperty] private List<Album>? listAlbum;
         [ObservableProperty] private List<User>? listArtist;
         [ObservableProperty] private List<Song>? listRecentRotation;
+
+        [ObservableProperty] private ObservableCollection<TrackRowViewModel> tracks = new();
 
         [ObservableProperty] private bool isLoading = true;
 
@@ -36,6 +41,7 @@ namespace Vibra_DesktopApp.ViewModels
             {
                 IsLoading = true;
                 await Task.WhenAll(
+                    LoadTracksAsync(),
                     RefreshListSongAsync(),
                     RefreshListAlbumAsync(),
                     RefreshListArtistAsync(),
@@ -72,7 +78,45 @@ namespace Vibra_DesktopApp.ViewModels
 
             ListRecentRotation = recent?.Take(5).ToList();
         }
-        
+
+        private async Task LoadTracksAsync()
+        {
+            IsLoading = true;
+            try
+            {
+                List<Song>? list;
+
+                var raw = await ApiManager.GetInstance()
+                    .HttpGetAsync<List<Song>>($"home/list-song")
+                    .ConfigureAwait(false);
+
+                list = raw;
+
+                list = list?.Take(8).ToList();
+
+                var songManager = SongManager.GetInstace();
+                var vms = new ObservableCollection<TrackRowViewModel>();
+                var i = 1;
+                foreach (var s in list ?? [])
+                {
+                    vms.Add(new TrackRowViewModel(s, i++, songManager));
+                }
+
+                Tracks = vms;
+
+                //MessageBox.Show("Tracks loaded successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch
+            {
+                MessageBox.Show("Failed to load tracks. Please try again later.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Tracks = new ObservableCollection<TrackRowViewModel>();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
 
 
         [RelayCommand]
