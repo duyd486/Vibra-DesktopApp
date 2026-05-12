@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using Vibra_DesktopApp.Singleton;
 using Vibra_DesktopApp.Models;
+using Vibra_DesktopApp.Singleton;
 using Vibra_DesktopApp.ViewModels;
 
 namespace Vibra_DesktopApp.ViewModels.Components
@@ -159,6 +161,36 @@ namespace Vibra_DesktopApp.ViewModels.Components
             if (IsAddToPlaylistMenuOpen)
             {
                 await RefreshAvailablePlaylistsForCurrentTrackAsync().ConfigureAwait(false);
+            }
+        }
+
+        [RelayCommand]
+        private async Task DownloadSongAsync()
+        {
+            if (SongManager.GetInstace().CurrentTrack is null)
+                return;
+
+            try
+            {
+                var raw = await ApiManager.GetInstance()
+                    .HttpGetAsync<JsonElement>($"payment/create-bill?song_id={SongManager.GetInstace().CurrentTrack.id}")
+                    .ConfigureAwait(false);
+
+                if (raw.ValueKind == JsonValueKind.Object && raw.TryGetProperty("checkout_url", out var urlEl))
+                {
+                    var url = urlEl.GetString();
+                    if (!string.IsNullOrWhiteSpace(url))
+                    {
+                        Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                        return;
+                    }
+                }
+
+                Application.Current.Dispatcher.Invoke(() => MessageBox.Show("Không lấy được link thanh toán!"));
+            }
+            catch (Exception ex)
+            {
+                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(ex.Message));
             }
         }
 

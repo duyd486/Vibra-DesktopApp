@@ -77,15 +77,25 @@ namespace Vibra_DesktopApp.ViewModels
             }
         }
 
+        [RelayCommand]
+        private async Task LoginWithFacebook()
+        {
+            MessageBox.Show("Tính năng đăng nhập bằng Facebook đang được phát triển. Vui lòng thử lại sau!");
+            //bool success = await ApiManager.GetInstance().LoginWithFacebookAsync();
 
+            //if (success && ApiManager.GetInstance().GetCurrentUser() != null)
+            //{
+            //    MainWindow mainWindow = new MainWindow();
+            //    mainWindow.Show();
+            //    _indexVM.CloseWindow();
+            //}
+        }
 
         [RelayCommand]
         private void Test()
         {
             MessageBox.Show("Test command executed!");
         }
-
-
 
         [RelayCommand]
         private void OpenSignUp()

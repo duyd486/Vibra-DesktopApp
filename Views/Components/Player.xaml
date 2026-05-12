@@ -154,6 +154,7 @@
 
                     <Button Background="Transparent"
                             BorderThickness="0"
+                            Command="{Binding DownloadSongCommand}"
                             Padding="6">
                         <fa:IconBlock Icon="Download" FontSize="16" Foreground="{DynamicResource BrightCurrentColor}" />
                     </Button>

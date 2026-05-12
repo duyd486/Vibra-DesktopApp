@@ -130,7 +130,7 @@ namespace Vibra_DesktopApp.Singleton
                 string googleJson =
                     await googleResponse.Content.ReadAsStringAsync();
 
-                MessageBox.Show(googleJson);
+                //MessageBox.Show(googleJson);
 
                 using JsonDocument doc =
                     JsonDocument.Parse(googleJson);
@@ -138,7 +138,7 @@ namespace Vibra_DesktopApp.Singleton
                 string email =
                     doc.RootElement.GetProperty("email").GetString()!;
 
-                MessageBox.Show(email);
+                //MessageBox.Show(email);
 
                 string deviceToken = Environment.MachineName;
 
@@ -150,7 +150,7 @@ namespace Vibra_DesktopApp.Singleton
                 string result =
                     await response.Content.ReadAsStringAsync();
 
-                MessageBox.Show(result);
+                //MessageBox.Show(result);
 
                 ResponseBase<User>? res =
                     JsonSerializer.Deserialize<ResponseBase<User>>(result);
@@ -202,6 +202,19 @@ namespace Vibra_DesktopApp.Singleton
             {
                 MessageBox.Show("Đăng ký thất bại");
                 return false;
+            }
+        }
+
+        public async Task<bool> LogoutAsync()
+        {
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = null;
+                currentUser = null;
+                return true;
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message); return false;
             }
         }
 

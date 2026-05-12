@@ -21,7 +21,7 @@ namespace Vibra_DesktopApp.Views
         public IndexWindow(IndexViewModel vm)
         {
             InitializeComponent();
-
+            DataContext = vm;
             vm.OnWindowClose += (s, e) => this.Close();
         }
     }

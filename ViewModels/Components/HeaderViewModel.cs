@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using Vibra_DesktopApp.Models;
+using Vibra_DesktopApp.Singleton;
 using Vibra_DesktopApp.ViewModels.Pages;
+using Vibra_DesktopApp.Views;
 
 namespace Vibra_DesktopApp.ViewModels.Components
 {
@@ -206,9 +208,17 @@ namespace Vibra_DesktopApp.ViewModels.Components
         }
 
         [RelayCommand]
-        public void Logout()
+        public async Task Logout()
         {
-            _mainVM.NavigateTo(new HomeViewModel(_mainVM), NavigationItem.Home);
+            await ApiManager.GetInstance().LogoutAsync();
+            IndexWindow indexWindow = new IndexWindow(new IndexViewModel());
+            indexWindow.Show();
+
+            Application.Current.Windows
+                .OfType<Window>()
+                .FirstOrDefault(w => w is MainWindow)?
+                .Close();
+            //Application.Current?.Shutdown();
         }
 
         [RelayCommand]
