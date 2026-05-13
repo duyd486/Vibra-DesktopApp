@@ -103,13 +103,17 @@ namespace Vibra_DesktopApp.Singleton
                     ClientSecret = "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"
                 };
 
+                var dataStore = new FileDataStore("GoogleLogin");
+
+                await dataStore.ClearAsync();
+
                 var credential =
                     await GoogleWebAuthorizationBroker.AuthorizeAsync(
                         secrets,
                         scopes,
                         "user",
                         CancellationToken.None,
-                        new FileDataStore("GoogleLogin")
+                        dataStore
                     );
 
                 if (credential.Token.IsExpired(credential.Flow.Clock))
