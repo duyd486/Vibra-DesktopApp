@@ -8,7 +8,7 @@ namespace Vibra_DesktopApp.Models
         public int? id { get; set; }
         public DateTime? created_at { get; set; }
 
-        public int? status { get; set; } // 1 fail, 2 success (based on your Vue)
+        public string status { get; set; } = "1"; // 1 fail, 2 success (based on your Vue)
 
         public int? playlist_id { get; set; }
         public int? song_id { get; set; }
@@ -35,13 +35,13 @@ namespace Vibra_DesktopApp.Models
 
         public string package_name => playlist_id is not null ? "Album" : "Bài hát";
 
-        public bool is_success => status == 2;
-        public bool is_failed => status == 1;
+        public bool is_success => status == "2";
+        public bool is_failed => status == "1";
 
         public string status_text => status switch
         {
-            2 => "Thành công",
-            1 => "Thất bại",
+            "2" => "Thành công",
+            "1" => "Thất bại",
             _ => "Không xác định",
         };
     }

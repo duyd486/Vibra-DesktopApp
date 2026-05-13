@@ -57,6 +57,7 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
                     <Button Background="Transparent"
                             BorderThickness="0"
+                            Style="{StaticResource HoverScaleIconButtonStyle}"
                             Padding="6"
                             Command="{Binding ToggleLoveCommand}">
                         <fa:IconBlock FontSize="16" Foreground="{DynamicResource BrightCurrentColor}">
@@ -79,6 +80,7 @@
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Padding="6"
+                                Style="{StaticResource HoverScaleIconButtonStyle}"
                                 Command="{Binding ToggleAddToPlaylistMenuCommand}">
                             <fa:IconBlock Icon="PlusCircle" FontSize="16" Foreground="{DynamicResource BrightCurrentColor}" />
                         </Button>
@@ -154,6 +156,7 @@
 
                     <Button Background="Transparent"
                             BorderThickness="0"
+                            Style="{StaticResource HoverScaleIconButtonStyle}"
                             Command="{Binding DownloadSongCommand}"
                             Padding="6">
                         <fa:IconBlock Icon="Download" FontSize="16" Foreground="{DynamicResource BrightCurrentColor}" />
@@ -176,6 +179,7 @@
                 <Button Background="Transparent"
                         BorderThickness="0"
                         Margin="8,0"
+                        Style="{StaticResource HoverScaleIconButtonStyle}"
                         Command="{Binding ToggleShuffleCommand}">
                     <fa:IconBlock FontSize="16"
                                   Foreground="{DynamicResource AppTextBrush}"
@@ -185,6 +189,7 @@
 
                 <Button Background="Transparent"
                         BorderThickness="0"
+                        Style="{StaticResource HoverScaleIconButtonStyle}"
                         Margin="8,0"
                         Command="{Binding PrevCommand}">
                     <fa:IconBlock Icon="StepBackward"
@@ -213,6 +218,7 @@
                 <Button Background="Transparent"
                         BorderThickness="0"
                         Margin="8,0"
+                        Style="{StaticResource HoverScaleIconButtonStyle}"
                         Command="{Binding NextCommand}">
                     <fa:IconBlock Icon="StepForward"
                                   Foreground="{DynamicResource AppTextBrush}"
@@ -412,6 +418,7 @@
 
             <Button Background="Transparent"
                     BorderThickness="0" Margin="10 0"
+                    Style="{StaticResource HoverScaleIconButtonStyle}"
                     Command="{Binding ToggleQueuePanelCommand}">
                 <fa:IconBlock Icon="List"
                               Foreground="{DynamicResource AppTextBrush}"
@@ -421,6 +428,7 @@
             <!--Song Detail Panel Btn-->
             <Button Background="Transparent"
                     BorderThickness="0" Margin="10 0"
+                    Style="{StaticResource HoverScaleIconButtonStyle}"
                     Command="{Binding ToggleSongDetailsPanelCommand}">
                 <fa:IconBlock Icon="TabletScreenButton"
                               Foreground="{DynamicResource AppTextBrush}"
@@ -429,6 +437,7 @@
             </Button>
 
             <Button Background="Transparent"
+                    Style="{StaticResource HoverScaleIconButtonStyle}"
                     BorderThickness="0" Margin="10 0 20 0">
                 <fa:IconBlock Icon="Expand"
                               Foreground="{DynamicResource AppTextBrush}"

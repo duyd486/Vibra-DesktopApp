@@ -75,6 +75,7 @@ namespace Vibra_DesktopApp.Singleton
                 MessageBox.Show("Đăng nhập thành công" + res.data?.name);
                 currentUser = res?.data;
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + currentUser?.token);
+                SessionManager.SaveUser(currentUser!);
                 return true;
             }
             else
@@ -164,6 +165,8 @@ namespace Vibra_DesktopApp.Singleton
                             "Bearer",
                             currentUser?.token);
 
+                    SessionManager.SaveUser(currentUser!);
+
                     MessageBox.Show("Đăng nhập Google thành công");
 
                     return true;
@@ -211,6 +214,7 @@ namespace Vibra_DesktopApp.Singleton
             {
                 client.DefaultRequestHeaders.Authorization = null;
                 currentUser = null;
+                SessionManager.Clear();
                 return true;
             } catch (Exception ex)
             {
@@ -289,8 +293,14 @@ namespace Vibra_DesktopApp.Singleton
             var token = currentUser?.token;
             currentUser = user;
 
+
             if (string.IsNullOrWhiteSpace(currentUser.token) && !string.IsNullOrWhiteSpace(token))
                 currentUser.token = token;
+
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(
+                    "Bearer",
+                    currentUser?.token);
         }
 
         public User? GetCurrentUser()

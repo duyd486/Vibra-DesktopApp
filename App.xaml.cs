@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
+using Vibra_DesktopApp.Services;
 using Vibra_DesktopApp.ViewModels;
 using Vibra_DesktopApp.Views;
 
@@ -15,14 +16,28 @@ namespace Vibra_DesktopApp
         {
             base.OnStartup(e);
 
-            var indexVM = new IndexViewModel();
+            var user = SessionManager.LoadUserAsync().Result;
 
-            var indexWindow = new IndexWindow (indexVM)
+            if(user != null)
             {
-                DataContext = indexVM
-            };
+                MainWindow mainWindow = new MainWindow()
+                {
+                    DataContext = new MainViewModel()
+                };
+                mainWindow.Show();
+            }
+            else
+            {
+                var indexVM = new IndexViewModel();
 
-            indexWindow.Show();
+                var indexWindow = new IndexWindow (indexVM)
+                {
+                    DataContext = indexVM
+                };
+
+                indexWindow.Show();
+            }
+
         }
     }
 

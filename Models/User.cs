@@ -6,7 +6,7 @@ namespace Vibra_DesktopApp.Models
 {
     public class User
     {
-        public int? id { get; set; }
+        public int id { get; set; }
         public string? name { get; set; }
         public string? description { get; set; }
         public string? email { get; set; }
@@ -46,5 +46,18 @@ namespace Vibra_DesktopApp.Models
                 return artist ?? this;
             }
         }
+    }
+
+    public class UserSession
+    {
+        public int id { get; set; }
+
+        public string? name { get; set; }
+
+        public string? email { get; set; }
+
+        public string? token { get; set; }
+
+        public string? avatar_path { get; set; }
     }
 }

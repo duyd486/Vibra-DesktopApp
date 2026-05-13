@@ -475,6 +475,9 @@
                                           CanUserAddRows="False"
                                           HeadersVisibility="Column"
                                           GridLinesVisibility="None"
+                                          HorizontalScrollBarVisibility="Disabled"
+                                            ColumnWidth="*"
+                                          IsReadOnly="True"
                                           Background="Transparent"
                                           Foreground="{DynamicResource AppTextBrush}"
                                           BorderThickness="0"
@@ -506,17 +509,18 @@
                                     </DataGrid.Resources>
 
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Mã giao dịch" Binding="{Binding id}"/>
-                                        <DataGridTextColumn Header="Ngày thanh toán" Binding="{Binding created_at, StringFormat={}{0:dd/MM/yyyy}}"/>
-                                        <DataGridTextColumn Header="Số tiền" Binding="{Binding amount_text}"/>
-                                        <DataGridTextColumn Header="Tên" Binding="{Binding item_name}"/>
-                                        <DataGridTextColumn Header="Gói dịch vụ" Binding="{Binding package_name}"/>
+                                        <DataGridTextColumn Width="*" Header="Mã giao dịch" Binding="{Binding id}"/>
+                                        <DataGridTextColumn Width="*" Header="Ngày thanh toán" Binding="{Binding created_at, StringFormat={}{0:dd/MM/yyyy}}"/>
+                                        <DataGridTextColumn Width="*" Header="Số tiền" Binding="{Binding amount_text}"/>
+                                        <DataGridTextColumn Width="*" Header="Tên" Binding="{Binding item_name}"/>
+                                        <DataGridTextColumn Width="*" Header="Gói dịch vụ" Binding="{Binding package_name}"/>
 
-                                        <DataGridTemplateColumn Header="Trạng thái">
+                                        <DataGridTemplateColumn Width="*" Header="Trạng thái">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Border CornerRadius="999"
+                                                    <Border CornerRadius="10"
                                                             Padding="10,4"
+                                                            Margin="6"
                                                             Background="{Binding status, Converter={StaticResource PaymentStatusToBrush}}">
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                             <Ellipse Width="8" Height="8"

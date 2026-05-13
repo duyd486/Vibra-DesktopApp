@@ -26,42 +26,81 @@
                            Foreground="{DynamicResource AppTextBrush}"/>
 
                 <Button Grid.Row="1"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Padding="10"
-                        HorizontalContentAlignment="Stretch"
-                        Command="{Binding PlayOrPauseCurrentCommand}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+        Background="Transparent"
+        BorderThickness="0"
+        Padding="0"
+        Cursor="Hand"
+        HorizontalContentAlignment="Stretch"
+        Command="{Binding PlayOrPauseCurrentCommand}">
 
-                        <Border Width="48" Height="48" CornerRadius="24" ClipToBounds="True">
-                            <Grid Width="48" Height="48">
-                                <Image Source="/Assets/Images/default.jpg" Stretch="UniformToFill" Width="48" Height="48"/>
-                                <Image Source="{Binding SongManager.CurrentTrack.thumbnail_path}" Stretch="UniformToFill" Width="48" Height="48"/>
-                            </Grid>
-                        </Border>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
 
-                        <StackPanel Grid.Column="1" Margin="12,0" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding SongManager.CurrentTrack.name}"
-                                       Foreground="{DynamicResource AppTextBrush}"
-                                       FontWeight="SemiBold"
-                                       TextTrimming="CharacterEllipsis"/>
-                            <TextBlock Text="{Binding SongManager.CurrentTrack.author.name}"
-                                       Foreground="{DynamicResource AppTextMutedBrush}"
-                                       FontSize="12"
-                                       TextTrimming="CharacterEllipsis"/>
-                        </StackPanel>
+                            <Border x:Name="Root"
+                    CornerRadius="10"
+                    Padding="10"
+                    Background="Transparent">
 
-                        <fa:IconBlock Grid.Column="2"
-                                      Icon="{Binding SongManager.IsPlaying, Converter={StaticResource BoolToIconConverter}}"
-                                      Foreground="{DynamicResource AppTextBrush}"
-                                      FontSize="18"
-                                      VerticalAlignment="Center"/>
-                    </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Width="48"
+                            Height="48"
+                            CornerRadius="24"
+                            ClipToBounds="True">
+
+                                        <Grid Width="48" Height="48">
+                                            <Image Source="/Assets/Images/default.jpg"
+                                   Stretch="UniformToFill"
+                                   Width="48"
+                                   Height="48"/>
+
+                                            <Image Source="{Binding SongManager.CurrentTrack.thumbnail_path}"
+                                   Stretch="UniformToFill"
+                                   Width="48"
+                                   Height="48"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1"
+                                Margin="12,0"
+                                VerticalAlignment="Center">
+
+                                        <TextBlock Text="{Binding SongManager.CurrentTrack.name}"
+                                   Foreground="{DynamicResource AppTextBrush}"
+                                   FontWeight="SemiBold"
+                                   TextTrimming="CharacterEllipsis"/>
+
+                                        <TextBlock Text="{Binding SongManager.CurrentTrack.author.name}"
+                                   Foreground="{DynamicResource AppTextMutedBrush}"
+                                   FontSize="12"
+                                   TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+
+                                    <fa:IconBlock Grid.Column="2"
+                                  Icon="{Binding SongManager.IsPlaying, Converter={StaticResource BoolToIconConverter}}"
+                                  Foreground="{DynamicResource AppTextBrush}"
+                                  FontSize="18"
+                                  VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <ControlTemplate.Triggers>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Root"
+                            Property="Background"
+                            Value="{DynamicResource ControlBackgroundBrush}"/>
+                                </Trigger>
+
+                            </ControlTemplate.Triggers>
+
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
 
                 <Grid Grid.Row="2" Margin="0,12,0,0">
@@ -86,6 +125,7 @@
                                 BorderThickness="0"
                                 FontSize="10"
                                 VerticalContentAlignment="Center"
+                                Style="{StaticResource HoverScaleIconButtonStyle}"
                                 Foreground="{DynamicResource AppTextMutedBrush}"
                                 Command="{Binding ClearWaitlistCommand}">
                             <TextBlock Text="Xóa tất cả" Margin="0 6 0 0"/>
@@ -124,6 +164,7 @@
                                     <Button Background="Transparent"
                                             BorderThickness="0"
                                             Padding="10"
+                                            Style="{StaticResource HoverScaleSidePanel}"
                                             HorizontalContentAlignment="Stretch"
                                             Command="{Binding DataContext.PlayWaitlistItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}">
@@ -144,6 +185,7 @@
                                             BorderThickness="0"
                                             Padding="6"
                                             Margin="0,0,6,0"
+                                            Style="{StaticResource HoverScaleIconButtonStyle}"
                                             Command="{Binding DataContext.RemoveWaitlistItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}">
                                         <fa:IconBlock Icon="Trash" Foreground="{DynamicResource AppTextMutedBrush}" FontSize="16" />

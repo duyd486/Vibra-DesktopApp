@@ -34,11 +34,11 @@ namespace Vibra_DesktopApp.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int? status = value is int i ? i : null;
+            string? status = value is string i ? i : null;
             return status switch
             {
-                2 => new SolidColorBrush(Color.FromRgb(0x10, 0xB9, 0x81)),
-                1 => new SolidColorBrush(Color.FromRgb(0xF5, 0x9E, 0x0B)),
+                "2" => new SolidColorBrush(Color.FromRgb(0x10, 0xB9, 0x81)),
+                "1" => new SolidColorBrush(Color.FromRgb(0xF5, 0x9E, 0x0B)),
                 _ => new SolidColorBrush(Color.FromRgb(0x9C, 0xA3, 0xAF)),
             };
         }
@@ -51,11 +51,11 @@ namespace Vibra_DesktopApp.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int? status = value is int i ? i : null;
+            string? status = value is string i ? i : null;
             return status switch
             {
-                2 => new SolidColorBrush(Color.FromRgb(0x34, 0xD3, 0x99)),
-                1 => new SolidColorBrush(Color.FromRgb(0xFB, 0xBF, 0x24)),
+                "2" => new SolidColorBrush(Color.FromRgb(0x34, 0xD3, 0x99)),
+                "1" => new SolidColorBrush(Color.FromRgb(0xFB, 0xBF, 0x24)),
                 _ => new SolidColorBrush(Color.FromRgb(0xD1, 0xD5, 0xDB)),
             };
         }

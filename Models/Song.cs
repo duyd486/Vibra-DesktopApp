@@ -13,7 +13,7 @@ namespace Vibra_DesktopApp.Models
         public string? lyrics { get; set; }
         public string? thumbnail { get; set; }
         public int? total_played { get; set; }
-        public int? status { get; set; }
+        //public int? status { get; set; }
         public int? price { get; set; }
         public DateTime? created_at { get; set; }
         public DateTime? updated_at { get; set; }
