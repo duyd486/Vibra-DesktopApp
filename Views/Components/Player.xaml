@@ -91,10 +91,10 @@
                                IsOpen="{Binding IsAddToPlaylistMenuOpen, Mode=TwoWay}"
                                AllowsTransparency="True"
                                PopupAnimation="Fade">
-                            <Border Background="#111"
+                            <Border Background="{DynamicResource ControlBackgroundBrush}"
                                     CornerRadius="8"
                                     Padding="8"
-                                    BorderBrush="#333"
+                                    BorderBrush="{DynamicResource NavActiveBackgroundBrush}"
                                     BorderThickness="1">
                                 <StackPanel MinWidth="260">
                                     <TextBlock Text="Thêm vào playlist"
@@ -102,8 +102,8 @@
                                                FontWeight="SemiBold"
                                                Margin="6,2,6,6" />
 
-                                    <TextBlock Text="Chưa có playlist"
-                                               Foreground="#AAAAAA"
+                                    <TextBlock Text="Không có playlist phù hợp"
+                                               Foreground="{DynamicResource AppTextBrush}"
                                                Margin="6,4"
                                                Visibility="{Binding AvailablePlaylistsForCurrentTrack.Count, Converter={StaticResource ZeroToVisibilityConverter}}" />
 
@@ -122,7 +122,7 @@
                                                                 <Setter Property="Background" Value="Transparent" />
                                                                 <Style.Triggers>
                                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter Property="Background" Value="#222" />
+                                                                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
                                                                     </Trigger>
                                                                 </Style.Triggers>
                                                             </Style>
@@ -140,7 +140,7 @@
                                                                        Margin="8,6" />
                                                             <TextBlock Grid.Column="1"
                                                                        Text="Thêm vào danh sách phát"
-                                                                       Foreground="#AAAAAA"
+                                                                       Foreground="{DynamicResource AppTextBrush}"
                                                                        FontSize="10"
                                                                        Margin="8,6" />
                                                         </Grid>
@@ -225,10 +225,8 @@
                                   FontSize="18" />
                 </Button>
 
-                <fa:IconBlock Icon="RedoAlt"
-                              Foreground="{DynamicResource AppTextBrush}"
-                              FontSize="16"
-                              Margin="12,0"/>
+                
+                <Image Source="/Assets/Images/MyLogoGray.png" Width="22" Margin="6 0 0 0"/>
             </StackPanel>
 
             <!-- Progress bar -->
