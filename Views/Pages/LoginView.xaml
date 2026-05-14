@@ -20,14 +20,16 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Margin="0 30 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Border Background="White" Width="200" Height="60">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="680">
+                <Button Style="{StaticResource CloseButton}" FontSize="14" FontWeight="Bold" Content=" X" Command="{Binding CloseWindowCommand}" Height="40" Width="40" Margin="0 0 12 0" HorizontalAlignment="Right"/>
+
+                <Border Background="White" Width="180" Height="52">
                     <Border.OpacityMask>
                         <ImageBrush ImageSource="/Assets/Images/MyLogo.png"/>
                     </Border.OpacityMask>
                 </Border>
 
-                <TextBlock Text="Đăng nhập vào Vibra" FontWeight="Bold" FontSize="36" Margin="0 0 0 0" Foreground="White"/>
+                <TextBlock Text="Đăng nhập vào Vibra" HorizontalAlignment="Center" FontWeight="Bold" FontSize="36" Margin="0 0 0 0" Foreground="White"/>
 
             </StackPanel>
             <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -214,6 +216,21 @@
                 <TextBlock Text="Bạn chưa có tài khoản?  " Foreground="#aeaeae" FontSize="18"/>
                 <Button Command="{Binding OpenSignUpCommand}" Content="Đăng ký" FontSize="18" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand" Foreground="White"/>
             </StackPanel>
+        </Grid>
+
+        <!-- Submitting overlay (on top of everything) -->
+        <Grid Background="#99000000"
+              Margin="0 -300 0 0"
+              Grid.Row="1"
+              Visibility="{Binding IsSubmitting, Converter={StaticResource BoolToVisibility}}"
+              Panel.ZIndex="999">
+            <ProgressBar Width="220"
+                         Height="8"
+                         IsIndeterminate="True"
+                         Foreground="{DynamicResource CurrentColor}"
+                         Background="#33FFFFFF"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Center" />
         </Grid>
     </Grid>
 </UserControl>

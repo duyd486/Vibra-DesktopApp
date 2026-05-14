@@ -46,6 +46,8 @@
         <!-- View templates -->
         <DataTemplate DataType="{x:Type vm:LoginViewModel}"><views:LoginView /></DataTemplate>
         <DataTemplate DataType="{x:Type vm:SignUpViewModel}"><views:SignUpView /></DataTemplate>
+        <DataTemplate DataType="{x:Type vm2:InterestViewModel}"> <pages:InterestView /> </DataTemplate>
+
         <DataTemplate DataType="{x:Type vm:HomeViewModel}"><pages:HomePage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm2:AlbumViewModel}"><pages:AlbumPage /></DataTemplate>
         <DataTemplate DataType="{x:Type vm2:ArtistViewModel}"><pages:ArtistPage /></DataTemplate>

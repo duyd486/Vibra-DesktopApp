@@ -1,0 +1,351 @@
+﻿<UserControl x:Class="Vibra_DesktopApp.Views.Pages.InterestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:Vibra_DesktopApp.Behaviors"
+             mc:Ignorable="d"
+             d:DesignHeight="900" d:DesignWidth="1200">
+
+    <UserControl.Resources>
+        <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+    </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <!-- Background gradient (dark) -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#292929" Offset="0" />
+                <GradientStop Color="#171717" Offset="0.55" />
+                <GradientStop Color="#000000" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- Submitting overlay -->
+        <Grid Background="#99000000"
+              Visibility="{Binding IsSubmitting, Converter={StaticResource BoolToVisibility}}"
+              Panel.ZIndex="999">
+            <ProgressBar Width="220"
+                         Height="8"
+                         IsIndeterminate="True"
+                         Foreground="{DynamicResource CurrentColor}"
+                         Background="#33FFFFFF"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Center" />
+        </Grid>
+
+        <Border Background="{DynamicResource WindowBackgroundBrush}"
+                CornerRadius="24"
+                Padding="32"
+                MaxWidth="760"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Margin="16">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Step progress bars -->
+                <Grid Grid.Row="0" Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="14" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border x:Name="Step1Bar" Grid.Column="0" Height="6" CornerRadius="99">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="#404040" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Step}" Value="1">
+                                        <Setter Property="Background" Value="{DynamicResource CurrentColor}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                    <Border Grid.Column="1" Background="Transparent" />
+                    <Border x:Name="Step2Bar" Grid.Column="2" Height="6" CornerRadius="99">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="#404040" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Step}" Value="2">
+                                        <Setter Property="Background" Value="{DynamicResource CurrentColor}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                </Grid>
+
+                <!-- Title / Subtitle -->
+                <TextBlock Grid.Row="1"
+                           Text="{Binding TitleText}"
+                           FontSize="28"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource AppTextBrush}"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,6" />
+
+                <TextBlock Grid.Row="2"
+                           Text="{Binding SubtitleText}"
+                           FontSize="13"
+                           Foreground="{DynamicResource AppTextMutedBrush}"
+                           TextAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,18" />
+
+                <!-- Step 1: Categories -->
+                <Grid Grid.Row="3" Visibility="{Binding IsStep1, Converter={StaticResource BoolToVisibility}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Skeleton -->
+                    <ItemsControl Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.Items>
+                            <sys:Int32>1</sys:Int32>
+                            <sys:Int32>2</sys:Int32>
+                            <sys:Int32>3</sys:Int32>
+                            <sys:Int32>4</sys:Int32>
+                            <sys:Int32>5</sys:Int32>
+                            <sys:Int32>6</sys:Int32>
+                            <sys:Int32>7</sys:Int32>
+                            <sys:Int32>8</sys:Int32>
+                            <sys:Int32>9</sys:Int32>
+                        </ItemsControl.Items>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="190"
+                                        Height="190"
+                                        Margin="0,0,14,14"
+                                        Background="#2A2A2A"
+                                        CornerRadius="14" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- List -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  Visibility="{Binding IsLoading, Converter={StaticResource InverseBoolToVisibility}}">
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+                        </ScrollViewer.Resources>
+
+                        <ItemsControl ItemsSource="{Binding Categories}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Width="140"
+                                            Height="140"
+                                            Margin="0,0,14,14"
+                                            Cursor="Hand"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Padding="0"
+                                            Command="{Binding DataContext.ToggleCategoryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Card"
+                                                        CornerRadius="4"
+                                                        BorderThickness="2"
+                                                        BorderBrush="Transparent"
+                                                        ClipToBounds="True">
+                                                    <Grid>
+                                                        <Image behaviors:LazyImage.Placeholder="/Assets/Images/default.jpg"
+                                                               behaviors:LazyImage.Source="{Binding Category.thumbnail_path}"
+                                                               Stretch="UniformToFill" />
+
+                                                        <Border VerticalAlignment="Bottom" Height="64">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                                    <GradientStop Color="#00000000" Offset="0" />
+                                                                    <GradientStop Color="#B3000000" Offset="1" />
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+
+                                                            <TextBlock Text="{Binding Category.name}"
+                                                                       Foreground="White"
+                                                                       FontWeight="SemiBold"
+                                                                       Margin="12,0,12,10"
+                                                                       VerticalAlignment="Bottom"
+                                                                       TextTrimming="CharacterEllipsis" />
+                                                        </Border>
+
+                                                        <Border x:Name="SelectedBadge"
+                                                                Background="{DynamicResource CurrentColor}"
+                                                                CornerRadius="8"
+                                                                Padding="10,4"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Top"
+                                                                Margin="10"
+                                                                Visibility="Collapsed">
+                                                            <TextBlock Text="Chọn" FontSize="12" FontWeight="SemiBold" Foreground="Black" />
+                                                        </Border>
+                                                    </Grid>
+                                                </Border>
+
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Card" Property="Opacity" Value="0.92" />
+                                                    </Trigger>
+
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter TargetName="Card" Property="BorderBrush" Value="{DynamicResource CurrentColor}" />
+                                                        <Setter TargetName="SelectedBadge" Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+
+                <!-- Step 2: Hobbies -->
+                <Grid Grid.Row="3" Visibility="{Binding IsStep2, Converter={StaticResource BoolToVisibility}}">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  Visibility="{Binding IsLoading, Converter={StaticResource InverseBoolToVisibility}}">
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+                        </ScrollViewer.Resources>
+
+                        <ItemsControl ItemsSource="{Binding Hobbies}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Width="190"
+                                            MinHeight="60"
+                                            Margin="0,0,14,14"
+                                            Cursor="Hand"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Padding="0"
+                                            Command="{Binding DataContext.ToggleHobbyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="HobbyCard"
+                                                        CornerRadius="14"
+                                                        Background="{DynamicResource ControlBackgroundBrush}"
+                                                        BorderThickness="1"
+                                                        BorderBrush="#404040"
+                                                        Padding="12"
+                                                        MinHeight="60">
+                                                    <Grid>
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   Foreground="{DynamicResource AppTextBrush}"
+                                                                   FontWeight="SemiBold"
+                                                                   FontSize="13"
+                                                                   TextAlignment="Center"
+                                                                   TextWrapping="Wrap"
+                                                                   Margin="8"
+                                                                   VerticalAlignment="Center"
+                                                                   HorizontalAlignment="Center" />
+
+                                                        <Border x:Name="HobbySelectedBadge"
+                                                                Background="{DynamicResource CurrentColor}"
+                                                                CornerRadius="4"
+                                                                Padding="10,4"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Top"
+                                                                Margin="6"
+                                                                Visibility="Collapsed">
+                                                            <TextBlock Text="Chọn" FontSize="12" FontWeight="SemiBold" Foreground="Black" />
+                                                        </Border>
+                                                    </Grid>
+                                                </Border>
+
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="HobbyCard" Property="BorderBrush" Value="#606060" />
+                                                    </Trigger>
+
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter TargetName="HobbyCard" Property="BorderBrush" Value="{DynamicResource CurrentColor}" />
+                                                        <Setter TargetName="HobbyCard" Property="BorderThickness" Value="2" />
+                                                        <Setter TargetName="HobbySelectedBadge" Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+
+                <!-- Hint on step 2 -->
+                <TextBlock Grid.Row="4"
+                           Text="{Binding HobbyHintText}"
+                           FontSize="12"
+                           Foreground="{DynamicResource AppTextMutedBrush}"
+                           TextAlignment="Center"
+                           Margin="0,10,0,0"
+                           Visibility="{Binding IsStep2, Converter={StaticResource BoolToVisibility}}" />
+
+                <!-- Actions -->
+                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                    <Button Content="Quay lại"
+                            Padding="18,10"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Foreground="{DynamicResource AppTextBrush}"
+                            Command="{Binding PrevStepCommand}"
+                            Visibility="{Binding IsStep2, Converter={StaticResource BoolToVisibility}}"
+                            Margin="0,0,10,0" />
+
+                    <Button Content="{Binding PrimaryActionText}"
+                            Padding="24,10"
+                            Background="{DynamicResource CurrentColor}"
+                            BorderThickness="0"
+                            Foreground="Black"
+                            FontWeight="SemiBold"
+                            IsEnabled="{Binding IsPrimaryActionEnabled}"
+                            Command="{Binding PrimaryActionCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

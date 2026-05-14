@@ -72,6 +72,7 @@ namespace Vibra_DesktopApp.Singleton
 
             if (res?.code == 200)
             {
+                client.DefaultRequestHeaders.Authorization = null;
                 MessageBox.Show("Đăng nhập thành công" + res.data?.name);
                 currentUser = res?.data;
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + currentUser?.token);
@@ -171,7 +172,7 @@ namespace Vibra_DesktopApp.Singleton
 
                     SessionManager.SaveUser(currentUser!);
 
-                    MessageBox.Show("Đăng nhập Google thành công");
+                    //MessageBox.Show("Đăng nhập Google thành công");
 
                     return true;
                 }

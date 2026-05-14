@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using Vibra_DesktopApp.ViewModels.Pages;
 
 namespace Vibra_DesktopApp.ViewModels
 {
@@ -13,6 +14,7 @@ namespace Vibra_DesktopApp.ViewModels
 
         public LoginViewModel LoginVM { get; }
         public SignUpViewModel SignUpVM { get; }
+        public InterestViewModel InterestVM { get; }
 
 
         public event EventHandler? OnWindowClose;
@@ -23,6 +25,7 @@ namespace Vibra_DesktopApp.ViewModels
         {
             LoginVM = new LoginViewModel(this);
             SignUpVM = new SignUpViewModel(this);
+            InterestVM = new InterestViewModel(this);
 
             CurrentViewModel = LoginVM;
         }
@@ -39,5 +42,7 @@ namespace Vibra_DesktopApp.ViewModels
 
         public void ShowLogin()
             => CurrentViewModel = LoginVM;
+        public void ShowInterest()
+            => CurrentViewModel = InterestVM;
     }
 }
