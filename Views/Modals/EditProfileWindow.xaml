@@ -18,8 +18,12 @@
     <Border Width="700"
             Padding="24"
             CornerRadius="12"
-            Background="#1D1512">
+            Background="{DynamicResource ControlBackgroundBrush}">
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="253*"/>
+                <ColumnDefinition Width="399*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -27,7 +31,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Grid>
+            <Grid Grid.ColumnSpan="2">
                 <TextBlock Text="Chi tiết hồ sơ"
                            FontSize="22"
                            FontWeight="Bold"
@@ -42,7 +46,7 @@
                 </Button>
             </Grid>
 
-            <Grid Grid.Row="1" Margin="0 18 0 0">
+            <Grid Grid.Row="1" Margin="0 18 0 0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="360"/>
                     <ColumnDefinition Width="16"/>
@@ -80,20 +84,20 @@
                 <StackPanel Grid.Column="2">
                     <!-- Tên -->
                     <TextBlock Text="Tên"
-                               Foreground="#9CA3AF"
+                               Foreground="{DynamicResource AppTextBrush}"
                                FontSize="12"
                                Margin="0 0 0 6"/>
                     <TextBox Text="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}"
                              Margin="0 0 0 14"
-                             Background="#25211F"
-                             Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                              BorderThickness="0"
                              Padding="14,10"
                              FontSize="14" />
 
                     <!-- Tiểu sử -->
                     <TextBlock Text="Tiểu sử"
-                               Foreground="#9CA3AF"
+                               Foreground="{DynamicResource AppTextBrush}"
                                FontSize="12"
                                Margin="0 0 0 6"/>
                     <TextBox Text="{Binding ProfileDescription, UpdateSourceTrigger=PropertyChanged}"
@@ -101,21 +105,21 @@
                              TextWrapping="Wrap"
                              Height="140"
                              Margin="0 0 0 14"
-                             Background="#25211F"
-                             Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                              BorderThickness="0"
                              Padding="14,10"
                              FontSize="14" />
 
                     <!-- Giới tính -->
                     <TextBlock Text="Giới tính"
-                               Foreground="#9CA3AF"
+                               Foreground="{DynamicResource AppTextBrush}"
                                FontSize="12"
                                Margin="0 0 0 6"/>
                     <Grid Margin="0 0 0 14">
                         <Button x:Name="GenderDropdownButton"
-                                Background="#25211F"
-                                Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                                 BorderThickness="0"
                                 Padding="14,10"
                                 HorizontalContentAlignment="Left"
@@ -212,13 +216,13 @@
 
                     <!-- Ngày sinh -->
                     <TextBlock Text="Ngày sinh"
-                               Foreground="#9CA3AF"
+                               Foreground="{DynamicResource AppTextBrush}"
                                FontSize="12"
                                Margin="0 0 0 6"/>
                     <Grid>
                         <Button x:Name="BirthDropdownButton"
-                                Background="#25211F"
-                                Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                                 BorderThickness="0"
                                 Padding="14,10"
                                 HorizontalContentAlignment="Left"
@@ -266,7 +270,7 @@
                 </StackPanel>
             </Grid>
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 18 0 0">
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 18 0 0" Grid.Column="1">
                 <Button Content="Hủy"
                         Margin="0 0 12 0"
                         Padding="26,10"
@@ -285,11 +289,11 @@
             </StackPanel>
 
             <TextBlock Grid.Row="3"
-                       Margin="0 16 0 0"
+                       Margin="0,16,0,14"
                        FontSize="11"
-                       Foreground="#9CA3AF"
+                       Foreground="{DynamicResource AppTextBrush}"
                        TextWrapping="Wrap"
-                       Text="Bằng cách tiếp tục, bạn đồng ý cho phép TÔI truy cập vào hình ảnh bạn đã chọn để tải lên. Vui lòng đảm bảo bạn có quyền tải lên hình ảnh."/>
+                       Text="Bằng cách tiếp tục, bạn đồng ý cho phép TÔI truy cập vào hình ảnh bạn đã chọn để tải lên. Vui lòng đảm bảo bạn có quyền tải lên hình ảnh." Grid.ColumnSpan="2"/>
         </Grid>
     </Border>
 </Window>

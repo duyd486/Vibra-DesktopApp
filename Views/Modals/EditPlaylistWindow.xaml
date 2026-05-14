@@ -17,7 +17,7 @@
     <Border Width="550"
             Padding="24"
             CornerRadius="12"
-            Background="#1D1512">
+            Background="{DynamicResource ControlBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -78,7 +78,7 @@
 
                 <StackPanel Grid.Column="2">
                     <TextBlock Text="Tên Playlist"
-                               Foreground="#9CA3AF"
+                               Foreground="{DynamicResource AppTextBrush}"
                                FontSize="12"
                                Margin="0 0 0 6"/>
 
@@ -86,8 +86,8 @@
                         <TextBox x:Name="PlaylistNameTextBox"
                                  Text="{Binding PlaylistName, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="0 0 0 10"
-                                 Background="#25211F"
-                                 Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                                  BorderThickness="0"
                                  Padding="14,10"
                                  FontSize="14" />
@@ -138,7 +138,7 @@
             <TextBlock Grid.Row="3"
                        Margin="0 16 0 0"
                        FontSize="11"
-                       Foreground="#9CA3AF"
+                       Foreground="{DynamicResource AppTextBrush}"
                        TextWrapping="Wrap"
                        Text="Bằng cách tiếp tục, bạn đồng ý cho phép TÔI truy cập vào hình ảnh bạn đã chọn để tải lên. Vui lòng đảm bảo bạn có quyền tải lên hình ảnh."/>
         </Grid>

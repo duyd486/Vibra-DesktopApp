@@ -62,12 +62,12 @@ namespace Vibra_DesktopApp.ViewModels
 
         private async Task RefreshListAlbumAsync()
         {
-            ListAlbum = await ApiManager.GetInstance().HttpGetAsync<List<Album>>("home/list-album");
+            ListAlbum = (await ApiManager.GetInstance().HttpGetAsync<List<Album>>("home/list-album"))?.Take(10).ToList();
         }
 
         private async Task RefreshListArtistAsync()
         {
-            ListArtist = await ApiManager.GetInstance().HttpGetAsync<List<User>>("home/list-artist");
+            ListArtist = (await ApiManager.GetInstance().HttpGetAsync<List<User>>("home/list-artist"))?.Take(10).ToList();
         }
 
         private async Task RefreshListRecentRotationAsync()

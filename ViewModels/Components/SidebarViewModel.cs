@@ -489,5 +489,11 @@ namespace Vibra_DesktopApp.ViewModels.Components
                 });
             }
         }
+
+        [RelayCommand]
+        private void CloseWindow(Window window)
+        {
+            window?.Close();
+        }
     }
 }

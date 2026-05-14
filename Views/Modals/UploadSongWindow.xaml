@@ -17,7 +17,7 @@
     <Border Width="900"
             Padding="24"
             CornerRadius="12"
-            Background="#1D1512">
+            Background="{DynamicResource NavActiveBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -52,7 +52,7 @@
                         Width="330" Height="330"
                         BorderThickness="0"
                         Padding="0"
-                        Background="#3A3533"
+                        Background="{DynamicResource NavInactiveTextBrush}"
                         Command="{Binding ChooseSongThumbnailCommand}">
                     <Border CornerRadius="12" ClipToBounds="True">
                         <Grid>
@@ -78,8 +78,8 @@
 
                 <StackPanel Grid.Column="2">
                     <Button Command="{Binding ChooseSongFileCommand}"
-                            Background="#25211F"
-                            Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                             BorderThickness="0"
                             Padding="14,10"
                             Margin="0 0 0 10"
@@ -91,8 +91,8 @@
                                  AcceptsReturn="True"
                                  TextWrapping="Wrap"
                                  Height="140"
-                                 Background="#25211F"
-                                 Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                                  BorderThickness="0"
                                  Padding="14,10"
                                  FontSize="14" />
@@ -122,15 +122,16 @@
                     <Grid Margin="0 0 0 10">
                         <TextBox x:Name="SongPriceTextBox"
                                  Text="{Binding SongPrice, UpdateSourceTrigger=PropertyChanged}"
-                                 Background="#25211F"
-                                 Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                                  BorderThickness="0"
                                  Padding="14,10"
                                  FontSize="14" />
 
                         <TextBlock Text="Giá tiền"
                                    Margin="14,10,14,10"
-                                   Foreground="#9CA3AF"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                                    Opacity="0.7"
                                    IsHitTestVisible="False">
                             <TextBlock.Style>
@@ -162,8 +163,8 @@
                         <!-- Category dropdown (Vue-like, Popup) -->
                         <Grid Grid.Column="0">
                             <Button x:Name="CategoryDropdownButton"
-                                    Background="#25211F"
-                                    Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                                     BorderThickness="0"
                                     Padding="14,10"
                                     HorizontalContentAlignment="Left"
@@ -188,7 +189,7 @@
                                    AllowsTransparency="True"
                                    PopupAnimation="Fade">
                                 <Border Width="{Binding ActualWidth, ElementName=CategoryDropdownButton}"
-                                        Background="#25211F"
+                                        Background="{DynamicResource NavActiveTextBrush}"
                                         BorderBrush="#3A3533"
                                         BorderThickness="1"
                                         CornerRadius="10"
@@ -201,7 +202,7 @@
                                                             BorderThickness="0"
                                                             Padding="12,10"
                                                             HorizontalContentAlignment="Left"
-                                                            Foreground="White"
+                                                            Foreground="{DynamicResource AppTextBrush}"
                                                             Command="{Binding DataContext.SelectCategoryCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                             CommandParameter="{Binding}">
                                                         <Button.Style>
@@ -227,8 +228,8 @@
                         <!-- Album dropdown (Vue-like, Popup) -->
                         <Grid Grid.Column="2">
                             <Button x:Name="AlbumDropdownButton"
-                                    Background="#25211F"
-                                    Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                                     BorderThickness="0"
                                     Padding="14,10"
                                     HorizontalContentAlignment="Left"
@@ -253,7 +254,7 @@
                                    AllowsTransparency="True"
                                    PopupAnimation="Fade">
                                 <Border Width="{Binding ActualWidth, ElementName=AlbumDropdownButton}"
-                                        Background="#25211F"
+                                        Background="{DynamicResource NavActiveTextBrush}"
                                         BorderBrush="#3A3533"
                                         BorderThickness="1"
                                         CornerRadius="10"
@@ -266,7 +267,7 @@
                                                             BorderThickness="0"
                                                             Padding="12,10"
                                                             HorizontalContentAlignment="Left"
-                                                            Foreground="White"
+                                                            Foreground="{DynamicResource AppTextBrush}"
                                                             Command="{Binding DataContext.SelectAlbumCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                             CommandParameter="{Binding}">
                                                         <Button.Style>
@@ -291,8 +292,8 @@
 
                         <Button Grid.Column="4"
                                 Command="{Binding ChooseLyricFileCommand}"
-                                Background="#25211F"
-                                Foreground="White"
+                                 Background="{DynamicResource WindowBackgroundBrush}"
+                                 Foreground="{DynamicResource AppTextBrush}"
                                 BorderThickness="0"
                                 Padding="14,10"
                                 Content="{Binding SelectedLyricFileName, TargetNullValue=Chọn file Lyric}"/>
@@ -321,7 +322,7 @@
             <TextBlock Grid.Row="3"
                        Margin="0 16 0 0"
                        FontSize="11"
-                       Foreground="#9CA3AF"
+                       Foreground="{DynamicResource AppTextBrush}"
                        TextWrapping="Wrap"
                        Text="Bằng cách tiếp tục, bạn đồng ý cho phép TÔI truy cập vào hình ảnh bạn đã chọn để tải lên. Vui lòng đảm bảo bạn có quyền tải lên hình ảnh."/>
         </Grid>
