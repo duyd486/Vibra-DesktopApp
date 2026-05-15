@@ -197,7 +197,7 @@ namespace Vibra_DesktopApp.Singleton
 
             string result = await response.Content.ReadAsStringAsync();
 
-            MessageBox.Show(result);
+            //MessageBox.Show(result);
 
             ResponseBase<User>? res = JsonSerializer.Deserialize<ResponseBase<User>>(result);
 

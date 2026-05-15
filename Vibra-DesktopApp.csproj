@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+	  <ApplicationIcon>Assets\Images\MyLogoWhite.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,11 @@
     <None Remove="Assets\Images\LogoText.png" />
     <None Remove="Assets\Images\MyLogo.png" />
     <None Remove="Assets\Images\MyLogoGray.png" />
+    <None Remove="Assets\Images\MyLogoWhite.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Images\MyLogoWhite.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +52,7 @@
     </Resource>
     <Resource Include="Assets\Images\MyLogo.png" />
     <Resource Include="Assets\Images\MyLogoGray.png" />
+    <Resource Include="Assets\Images\MyLogoWhite.png" />
   </ItemGroup>
 
   <ItemGroup>

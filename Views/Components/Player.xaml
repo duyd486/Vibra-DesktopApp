@@ -425,7 +425,7 @@
             </Button>
             <!--Song Detail Panel Btn-->
             <Button Background="Transparent"
-                    BorderThickness="0" Margin="10 0"
+                    BorderThickness="0" Margin="10 0 24 0"
                     Style="{StaticResource HoverScaleIconButtonStyle}"
                     Command="{Binding ToggleSongDetailsPanelCommand}">
                 <fa:IconBlock Icon="TabletScreenButton"
@@ -434,14 +434,7 @@
                               Margin="4 0"/>
             </Button>
 
-            <Button Background="Transparent"
-                    Style="{StaticResource HoverScaleIconButtonStyle}"
-                    BorderThickness="0" Margin="10 0 20 0">
-                <fa:IconBlock Icon="Expand"
-                              Foreground="{DynamicResource AppTextBrush}"
-                              FontSize="24"
-                              Margin="4 0"/>
-            </Button>
+
         </StackPanel>
 
     </Grid>

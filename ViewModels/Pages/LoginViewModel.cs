@@ -45,8 +45,13 @@ namespace Vibra_DesktopApp.ViewModels
             IsSubmitting = true;
             try
             {
-                //bool result = await ApiManager.GetInstance().LoginAsync(EmailText, PasswordText);
-                bool result = await ApiManager.GetInstance().LoginAsync("adele@gmail.com", "12345678");
+                if (EmailText == null || PasswordText == null)
+                {
+                    MessageBox.Show("Vui lòng điền đủ tài khoản và mật khẩu");
+                    return;
+                }
+                bool result = await ApiManager.GetInstance().LoginAsync(EmailText, PasswordText);
+                //bool result = await ApiManager.GetInstance().LoginAsync("adele@gmail.com", "12345678");
 
                 if (result && ApiManager.GetInstance().GetCurrentUser() != null)
                 {
