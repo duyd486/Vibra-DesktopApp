@@ -18,7 +18,7 @@ namespace Vibra_DesktopApp.Singleton
     {
         public static ApiManager? Instance { get; private set; }
 
-        private const string baseUrl = "http://spotify_clone_api.test/api/";
+        private const string baseUrl = "http://100.107.16.50:8000/api/";
 
         private readonly HttpClient client = new();
 
